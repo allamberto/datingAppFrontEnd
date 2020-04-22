@@ -1,0 +1,69 @@
+.profile-front {
+  border-style: double;
+  padding: 20px 20px 20px 20px;
+  display:inline-block;
+  width: 400px;
+  height: 400px;
+  background-color: #85C7F2;
+}
+
+.funfact-front {
+  border-style: double;
+  padding: 20px 20px 20px 20px;
+  display:inline-block;
+  width: 400px;
+  height: 250px;
+  background-color: #85C7F2;
+}
+
+.profile-back {
+  border-style: double;
+  padding: 20px 20px 20px 20px;
+  display:inline-block;
+  width: 400px;
+  height: 400px;
+  background-color: #85C7F2;
+}
+
+.funfact-back {
+  border-style: double;
+  padding: 20px 20px 20px 20px;
+  display:inline-block;
+  width: 400px;
+  height: 250px;
+  background-color: #85C7F2;
+}
+
+.profile-image {
+  border: 2px solid black;
+  height: 380px;
+  width: 380px;;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+}
+
+.funfact-image {
+  border: 2px solid black;
+  width: 380px;
+  height: 230px;;
+  position: fixed;
+  top: 50%;
+  left: 54%;
+  transform: translate(-50%, -50%);
+}
+
+.sameline {
+  display: inline-block;
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.info {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+

@@ -1,0 +1,45 @@
+.messageSideButton {
+    width: 104%;
+    height: 92.3px;
+    background-color: transparent;
+    border-bottom: 2px solid black;
+    overflow: hidden;
+}
+
+.messageSideButton-container {
+  margin: 0px;
+  margin-top: 10px;
+}
+
+.sideImage {
+  height: 70px;
+  width: 70px;
+  padding: 5px;
+  border-radius: 50%;
+  border: 1px solid black;
+}
+
+.sideImage-container{
+  text-align: left;
+  margin-right: 10px;
+}
+
+.sideText-container{
+  margin: 0px;
+  text-align: left;
+  overflow: hidden;
+  width: 140%;
+}
+
+.sideName {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.sideLastMessage {
+  font-size: 16px;
+  font-weight: 500;
+  margin-left: 10px;
+  height: 12px;
+  margin-top: -10px;
+}

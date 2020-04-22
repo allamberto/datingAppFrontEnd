@@ -1,0 +1,27 @@
+.buttonMessage {
+    display: inline-block;
+    text-align: center;  
+    margin-right: 3px;
+    font-weight: bold;
+    line-height: 35px;
+}
+
+.tjImage {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+}
+
+.promptButton {
+    background-color: #D39F10;
+    border-radius: 8px;
+    border: 1px solid black;
+    width: 165px;
+    height: 45px;
+    float: right;
+    margin-right: -15px;
+}
+
+.prompt-container {
+    margin: 20px 10px;
+}

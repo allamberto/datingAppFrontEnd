@@ -1,0 +1,148 @@
+.settings {
+  position:absolute;
+  background: url(./../img/grotto4.jpg) no-repeat;
+  height: 100%;
+  width: 100%;
+  background-size: 100%;
+}
+
+.settingsContainer {
+    margin-top: 8%;
+    margin-left: 6%;
+    margin-right: 6%;
+}
+
+.toggle {
+    background-color: blue;
+    color: black;
+    font-weight: 600;
+}
+
+.bodyChanges {
+    background-color: #659DBD;
+}
+
+.vl {
+  border-left: 4px solid black;
+  border-radius: 4px;
+  height: 250px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.changeTitle {
+    font-size: 25px;
+    text-align: center;
+    color: black;
+    font-weight: 400px;
+    margin-top: 10px;
+}
+
+.changeButton:hover {
+    font-size: 25px;
+    text-align: center;
+    color: black;
+    font-weight: 700px;
+    text-decoration: none;
+}
+
+.changeBoxes {
+  font-size: 26px;
+}
+
+.changeButton {
+    color: black;
+    border: 2px solid black;
+    border-radius: 4px;
+    font-weight: 600px;
+    background-color: white;
+    padding: 5px 10px 5px 10px;
+    font-size: 24px;
+    margin-bottom: 10px;
+    margin-top: 40px;
+}
+
+.changeTextBoxContainer {
+    width: 60%;
+    margin-left: 20%; 
+    padding: 30px 30px 30px 30px;
+    text-align: left;   
+    color: black;
+    margin-top: -20px;
+} 
+
+.changePasswordButton:hover {
+    font-size: 18px;
+    text-align: center;
+    color: black;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.changePasswordButton {
+    color: black;
+    border: 2px solid black;
+    border-radius: 4px;
+    font-weight: 600;
+    background-color: white;
+    padding: 5px 10px 5px 10px;
+    font-size: 18px;
+    margin-bottom: 10px;
+    float: right;
+    margin-right: -15px;
+
+}
+
+.bulletOptions {
+    text-align: left;
+    font-weight: 500;
+    font-style: italic;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.tabs {
+  background-color: #F8F8F8;
+  border-radius: 10px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+  
+.slide1 {
+  background-color: #fff;
+  padding: 15px;
+  min-height: 100px;
+  height: 100%;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.slide2 {
+  background-color: #fff;
+  padding: 15px;
+  min-height: 100px;
+  height: 100%;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+} 
+
+.wrapper {
+  position: fixed;
+  top: 42%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 67%;
+  border-radius: 10px;
+  background-color: #fff; 
+  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+  height: 55%;
+}
+
+.changeOptions {
+  margin-top: 30px
+}
+
+label {
+  margin-left: -25px;
+  font-size: 24px;
+}

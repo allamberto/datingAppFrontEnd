@@ -1,0 +1,39 @@
+.chat-wrapper {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.containerTextarea {
+    position: absolute;
+    bottom: 0px;
+    width: 90%;
+    left: 0px;
+    float: left;
+}
+.textarea {
+    width: 100%;
+    outline: none;
+    min-height: 20px;
+    padding: 0;
+    box-shadow: none;
+    display: block;
+    border: 2px solid black;
+    overflow: hidden;  
+    transition: height 0.2s ease;
+    bottom:0;
+    border-radius: 6px;
+    margin-left: 90px;
+    margin-bottom: 20px;
+    padding: 8px 8px 8px 8px;
+}
+.textarea--ghost {
+    opacity: 0.3;
+    display: block;
+    white-space: pre-wrap;
+    word-wrap: break-word;  
+    visibility: hidden;
+    position: absolute;
+    bottom: 0;
+}
+
