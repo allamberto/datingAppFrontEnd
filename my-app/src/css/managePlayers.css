@@ -87,4 +87,18 @@
   font-weight: 600;
   width: 150px;
   margin-left: 509px;
+} 
+
+.modal-text {
+    display: inline-block;
+    font-size: 18px;
+}
+
+.modal-input {
+    display: inline-block;
+    width: 150px;
+}
+
+.modal-content-container {
+    text-align: center;
 }

@@ -11,19 +11,40 @@ class Signup3 extends React.Component {
 constructor(props) {
       super(props);
 
+      var pathOp;
+      if(sessionStorage.getItem("settingsNav") == "true") {
+        pathOp = "/settings";
+      } else {
+        pathOp = "/signup_4";
+      }
+
+      sessionStorage.setItem("settingsNav", "false");
+
+      this.state = {
+        path: pathOp
+      }
+
       this.changePage = this.changePage.bind(this);
+    }
+
+    componentDidMount() {
+        if(sessionStorage.getItem("netid") == null){
+            this.props.history.push("/login");
+        }
     }
 
     changePage  = (event) => {
       event.preventDefault();
-      this.props.history.push("/signup_4");
+      this.props.history.push(this.state.path);
     } 
 
 render() {
+        var step = (this.state.path != "/settings") ? <StepProgressBar level="50"/> : <div />; 
+
         return (
             <div className="signup">
               <div className="backdrop">
-                <StepProgressBar level="50"/>
+                {step}
                 <div className="content-container">
                   <h3>Tell Us About You</h3>
                   <button type="submit" className="btn btn-primary btn-block" onClick={this.changePage}>Submit</button>

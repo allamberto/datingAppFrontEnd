@@ -6,6 +6,10 @@
     line-height: 35px;
 }
 
+.buttonMessage:hover {
+    background-color: #d4af37;
+}
+
 .tjImage {
     display: inline-block;
     width: 30px;

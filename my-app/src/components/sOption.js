@@ -6,6 +6,14 @@ import "./../css/sidebar.css";
 export default class SidebarOption extends React.Component {
   constructor(props) {
       super(props);
+
+      this.checkClear = this.checkClear.bind(this);
+  }
+
+  checkClear() {
+    if(this.props.logout) {
+        sessionStorage.clear();
+    }
   }
 
   render() {
@@ -20,7 +28,7 @@ export default class SidebarOption extends React.Component {
       );
     } else {
       return (
-        <NavLink to={this.props.nav}>
+        <NavLink to={this.props.nav} onClick={this.checkClear}>
           <div className="container">
             <p className="menu-text" activeClassName="active">{this.props.message}</p>
           </div>

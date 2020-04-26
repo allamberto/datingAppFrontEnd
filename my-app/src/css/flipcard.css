@@ -34,6 +34,7 @@
   background-color: #85C7F2;
 }
 
+
 .profile-image {
   border: 2px solid black;
   height: 380px;
@@ -50,7 +51,7 @@
   height: 230px;;
   position: fixed;
   top: 50%;
-  left: 54%;
+  left: 50%;
   transform: translate(-50%, -50%);
 }
 

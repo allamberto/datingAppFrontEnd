@@ -12,6 +12,8 @@ class Listings extends React.Component {
 
     handleClick(e) {
       e.preventDefault();
+      sessionStorage.setItem("playingAs", this.props.playingAs);
+      sessionStorage.setItem("playingAsName", this.props.playingAsName); 
       this.props.history.push("/browse");
     }
 

@@ -37,7 +37,7 @@ function ModalControl(props) {
       <MyVerticallyCenteredModal
         content={props.content}
         show={modalShow}
-        onHide={() => setModalShow(false)}
+        onHide={() => {setModalShow(false); props.onHide();}}
       />
     </>
   );

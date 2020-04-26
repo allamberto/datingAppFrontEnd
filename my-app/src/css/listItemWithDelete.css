@@ -24,3 +24,14 @@
   float: right;
   margin-right: 15px;
 }
+
+.check {
+    width: 35px;
+    height: 45px;
+    margin-top: -5px;
+}
+
+.pending {
+    width: 35px;
+    margin-right: 18px;
+}

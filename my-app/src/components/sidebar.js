@@ -11,14 +11,27 @@ import SidebarOpt from './sOption';
 import './../css/sidebar.css';
 
 export default props => {
-  return (
-    <Menu {...props}>
-      <img className="logo" src={Logo} alt="Sidebar Logo"></img>
-      <SidebarOpt nav="/browse" message="Browse" badge={false} img={Browse} alt="Sidebar Browse"/>
-      <SidebarOpt nav="/chat" message="Message" badge={true} num="4" img={Chat} alt="Sidebar Chat"/>
-      <SidebarOpt nav="/players" message="Player Setup" badge={true} num="1" img={Rec} alt="Sidebar Recs"/>
-      <SidebarOpt nav="/settings" message="Settings" badge={false} img={Settings} alt="Sidebar Settings"/>
-      <SidebarOpt nav="/" message="Logout" badge={false}  img={Logout} alt="Sidebar Logout"/>
-    </Menu>
-  );
+  var playersBadge = sessionStorage.getItem("manageBadge") != 0;
+  var numPlayers = sessionStorage.getItem("manageBadge");
+  if(!props.limited) {
+      return (
+        <Menu {...props}>
+          <img className="logo" src={Logo} alt="Sidebar Logo"></img>
+          <SidebarOpt nav="/browse" message="Browse" badge={false} img={Browse} alt="Sidebar Browse"/>
+          <SidebarOpt nav="/chat" message="Message" badge={true} num="4" img={Chat} alt="Sidebar Chat"/>
+          <SidebarOpt nav="/players" message="Player Setup" badge={playersBadge} num={numPlayers} img={Rec} alt="Sidebar Recs"/>
+          <SidebarOpt nav="/settings" message="Settings" badge={false} img={Settings} alt="Sidebar Settings"/>
+          <SidebarOpt nav="/" message="Logout" badge={false}  img={Logout} alt="Sidebar Logout" logout={true}/>
+        </Menu>
+      );
+  } else {
+    return (
+        <Menu {...props}>
+          <img className="logo" src={Logo} alt="Sidebar Logo"></img>
+          <SidebarOpt nav="/browse" message="Browse" badge={false} img={Browse} alt="Sidebar Browse"/>
+          <SidebarOpt nav="/players" message="Player Setup" img={Rec} alt="Sidebar Recs"/>
+          <SidebarOpt nav="/" message="Logout" badge={false}  img={Logout} alt="Sidebar Logout" logout={true}/>
+        </Menu>
+    );
+  }
 };

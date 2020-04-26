@@ -108,30 +108,30 @@
   border-bottom-right-radius: 0px;
 }
   
-.slide1 {
+.slide1Settings {
   background-color: #fff;
   padding: 15px;
   min-height: 100px;
-  height: 100%;
+  height: 200px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
 
-.slide2 {
+.slide2Settings {
   background-color: #fff;
   padding: 15px;
   min-height: 100px;
-  height: 100%;
+  height: 200px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 } 
 
-.wrapper {
+.wrapperSettings {
   position: fixed;
   top: 42%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 67%;
+  width: 1000px;
   border-radius: 10px;
   background-color: #fff; 
   box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
@@ -139,7 +139,7 @@
 }
 
 .changeOptions {
-  margin-top: 30px
+  margin-top: 30px;
 }
 
 label {

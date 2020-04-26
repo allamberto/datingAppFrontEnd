@@ -37,6 +37,12 @@ class Chat extends React.Component {
         this.loadMessages();
     }
 
+    componentDidMount() {
+        if(sessionStorage.getItem("netid") == null){
+            this.props.history.push("/login");
+        }
+    }
+
     loadSideBar() {
       const { peopleMessaged } = this.state;
       peopleMessaged.push({person: "Sophie",

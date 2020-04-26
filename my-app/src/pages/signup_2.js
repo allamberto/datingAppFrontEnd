@@ -8,12 +8,31 @@ import DynamicButton from "./../components/dynamicButton";
 
 class Signup2 extends React.Component {
 
-constructor(props) {
+   constructor(props) {
       super(props);
 
-      this.mySubimitHandler = this.mySubmitHandler.bind(this);
+      var pathOp;
+      if(sessionStorage.getItem("settingsNav") == "true") {
+        pathOp = "/settings";
+      } else {
+        pathOp = "/signup_3";
+      }
+
+      sessionStorage.setItem("settingsNav", "false");
+
+      this.state = {
+        path: pathOp
+      }
+
+      this.mySubmitHandler = this.mySubmitHandler.bind(this);
       this.changePage = this.changePage.bind(this);
     }
+
+  componentDidMount() {
+    if(sessionStorage.getItem("netid") == null){
+        this.props.history.push("/login");
+    }
+  }
 
 mySubmitHandler = (event) => {
       event.preventDefault();
@@ -22,14 +41,15 @@ mySubmitHandler = (event) => {
 
 changePage  = (event) => {
       event.preventDefault();
-      this.props.history.push("/signup_3");
+      this.props.history.push(this.state.path);
     } 
 
 render() {
+    var step = (this.state.path != "/settings") ? <StepProgressBar level="35"/> : <div />;
         return (
             <div className="signup">
                  <div className="backdrop">
-                <StepProgressBar level="35"/>
+                {step}
                 <div className="content-container">
                 <form onSubmit={this.mySubmitHandler}>
                 <h3>Basic Information</h3>

@@ -68,6 +68,11 @@ body, html, .App, #root, .auth-wrapper {
   font-weight: 400;
 }
 
+.custom-checkbox {
+  float: right;
+  margin-bottom: 10px;
+}
+
 .forgot-password,
 .forgot-password a {
   text-align: right;
@@ -79,4 +84,8 @@ body, html, .App, #root, .auth-wrapper {
 
 .forgot-password a {
   color: #167bff;
+}
+
+.form-group-text {
+  margin-left: 0px;
 }

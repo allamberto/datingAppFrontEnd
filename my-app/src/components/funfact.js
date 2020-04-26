@@ -13,16 +13,17 @@ class FunFact extends React.Component {
       return (
         <div className="funfact-front">
           <div className="info">
-            <h1>I like eggs.</h1> 
+            <h1>{this.props.f.caption}</h1> 
           </div>          
         </div>        
       ); 
     }
 
     Back() {
+      var img =" data:image/gif;base64," + this.props.f.image;
         return (
             <div className="funfact-back">
-             <img src={Lep} className="funfact-image"></img>
+             <img src={img} className="funfact-image"></img>
             </div>
       );
     }

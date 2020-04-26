@@ -7,6 +7,7 @@ import StepProgressBar from "./../components/progressbar";
 export default class Signup1 extends React.Component {
 
 render() {
+        sessionStorage.setItem("settingsNav", "false");
         return (
             <div className="signup">
               <div className="backdrop">
