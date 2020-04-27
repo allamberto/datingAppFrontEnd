@@ -1,14 +1,18 @@
 import React from "react";
 import { Button } from "react-bootstrap";
+import Textbox from './textbox';
+import ImageUpload from './image';
 
-function Textbox(props) {
+function Funfact(props) {
     return (
-    <div align="form-group">
-        <input type="text" className="form-control" placeholder={props.placeholder}/>
-    </div>);
+      <div>
+	<Textbox placeholder="Enter a caption" header="Fun Fact Caption" className="form-control"/>
+        <ImageUpload callback={props.callback}/>
+      </div>
+    );
 }
 
-class MultipleChoice extends React.Component {
+class DynamicButton extends React.Component {
     constructor(props) {
         super(props);
         this.state = { inputs: ['input-0'] };
@@ -19,12 +23,10 @@ class MultipleChoice extends React.Component {
         return(
             <div>
             <div id="dynamicInput">
-                {this.state.inputs.map(input => <Textbox placeholder={this.props.placeholder} />)}
+                {this.state.inputs.map(input => <Funfact callback={this.props.callback}/>)}
             </div>
             <div className="plus-container">
-               <Button variant="success" className="plus" onClick={ () => this.appendInput() }>
-                   +
-               </Button>
+               <button className="plus" onClick={ () => this.appendInput() } />
             </div>
             </div>
         );
@@ -36,6 +38,6 @@ class MultipleChoice extends React.Component {
     }
 }
 
-export default MultipleChoice;
+export default DynamicButton;
 
 

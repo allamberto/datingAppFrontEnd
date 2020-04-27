@@ -4,7 +4,6 @@ import "./../css/signup.css";
 import StepProgressBar from "./../components/progressbar";
 import ImageUpload from './../components/image';
 import Textbox from './../components/textbox';
-import DynamicButton from './../components/dynamicButton';
 
 class Signup4 extends React.Component {
 
@@ -79,22 +78,12 @@ render() {
 		  <ImageUpload callback={this.setProfile}/>
 		  <hr className="divider" />
 
-		  <h2 className="section-header">Choose a Prompt Question</h2>
-		  <Textbox placeholder="Enter prompt Question" header="Your personal question will be answered by each of your matches." className="form-control"/>
-
-		  <hr className="divider" />
-
 		  <h2 className="section-header">Upload Fun Facts</h2>
-
-		  <DynamicButton callback={this.setProfile} />
- 
-		  <hr className="divider" />
-
-		  <h2 className="section-header">Upload Your Calendar</h2>
-		  <input type="file" name="file" />	
-	
+		  <Textbox placeholder="Enter a caption" header="Fun Fact Caption"/>
+                  <ImageUpload callback={this.setProfile}/>
                   <button type="submit" className="btn btn-primary btn-block" onClick={this.changePage}>Submit</button>
 
+		   <h2 className="section-header">Upload Your Calender</h2>
                </div>
               </div>
             </div>

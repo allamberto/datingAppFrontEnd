@@ -6,9 +6,8 @@ import "./../css/multipleChoice.css";
 const optionStyle = {"option": 
 		      {
 			"width": "700px", 
-			"margin-left" : "40px",
-			"text-align" : "left",
-			"font-size" : "2px"
+			"marginLeft" : "40px",
+			"textAlign" : "left",
 		      }
 		    };
 
@@ -33,7 +32,7 @@ class MC extends React.Component {
         <Test onOptionSelect={selectedOptions => this.setState({ selectedOptions })}>
           <QuestionGroup questionNumber={"temperament"}>
             <h2 className="question-text">Question 1 of 14: Which best describes you?</h2>
-            <Option value="introverted" style={optionStyle}>Introverted</Option>
+            <Option value="introverted" style={optionStyle}><p className="text-test">Introverted</p></Option>
             <Option value="extroverted" style={optionStyle}>Extroverted</Option>
             <Option value="ambiverted" style={optionStyle}>Ambiverted</Option>
           </QuestionGroup>
