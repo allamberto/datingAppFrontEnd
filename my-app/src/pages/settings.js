@@ -301,7 +301,7 @@ class Settings extends React.Component {
                                       <li>Name</li>
                                       <li>Dorm</li>
                                       <li>Sexual Preference</li>
-                                      <li>Calendar</li>
+                                      <li>Hometown</li>
                                     </ul>
                                 </div>
                                 <NavLink to="/signup_2" className="changeButton">Here</NavLink>
@@ -311,26 +311,13 @@ class Settings extends React.Component {
                                 <h2 className="changeTitle">Change Personal Preferences</h2>
                                 <div className="bulletOptions">
                                     <ul>
-                                      <li>Astrological Sign</li>
+                                      <li>Qualities in a Partner</li>
                                       <li>Friday Night Plans</li>
-                                      <li>Favorite Foods</li>
-                                      <li>Hobbies</li>
+                                      <li>Religous Views</li>
+                                      <li>First Date Ideas</li>
                                     </ul>
                                 </div>
                                  <NavLink to="/signup_3" className="changeButton">Here</NavLink>
-                            </Col>
-                            <div class="vl"></div>
-                            <Col>
-                                <h2 className="changeTitle">Change Partner Preferences</h2>
-                                <div className="bulletOptions">
-                                    <ul>
-                                      <li>Ew</li>
-                                      <li>Ew</li>
-                                      <li>Ew</li>
-                                      <li>Ew</li>
-                                    </ul>
-                                </div>
-                                <NavLink to="/signup_4" className="changeButton">Here</NavLink>
                             </Col>
                             <div class="vl"></div>
                             <Col>
@@ -339,11 +326,11 @@ class Settings extends React.Component {
                                     <ul>
                                       <li>Photos</li>
                                       <li>Fun Facts</li>
-                                      <li>Ugh</li>
-                                      <li>Um</li>
+                                      <li>Calender</li>
+                                      <li>Prompt Question</li>
                                     </ul>
                                 </div>
-                                <NavLink to="/signup_5" className="changeButton">Here</NavLink>
+                                <NavLink to="/signup_4" className="changeButton">Here</NavLink>
                             </Col>
                           </Row>
                         </Container>

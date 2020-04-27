@@ -2,14 +2,19 @@ import React, { Component } from "react";
 import { NavLink, withRouter} from "react-router-dom";
 import Textbox from './../components/textbox';
 import "./../css/signup.css";
-import {DropdownButton, Dropdown} from "react-bootstrap";
+import {DropdownButton, Dropdown, Container, Col, Row} from "react-bootstrap";
 import StepProgressBar from "./../components/progressbar";
 import DynamicButton from "./../components/dynamicButton";
+import CustomDropdown from "./../components/customDropdown";
 
 class Signup2 extends React.Component {
 
    constructor(props) {
       super(props);
+
+      if(sessionStorage.getItem("netid") == null){
+        this.props.history.push("/login");
+      }
 
       var pathOp;
       if(sessionStorage.getItem("settingsNav") == "true") {
@@ -21,32 +26,124 @@ class Signup2 extends React.Component {
       sessionStorage.setItem("settingsNav", "false");
 
       this.state = {
-        path: pathOp
+	netid: sessionStorage.getItem('netid'),
+        path: pathOp,
+	firstName: "",
+	lastName: "",
+	city: "",
+	state: "",
+	dorm: "",
+	year: "",
+	majors: [],
+	minors: [],
+	identity: "",
+	orientation: []
       }
 
-      this.mySubmitHandler = this.mySubmitHandler.bind(this);
       this.changePage = this.changePage.bind(this);
+      this.setFirstName = this.setFirstName.bind(this);
+      this.setLastName = this.setLastName.bind(this);
+      this.setCity = this.setCity.bind(this);
+      this.setYear = this.setYear.bind(this);
+      this.setIdentity = this.setIdentity.bind(this);
+      this.setOrientation = this.setOrientation.bind(this);
+      this.setStateVal = this.setStateVal.bind(this);
+      this.setMajors = this.setMajors.bind(this);
+      this.setMinors = this.setMinors.bind(this);
+      this.setDorm = this.setDorm.bind(this);
     }
 
-  componentDidMount() {
-    if(sessionStorage.getItem("netid") == null){
-        this.props.history.push("/login");
-    }
+  changePage  = (event) => {
+      event.preventDefault();
+      const requestOptions = {
+            method: 'PUT',
+            body: JSON.stringify({
+		"firstName": this.state.firstName,
+		"lastName": this.state.lastName,
+		"gradYear": this.state.year,
+		"city": this.state.city,
+		"state": this.state.state,
+		"dorm": this.state.dorm,
+		"majors": this.state.majors,
+		"minors": this.state.minors,
+		"sexualOrientation": "heterosexual",
+		"genderIdentity": this.state.identity
+            })
+          };
+          fetch('http://3.211.82.27:8800/students/'+this.state.netid, requestOptions)
+          .then(async response => {
+                const data = await response.json();
+
+                // check for error response
+                if (!response.ok) {
+                    // get error message from body or default to response status
+                    const error = (data && data.message) || response.status;
+                    return Promise.reject(error);
+                }
+
+                this.props.history.push(this.state.path);
+            })
+            .catch(error => {
+                console.error('There was an error!', error);
+            });
   }
 
-mySubmitHandler = (event) => {
-      event.preventDefault();
-      //this.props.history.push("/signup_3");
+  setFirstName(e) {
+    this.setState({firstName: e.target.value});
+  }
+
+  setLastName(e) {
+    this.setState({lastName: e.target.value});
+  }
+
+  setCity(e) {
+    this.setState({city: e.target.value});
+  }
+
+  setYear(e) {
+    this.setState({year: e.value});
+  }
+
+  setIdentity(e) {
+    this.setState({identity: e.value});
+  }
+
+  setOrientation(e) {
+    var ors = [];
+    for(var o of e) {
+        ors.push(o.value);
     }
+    console.log(ors);
+    this.setState({orientation: ors});
+  }
 
-changePage  = (event) => {
-      event.preventDefault();
-      this.props.history.push(this.state.path);
-    } 
+  setStateVal(e) {
+    this.setState({state: e.value});
+  }
 
-render() {
+  setMajors(e) {
+    var ms = [];
+    for(var major of e) {
+	ms.push(major.value);
+    }
+    this.setState({majors: ms});
+  }
+
+  setMinors(e) {
+    var minors = [];
+    for(var minor of e) {
+        minors.push(minor.value);
+    }
+    this.setState({minors: minors});
+  }
+
+  setDorm(e) {
+    this.setState({dorm: e.value});
+  }
+
+  render() {
     var step = (this.state.path != "/settings") ? <StepProgressBar level="35"/> : <div />;
-        return (
+	return (
             <div className="signup">
                  <div className="backdrop">
                 {step}
@@ -54,42 +151,50 @@ render() {
                 <form onSubmit={this.mySubmitHandler}>
                 <h3>Basic Information</h3>
 
-                <Textbox header="First Name" placeholder="Enter First Name" style="form-control"/>               
-                <Textbox header="Last Name" placeholder="Enter Last Name" style="form-control"/>               
-                <Textbox header="Home City" placeholder="Enter Home City" style="form-control"/>               
-                <Textbox header="Home State" placeholder="ex. NJ" style="form-control"/>      
+		<Container>
+		  <Row md={12}>
+                    <Col md={6} className="align">
+                    	<Textbox header="First Name" placeholder="Enter First Name" style="form-control" callback={this.setFirstName}/>
+		    </Col>
+                    <Col md={6} className="align">
+			<Textbox header="Last Name" placeholder="Enter Last Name" style="form-control" callback={this.setLastName}/>
+                    </Col>
+                  </Row>
+		  <Row md={12}>
+                    <Col md={6} className="align">
+                    	<Textbox header="Hometown" placeholder="Enter Hometown" style="form-control-help" callback={this.setCity}/>
+		    </Col>
+                    <Col md={6} className="align">
+                        <CustomDropdown ops="states"  multi={false} placeholder="Select State.." className="container-drop" header="Home State" callback={this.setStateVal}/>
+		    </Col>
+                  </Row>
+		  <Row md={12}>
+		    <Col md={6} className="align">
+			<CustomDropdown ops="dorms"  multi={false} placeholder="Select Dorm.." className="container-drop" header="Dorm" callback={this.setDorm}/>  
+		    </Col>
+		    <Col md={6} className="align">
+			<CustomDropdown ops="years"  multi={false}  placeholder="Select Class.." className="container-drop" header="Class Year" callback={this.setYear}/> 
+		    </Col>
+		  </Row>
+		  <Row md={12}>
+		    <Col md={6} className="align">
+               		<CustomDropdown ops="majors"  multi={true}  placeholder="Select Majors.." className="container-drop" header="Majors" callback={this.setMajors}/> 
+		    </Col>
+   		    <Col md={6} className="align">
+			<CustomDropdown ops="minors"  multi={true}  placeholder="Select Minors.." className="container-drop" header="Minors" callback={this.setMinors}/>
+		    </Col>
+		  </Row>
 
-                <DropdownButton id="dropdown-item-button" title="On-Campus Hall">
-                  <Dropdown.Item as="button">Action</Dropdown.Item>
-                  <Dropdown.Item as="button">Another action</Dropdown.Item>
-                  <Dropdown.Item as="button">Something else</Dropdown.Item>
-                </DropdownButton>
-
-                <DropdownButton id="dropdown-item-button" title="Class">
-                  <Dropdown.Item as="button">2020</Dropdown.Item>
-                  <Dropdown.Item as="button">2021</Dropdown.Item>
-                  <Dropdown.Item as="button">2022</Dropdown.Item>
-                  <Dropdown.Item as="button">2023</Dropdown.Item>
-                </DropdownButton>
-
-                <label>Majors</label>
-                <DynamicButton placeholder="Enter Major"/>
-                <label>Minors</label>
-                <DynamicButton placeholder="Enter  Minor"/>
-
-                <DropdownButton id="dropdown-item-button" title="Gender Identity">
-                  <Dropdown.Item as="button">Action</Dropdown.Item>
-                  <Dropdown.Item as="button">Another action</Dropdown.Item>
-                  <Dropdown.Item as="button">Something else</Dropdown.Item>
-                </DropdownButton>
-
-                <DropdownButton id="dropdown-item-button" title="Sexual Orientation">
-                  <Dropdown.Item as="button">Action</Dropdown.Item>
-                  <Dropdown.Item as="button">Another action</Dropdown.Item>
-                  <Dropdown.Item as="button">Something else</Dropdown.Item>
-                </DropdownButton>
-                
-                <button type="submit" className="btn btn-primary btn-block" onClick={this.changePage}>Submit</button>
+		  <Row md={12}>
+                     <Col md={6} className="align">
+			<CustomDropdown ops="identity"  multi={false}  placeholder="Select How You Identify.." className="container-drop" header="How Do You Identify" callback={this.setIdentity}/> 
+                    </Col>
+                    <Col md={6} className="align">
+			<CustomDropdown ops="orientation"  multi={true}  placeholder="Select Who You Are Looking For.." className="container-drop" header="Who Are You Looking For" callback={this.setOrientation}/>  
+		    </Col>
+		  </Row>
+                </Container>            
+                <button type="submit" className="btn btn-primary btn-block signup-submit" onClick={this.changePage}>Submit</button>
             </form> 
             </div>
           </div>

@@ -98,22 +98,8 @@ class Creds extends React.Component {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({"netid": this.state.netid,
-                                          "password": this.state.password,
-                                          "firstName": "",
-                                            "lastName": "",
-                                            "gradYear": "",
-                                            "city": "",
-                                            "state": "",
-                                            "dorm": "",
-                                            "majors": [],
-                                            "minors": [],
-                                            "sexualOrientation": "",
-                                            "genderIdentity": "",
-                                            "question": "",
-                                            "dh": "",
-                                            "attendsMass": "",
-                                            "fridayNights": ""
-                    })
+                                          "password": this.state.password
+                   })
                   };
                   fetch('http://3.211.82.27:8800//students', requestOptions)
                   .then(async response => {

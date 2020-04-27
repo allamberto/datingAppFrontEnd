@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { NavLink, withRouter} from "react-router-dom";
-import Textbox from './../components/textbox';
 import "./../css/signup.css";
 import {DropdownButton, Dropdown} from "react-bootstrap";
 import StepProgressBar from "./../components/progressbar";
-import DynamicButton from "./../components/dynamicButton";
+import MultipleChoice from './../components/multipleChoice2';
 
 class Signup3 extends React.Component {
 
@@ -21,10 +20,13 @@ constructor(props) {
       sessionStorage.setItem("settingsNav", "false");
 
       this.state = {
-        path: pathOp
+	netid: sessionStorage.getItem("netid"),
+        path: pathOp,
+	selected: {}
       }
 
       this.changePage = this.changePage.bind(this);
+      this.setSelected = this.setSelected.bind(this);
     }
 
     componentDidMount() {
@@ -33,9 +35,48 @@ constructor(props) {
         }
     }
 
+    setSelected = (childData) => {
+	this.setState({selected: childData});
+    }
+
     changePage  = (event) => {
       event.preventDefault();
-      this.props.history.push(this.state.path);
+      console.log(this.state.selected);
+      const requestOptions = {
+            method: 'PUT',
+            body: JSON.stringify({
+		    "temperament": this.state.selected.temperament,
+		    "giveAffection": this.state.selected.giveAffection,
+		    "trait": this.state.selected.trait,
+		    "idealDate": this.state.selected.idealDate,
+		    "fridayNight": this.state.selected.fridayNight,
+		    "diningHall": this.state.selected.diningHall,
+		    "studySpot": this.state.selected.studySpot,
+		    "mass": this.state.selected.mass,
+		    "club": this.state.selected.club,
+		    "gameDay": this.state.selected.gameDay,
+		    "hour": this.state.selected.hour,
+		    "idealTemperament": this.state.selected.idealTemperament,
+		    "receiveAffection": this.state.selected.receiveAffection,
+		    "idealTrait": this.state.selected.idealTrait
+            })
+          };
+          fetch('http://3.211.82.27:8800/students/'+this.state.netid, requestOptions)
+          .then(async response => {
+                const data = await response.json();
+
+                // check for error response
+                if (!response.ok) {
+                    // get error message from body or default to response status
+                    const error = (data && data.message) || response.status;
+                    return Promise.reject(error);
+                }
+
+                this.props.history.push(this.state.path);
+            })
+            .catch(error => {
+                console.error('There was an error!', error);
+            });
     } 
 
 render() {
@@ -47,6 +88,8 @@ render() {
                 {step}
                 <div className="content-container">
                   <h3>Tell Us About You</h3>
+
+ 		  <MultipleChoice callback={this.setSelected}/>
                   <button type="submit" className="btn btn-primary btn-block" onClick={this.changePage}>Submit</button>
                </div>
               </div>

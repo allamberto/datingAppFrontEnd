@@ -15,7 +15,7 @@ constructor(props) {
       if(sessionStorage.getItem("settingsNav") == "true") {
         pathOp = "/settings";
       } else {
-        pathOp = "/signup_5";
+        pathOp = "/players";
       }
 
       sessionStorage.setItem("settingsNav", "false");

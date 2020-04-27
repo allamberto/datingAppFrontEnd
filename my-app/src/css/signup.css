@@ -46,15 +46,6 @@ h1,h2,h3,h4,h5,h6,label,span {
     overflow-y:scroll;
 }
 
-.form-control {
-  width: 70%;
-  border-color: #167bff;
-  box-shadow: none;
-  margin-right: 40px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
 .plus-container {
   text-align: right;
 }
@@ -68,4 +59,9 @@ h1,h2,h3,h4,h5,h6,label,span {
 
 .offset {
     width: 50%;
+}
+
+.signup-submit {
+  margin-top: 50px;
+  margin-bottom: 20px;
 }

@@ -1,18 +1,14 @@
 .form-control {
-  width: 70%;
   border-color: #167bff;
   box-shadow: none;
-  margin-right: 40px;
-  margin-top: 10px;
-  margin-bottom: 10px;
 }
 
-.promptBox {
-  width: 70%;
-  height: 300px;
+.title-text-textbox {
+  margin-left: 0px;
+  margin-bottom: -3px; 
+}
+
+.form-control-help {
   border-color: #167bff;
   box-shadow: none;
-  margin-right: 40px;
-  margin-top: 10px;
-  margin-bottom: 10px;
 }

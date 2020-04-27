@@ -1,0 +1,28 @@
+.container-drop {
+  width: 100%;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.longDrop {
+  margin-left: 20px;
+  width: 90%;
+  border-color: #167bff;
+  box-shadow: none;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  margin-left: 20px;
+  font-weight: 400;
+}
+
+.title-textbox {
+  margin-left: -10px;
+}
+
+.long-text {
+  margin-left: 0px;
+}
+
+.align {
+  text-align: left;
+}

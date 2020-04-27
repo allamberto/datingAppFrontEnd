@@ -1,0 +1,19 @@
+.multiple-choice-container {
+  width: 100%;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.question-line {
+  margin-bottom: 40px;
+  width: 740px;
+  border: 1px solid black;
+  border-radius: 10px;
+  margin-top: 30px;
+}
+
+.question-text {
+  font-size: 20px;
+  width: 700px;
+  margin-bottom: 30px;
+}
