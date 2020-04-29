@@ -4,10 +4,13 @@ import "./../css/prompt.css";
 import {Form} from 'react-bootstrap';
 
 class Prompt extends React.Component {
+    callback(e) {
+	e.preventDefault();
+    }
 
     render() {
          return (
-            <Form>
+            <Form onSubmit={this.callback.bind(this)}>
             <div className="prompt-container">  
               <Form.Group controlId="prompt.Textarea">
                 <Form.Label>{this.props.question}</Form.Label>

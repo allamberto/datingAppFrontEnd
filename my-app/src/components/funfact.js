@@ -20,7 +20,7 @@ class FunFact extends React.Component {
     }
 
     Back() {
-      var img =" data:image/gif;base64," + this.props.f.image;
+      var img = (this.props.f.image != "") ? 'http://3.211.82.27:8800/images/' + this.props.f.image : Lep;
         return (
             <div className="funfact-back">
              <img src={img} className="funfact-image"></img>

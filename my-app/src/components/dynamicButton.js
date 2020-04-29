@@ -8,7 +8,7 @@ function Funfact(props) {
       <div>
 	<p className="section-subclass">Fun Fact Caption</p>
 	<input placeholder="Enter Fun Fact" className="form-control prompt-control" onChange={event => props.callback(event.target.value, props.num)}/>
-        <input type="file" className="file-input" onChange={event => props.fileCallback(event.target.value, props.num)}/>
+        <input type="file" className="file-input" onChange={event => props.fileCallback(event.target, props.num)}/>
       </div>
     );
 }

@@ -42,10 +42,6 @@ class CardContainer extends React.Component{
     );}
 }
 
-let me = (
-    "netid": "alamber2"
-);
-
 class Browse extends React.Component {
   constructor(props) {
     super(props);
@@ -59,7 +55,7 @@ class Browse extends React.Component {
         playingAs: sessionStorage.getItem("playingAs"),
         playingAsName: sessionStorage.getItem("playingAsName"),
         person: [],
-        viewee: "",
+        lookingAt: "",
         show: true
     } 
 
@@ -100,16 +96,14 @@ class Browse extends React.Component {
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
-                this.setState({person: me});
                 return Promise.reject(error);
             }
 
-            console.log(data);
+	    console.log(data);
             this.setState({person: Object.values(data)});
-            this.setState({viewee: data.netid}); 
+            this.setState({lookingAt: data.netid}); 
         })
         .catch(error => {
-            this.setState({person: me});
             console.error('There was an error!', error);
         });
   }
@@ -123,7 +117,6 @@ class Browse extends React.Component {
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
-                this.setState({person: me});
                 return Promise.reject(error);
             }
 
@@ -133,17 +126,16 @@ class Browse extends React.Component {
                 this.setState({show: true});
             }
 
-            console.log(data);
             this.setState({person: Object.values(data)});
-            this.setState({viewee: data.netid});
+            this.setState({lookingAt: data.netid});
         })
         .catch(error => {
             console.error('There was an error!', error);
-            this.setState({person: me});
         }); 
   }
 
   updateRecommendationInterest(interest) {
+    console.log(this.state.netid, this.state.lookingAt, this.state.message);
     const requestOptions = {
         method: "PUT",
         body: JSON.stringify({"viewer": this.state.netid,
@@ -160,16 +152,14 @@ class Browse extends React.Component {
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
-                this.setState({person: me});
                 return Promise.reject(error);
             } 
             
-           this.getRecommendation();          
+          this.getRecommendation();          
  
         }) 
         .catch(error => {
             console.error('There was an error!', error);
-            this.setState({person: me});
         });
   } 
 
@@ -184,13 +174,12 @@ class Browse extends React.Component {
     };
     fetch('http://3.211.82.27:8800/recommendation', requestOptions)
       .then(async response => {
-            const data = await response.json();
+            const data = await response;
 
             // check for error response
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
-                this.setState({person: me});
                 return Promise.reject(error);
             } 
 
@@ -199,7 +188,6 @@ class Browse extends React.Component {
         })
         .catch(error => {
             console.error('There was an error!', error);
-            this.setState({person: me});
         });
   }
 
@@ -212,15 +200,14 @@ class Browse extends React.Component {
                               "status": "recommend"
         })
     };
-    fetch('http://3.211.82.27:8800/recommendation', requestOptions)
+    fetch('http://3.211.82.27:8800/browse', requestOptions)
       .then(async response => {
-            const data = await response.json();
+            const data = await response;
 
             // check for error response
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
-                this.setState({person: me});
                 return Promise.reject(error);
             }
 
@@ -228,12 +215,12 @@ class Browse extends React.Component {
 
         })
         .catch(error => {
-            this.setState({person: me});
             console.error('There was an error!', error);
         });
   } 
 
   updateProfilePass() {
+    console.log(this.state.playingAs + this.state.lookingAt + this.state.netid);
     const requestOptions = {
         method: "POST",
         body: JSON.stringify({"viewedFor": this.state.playingAs,
@@ -242,29 +229,26 @@ class Browse extends React.Component {
                               "status": "pass"
         })
     };
-    fetch('http://3.211.82.27:8800/recommendation', requestOptions)
+    fetch('http://3.211.82.27:8800/browse', requestOptions)
       .then(async response => {
-            const data = await response.json();
+            const data = await response;
 
             // check for error response
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
-                this.setState({person: me});
                 return Promise.reject(error);
             }
-
-            this.getProfile();
+            
+	    this.getProfile();
 
         })
         .catch(error => {
-            this.setState({person: me});
             console.error('There was an error!', error);
         });
   }
 
   render() {
-    console.log(this.state.person);
     if(this.state.show && this.state.playingAs == this.state.netid){
         return(
           <div id="Page">
@@ -324,10 +308,10 @@ class Browse extends React.Component {
                     <Profile person={this.state.person}/>
                     <Row className="buttons">
                         <Col md={6} className="button1Col">
-                             <button onClick={this.updatProfileInterest} className="recommendButtonHigher">Recommend To {"\n"}{this.state.playingAsName}</button>
+                             <button onClick={this.updateProfileInterest} className="recommendButtonHigher">Recommend To {"\n"}{this.state.playingAsName}</button>
                         </Col>
                         <Col md={6} className="button1Col">
-                            <button onClick={this.updatProfilePass} className="passButton passButtonNotMe">
+                            <button onClick={this.updateProfilePass} className="passButton passButtonNotMe">
                                 <p className="notMeButtonText">Not For {"\n"}{this.state.playingAsName}</p>
                              </button>
                         </Col>

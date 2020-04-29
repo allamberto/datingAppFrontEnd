@@ -10,7 +10,6 @@ class Profile extends React.Component {
     }
     
     Front() {
-        console.log(this.props.person);
         if( this.props.person == undefined || this.props.person[4] == undefined ) return;
         var majors = "";//( this.props.person[4].length > 1 ) ?  this.props.person[4].join(" ") +" Majors" :  this.props.person[4].join(" ") + " Major";
         var minors = "";//( this.props.person[5].length > 0 ) ?  (this.props.person[5].length > 1 ? this.props.person[5].join(" ") + " Minors" :  this.props.person[5].join(" ") +" Minor") : "";
@@ -32,9 +31,10 @@ class Profile extends React.Component {
     
     Back() {
         if(this.props.person == undefined || this.props.person == undefined) return;
+	var photo = 'http://3.211.82.27:8800/images/' + this.props.person[10];
         return (
             <div className="profile-back">
-             <img src={this.props.person[10]} className="profile-image"></img>
+             <img src={photo} className="profile-image"></img>
             </div>
       );
     }
