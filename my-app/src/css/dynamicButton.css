@@ -1,0 +1,19 @@
+.delete-funfact {
+  display: inline-block;
+}
+
+.delete-funfact-text {
+  display: inline-block;
+  border: 1px solid #d3d3d3;
+  padding: 5px;
+  border-radius: 4px;
+  font-weight: 500 !important;
+  width: 550px;
+}
+
+.delete-funfact-image {
+  display: inline-block;
+  width: 35px;
+  height: 30px;
+  margin-left: 20px;
+}
