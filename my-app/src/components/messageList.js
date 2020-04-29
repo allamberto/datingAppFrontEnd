@@ -1,50 +1,63 @@
 import React from 'react';
+import {Row, Col} from 'react-bootstrap';
 
 class MessageList extends React.Component {
     constructor(props) {
         super(props);
+        this.state = { id       : this.props.id,
+                       messages : this.props.messages}
         this.myMessage = this.myMessage.bind(this);
         this.theirMessage = this.theirMessage.bind(this);
     }
 
+    // Update when messages change
+    componentDidUpdate(prevProps, prevState) {
+      if (prevProps.messages.length !== this.props.messages.length) {
+        this.setState({messages : this.props.messages});
+      }
+    }
+
     myMessage(content){
         return (
-          <div>
-            <div className='message-right-triangle'>
+          <Row >
+            <Col className="float-right" >
+              <div className='message-right-triangle' >
                 <div className='myMessage-container'> {content} </div>
                 <div className='triangle-right'></div>
-            </div>
+              </div>
+            </Col>
             <hr className="messageDivider" />
-          </div>
+          </Row>
         );
     }
 
     theirMessage(content){
         return (
-          <div>
-            <div className='message-left-triangle'>
+          <Row>
+            <Col className="float-left" >
+              <div className='message-left-triangle' >
                 <div className='triangle-left'></div>
                 <div className='theirMessage-container'> {content} </div>
-            </div>
+              </div>
+            </Col>
             <hr className="messageDivider" />
-          </div>
+          </Row>
         );
     }
 
     render() {
         var messageList = [];
-        for(var message of this.props.messages) {
+        for(var message of this.state.messages) {
             var content = message['content'];
 
-            if(message['receiver'] == this.props.user) {
+            if(message['sender'] == this.props.user) {
                 messageList.push(this.myMessage(content));
-            } else {
+            }
+            else {
                 messageList.push(this.theirMessage(content));
             }
         }
-
         return(messageList);
-
     }
 }
 
