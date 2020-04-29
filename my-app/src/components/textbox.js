@@ -8,7 +8,7 @@ class Textbox extends React.Component {
          return (
             <div className="form-group">
                 <label className="title-text-textbox">{this.props.header}</label>
-                <input type="text" className="form-control"  placeholder={this.props.placeholder} onChange={this.props.callback}/>
+                <input type="text" className="form-control"  value={this.props.value} placeholder={this.props.placeholder} onChange={this.props.callback}/>
             </div>
         );
     }

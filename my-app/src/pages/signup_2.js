@@ -26,48 +26,80 @@ class Signup2 extends React.Component {
       sessionStorage.setItem("settingsNav", "false");
 
       this.state = {
-	netid: sessionStorage.getItem('netid'),
+        netid: sessionStorage.getItem('netid'),
         path: pathOp,
-	firstName: "",
-	lastName: "",
-	city: "",
-	state: "",
-	dorm: "",
-	year: "",
-	majors: [],
-	minors: [],
-	identity: "",
-	orientation: []
+        firstName: "",
+        lastName: "",
+        city: "",
+        state: "",
+        dorm: "",
+        year: "",
+        majors: [],
+        minors: [],
+        identity: "",
+        orientation: []
       }
 
-      this.changePage = this.changePage.bind(this);
-      this.setFirstName = this.setFirstName.bind(this);
-      this.setLastName = this.setLastName.bind(this);
-      this.setCity = this.setCity.bind(this);
-      this.setYear = this.setYear.bind(this);
-      this.setIdentity = this.setIdentity.bind(this);
+      this.autoPopulate();
+
+      this.changePage     = this.changePage.bind(this);
+      this.setFirstName   = this.setFirstName.bind(this);
+      this.setLastName    = this.setLastName.bind(this);
+      this.setCity        = this.setCity.bind(this);
+      this.setYear        = this.setYear.bind(this);
+      this.setIdentity    = this.setIdentity.bind(this);
       this.setOrientation = this.setOrientation.bind(this);
-      this.setStateVal = this.setStateVal.bind(this);
-      this.setMajors = this.setMajors.bind(this);
-      this.setMinors = this.setMinors.bind(this);
-      this.setDorm = this.setDorm.bind(this);
-    }
+      this.setStateVal    = this.setStateVal.bind(this);
+      this.setMajors      = this.setMajors.bind(this);
+      this.setMinors      = this.setMinors.bind(this);
+      this.setDorm        = this.setDorm.bind(this);
+  }
+
+  autoPopulate() {
+    fetch('http://3.211.82.27:8800/students/' + this.state.netid)
+      .then(async response => {
+            const data = await response.json();
+
+            // check for error response
+            if (!response.ok) {
+                // get error message from body or default to response status
+                const error = (data && data.message) || response.status;
+                return Promise.reject(error);
+            }
+            this.setState({
+              ...this.state,
+              firstName       : data.firstName,
+              lastName        : data.lastName,
+              city            : data.city,
+              state           : data.state,
+              dorm            : data.dorm,
+              year            : data.gradYear,
+              majors          : data.majors,
+              minors          : data.minors,
+              identity        : data.genderIdentity,
+              orientation     : data.browseGenderIdentity
+            });
+        })
+        .catch(error => {
+            console.error('There was an error!', error);
+    });
+  }
 
   changePage  = (event) => {
       event.preventDefault();
       const requestOptions = {
             method: 'PUT',
             body: JSON.stringify({
-		"firstName": this.state.firstName,
-		"lastName": this.state.lastName,
-		"gradYear": this.state.year,
-		"city": this.state.city,
-		"state": this.state.state,
-		"dorm": this.state.dorm,
-		"majors": this.state.majors,
-		"minors": this.state.minors,
-		"sexualOrientation": "heterosexual",
-		"genderIdentity": this.state.identity
+          		"firstName"             : this.state.firstName,
+          		"lastName"              : this.state.lastName,
+          		"gradYear"              : this.state.year,
+          		"city"                  : this.state.city,
+          		"state"                 : this.state.state,
+          		"dorm"                  : this.state.dorm,
+          		"majors"                : this.state.majors,
+          		"minors"                : this.state.minors,
+          		"browseGenderIdentity"  : this.state.orientation,
+          		"genderIdentity"        : this.state.identity
             })
           };
           fetch('http://3.211.82.27:8800/students/'+this.state.netid, requestOptions)
@@ -110,10 +142,11 @@ class Signup2 extends React.Component {
 
   setOrientation(e) {
     var ors = [];
-    for(var o of e) {
+    if (e) {
+      for(var o of e) {
         ors.push(o.value);
+      }
     }
-    console.log(ors);
     this.setState({orientation: ors});
   }
 
@@ -123,18 +156,22 @@ class Signup2 extends React.Component {
 
   setMajors(e) {
     var ms = [];
-    for(var major of e) {
-	ms.push(major.value);
+    if (e) {
+      for(var major of e) {
+  	     ms.push(major.value);
+      }
     }
     this.setState({majors: ms});
   }
 
   setMinors(e) {
     var minors = [];
-    for(var minor of e) {
+    if (e) {
+      for(var minor of e) {
         minors.push(minor.value);
+      }
+      this.setState({minors: minors});
     }
-    this.setState({minors: minors});
   }
 
   setDorm(e) {
@@ -153,49 +190,49 @@ class Signup2 extends React.Component {
 
 		<Container>
 		  <Row md={12}>
-                    <Col md={6} className="align">
-                    	<Textbox header="First Name" placeholder="Enter First Name" style="form-control" callback={this.setFirstName}/>
+        <Col md={6} className="align">
+          <Textbox header="First Name" placeholder="Enter First Name" style="form-control" value={this.state.firstName} callback={this.setFirstName}/>
 		    </Col>
-                    <Col md={6} className="align">
-			<Textbox header="Last Name" placeholder="Enter Last Name" style="form-control" callback={this.setLastName}/>
-                    </Col>
+        <Col md={6} className="align">
+			     <Textbox header="Last Name" placeholder="Enter Last Name" style="form-control" value={this.state.lastName} callback={this.setLastName}/>
+        </Col>
                   </Row>
 		  <Row md={12}>
                     <Col md={6} className="align">
-                    	<Textbox header="Hometown" placeholder="Enter Hometown" style="form-control-help" callback={this.setCity}/>
+                    	<Textbox header="Hometown" placeholder="Enter Hometown" style="form-control-help" value={this.state.city} callback={this.setCity}/>
 		    </Col>
                     <Col md={6} className="align">
-                        <CustomDropdown ops="states"  multi={false} placeholder="Select State.." className="container-drop" header="Home State" callback={this.setStateVal}/>
+                        <CustomDropdown ops="states"  multi={false} placeholder="Select State.." className="container-drop" header="Home State" value={this.state.state} callback={this.setStateVal}/>
 		    </Col>
                   </Row>
 		  <Row md={12}>
 		    <Col md={6} className="align">
-			<CustomDropdown ops="dorms"  multi={false} placeholder="Select Dorm.." className="container-drop" header="Dorm" callback={this.setDorm}/>  
+			<CustomDropdown ops="dorms"  multi={false} placeholder="Select Dorm.." className="container-drop" header="Dorm" value={this.state.dorm} callback={this.setDorm}/>
 		    </Col>
 		    <Col md={6} className="align">
-			<CustomDropdown ops="years"  multi={false}  placeholder="Select Class.." className="container-drop" header="Class Year" callback={this.setYear}/> 
+			<CustomDropdown ops="years"  multi={false}  placeholder="Select Class.." className="container-drop" header="Class Year" value={this.state.year} callback={this.setYear}/>
 		    </Col>
 		  </Row>
 		  <Row md={12}>
 		    <Col md={6} className="align">
-               		<CustomDropdown ops="majors"  multi={true}  placeholder="Select Majors.." className="container-drop" header="Majors" callback={this.setMajors}/> 
+               		<CustomDropdown ops="majors"  multi={true}  placeholder="Select Majors.." className="container-drop" header="Majors" value={this.state.majors} callback={this.setMajors}/>
 		    </Col>
    		    <Col md={6} className="align">
-			<CustomDropdown ops="minors"  multi={true}  placeholder="Select Minors.." className="container-drop" header="Minors" callback={this.setMinors}/>
+			<CustomDropdown ops="minors"  multi={true}  placeholder="Select Minors.." className="container-drop" header="Minors" value={this.state.minors} callback={this.setMinors}/>
 		    </Col>
 		  </Row>
 
 		  <Row md={12}>
                      <Col md={6} className="align">
-			<CustomDropdown ops="identity"  multi={false}  placeholder="Select How You Identify.." className="container-drop" header="How Do You Identify" callback={this.setIdentity}/> 
+			<CustomDropdown ops="identity"  multi={false}  placeholder="Select How You Identify.." className="container-drop" header="How Do You Identify" value={this.state.identity} callback={this.setIdentity}/>
                     </Col>
                     <Col md={6} className="align">
-			<CustomDropdown ops="orientation"  multi={true}  placeholder="Select Who You Are Looking For.." className="container-drop" header="Who Are You Looking For" callback={this.setOrientation}/>  
+			<CustomDropdown ops="orientation"  multi={true}  placeholder="Select Who You Are Looking For.." className="container-drop" header="Who Are You Looking For"  value={this.state.orientation} callback={this.setOrientation}/>
 		    </Col>
 		  </Row>
-                </Container>            
+                </Container>
                 <button type="submit" className="btn btn-primary btn-block signup-submit" onClick={this.changePage}>Submit</button>
-            </form> 
+            </form>
             </div>
           </div>
         </div>
