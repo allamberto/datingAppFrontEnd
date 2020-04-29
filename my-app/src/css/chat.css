@@ -14,7 +14,7 @@
 }
 
 .chatRoomTitle {
-   border-bottom: 4px solid black; 
+   border-bottom: 4px solid black;
    text-align: center;
    width: 200%;
 }
@@ -26,15 +26,23 @@
     padding: 12px;
 }
 
+.messageNavContainer {
+  box-shadow: 8px 0px 4px grey;
+}
+
+.activeConversation {
+  background-color: lightgray;
+}
+
 .messageNav {
     border-top: 5px solid black;
     border-bottom: 5px solid black;
     background-color: #E8E8E8;
-    height: 80%;
+    height: 90%;
     width: 24.5%;
     position: fixed;
     top: 50%;
-    transform: translate(0%, -48%);
+    transform: translate(0%, -42%);
     overflow-y: auto;
     overflow-x: hidden;
     text-align: center;
@@ -48,9 +56,9 @@
 
 .chatRoom {
     width: 100%;
-    height: 90%;
-    overflow-y: auto;
     position: relative;
+    height: 550px;
+    overflow-y: auto;
     margin-top: 10px;
 }
 
@@ -65,7 +73,7 @@
     left: 0px;
     bottom: 0px;
     width: 70%;
-    white-space: pre-line; 
+    white-space: pre-line;
     white-space: pre-wrap;
     border: 2px solid black;
     border-radius: 6px;
@@ -84,10 +92,12 @@
     position: absolute;
     bottom: 0px;
     width: 100%;
+    border-top: 4px solid black;
+    padding-top: 20px
 }
 
 .sendtext-button {
-   border: 2px solid black; 
+   border: 2px solid black;
    background-color: lightblue;
    border-radius: 5px;
    margin-bottom: 22px;
@@ -103,24 +113,13 @@
     background-color: blue;
 }
 
-.myMessage-container {
-  height: auto;
-  width: auto;
-  background-color: lightblue;   
-  text-align: center;
-  padding: 5px 10px;
-  border-radius: 4px;
-  display: inline-block;
-  max-width: 400px;
-}
-
 .triangle-right {
     display: inline-block;
-    width: 0; 
-    height: 0; 
+    width: 0;
+    height: 0;
     border-bottom: 5px solid transparent;  /* left arrow slant */
     border-top: 5px solid transparent; /* right arrow slant */
-    border-left: 5px solid lightblue; /* bottom, add background color here */
+    border-left: 5px solid #84BD69; /* bottom, add background color here */
     font-size: 0;
     line-height: 0;
     bottom: 0px;
@@ -132,10 +131,17 @@
 }
 
 .message-right-triangle {
-  margin-right: 100px;
+  margin-left: 100px;
   margin-top: 5px;
   margin-bottom: 10px;
   float: right;
+}
+
+.message-left-triangle {
+  margin-right: 100px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  float: left;
 }
 
 .messageDivider {
@@ -145,32 +151,58 @@
     border-top: 2px solid transparent;
 }
 
+.myMessage-container {
+  height: auto;
+  width: auto;
+  background-color: #84BD69;
+  text-align: left;
+  padding: 5px 10px;
+  border-radius: 10px;
+  display: inline-block;
+  max-width: 400px;
+}
+
 .theirMessage-container {
   height: auto;
   width: auto;
-  background-color: lightgreen;
-  text-align: center;
+  background-color: #BAE99C;
+  text-align: left;
   padding: 5px 10px;
-  border-radius: 4px;
+  border-radius: 10px;
   display: inline-block;
   max-width: 400px;
 }
 
 .triangle-left {
     display: inline-block;
-    width: 0; 
-    height: 0; 
+    width: 0;
+    height: 0;
     border-bottom: 5px solid transparent;  /* left arrow slant */
     border-top: 5px solid transparent; /* right arrow slant */
-    border-right: 5px solid lightgreen; /* bottom, add background color here */
+    border-right: 5px solid #BAE99C; /* bottom, add background color here */
     font-size: 0;
     line-height: 0;
     bottom: 0;
 }
 
 .message-left-triangle {
-  margin-left: 100px;
+  margin-right: 100px;
   margin-top: 5px;
   margin-bottom: 10px;
   float: left;
+}
+
+fade {
+    position: absolute;
+    bottom: 0px;
+
+    display: block;
+
+    width: 100%;
+    height: 50px;
+
+    background-image: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 0.9)
+    100%);
 }

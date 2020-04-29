@@ -14,27 +14,27 @@ import Lep from './../img/lep.png';
 class Chat extends React.Component {
     constructor(props) {
         super(props);
-            
+
         this.loadMessages = this.loadMessages.bind(this);
-        this.renderMessages = this.renderMessages.bind(this);
-        this.saveMessage = this.saveMessage.bind(this);
         this.callbackText = this.callbackText.bind(this);
-        this.callbackList = this.callbackList.bind(this);
         this.addMessage = this.addMessage.bind(this);
         this.scrollToBottom = this.scrollToBottom.bind(this);
         this.loadMessageSideView = this.loadMessageSideView.bind(this);
         this.loadSideBar = this.loadSideBar.bind(this);
 
         this.state = {
+            netid: sessionStorage.getItem("netid"),
+            target: "",
+            targetName: "",
             messages: [],
             peopleMessaged: [],
-            value: '',
+            value: "whyyy",
             user: 'alamber2',
             sender: 'sjohns37',
-            update: 0
-        }        
+            id: 0,
+            update: 0,
+        }
         this.loadSideBar();
-        this.loadMessages();
     }
 
     componentDidMount() {
@@ -43,109 +43,90 @@ class Chat extends React.Component {
         }
     }
 
+    // Load all a user's conversations
     loadSideBar() {
-      const { peopleMessaged } = this.state;
-      peopleMessaged.push({person: "Sophie",
-                    sender: "sjohns37",
-                    user: "alamber2",
-                    lastMessage:"What is up homie? How are you today this is a test.",
-                    personImage: "./../img/lep.png"},
-                    {person: "Sophie",
-                    sender: "sjohns27",
-                    user: "alamber2",
-                    lastMessage:"What is up homie? How are you today this is a test.",
-                    personImage: "./../img/lep.png"},
-                    {person: "Sophie",
-                    sender: "sjohns27",
-                    user: "alamber2",
-                    lastMessage:"What is up homie? How are you today this is a test.",
-                    personImage: "./../img/lep.png"},
-                    {person: "Sophie",
-                    sender: "sjohns27",
-                    user: "alamber2",
-                    lastMessage:"What is up homie? How are you today this is a test.",
-                    personImage: "./../img/lep.png"},
-                    {person: "Sophie",
-                    sender: "sjohns27",
-                    user: "alamber2",
-                    lastMessage:"What is up homie? How are you today this is a test.",
-                    personImage: "./../img/lep.png"},
-                    {person: "Sophie",
-                    sender: "sjohns27",
-                    user: "alamber2",
-                    lastMessage:"What is up homie? How are you today this is a test.",
-                    personImage: "./../img/lep.png"});
-      this.setState({ peopleMessaged: peopleMessaged });
-    }
+      console.log(this.state.netid);
+      fetch('http://3.211.82.27:8800/conversations/' + this.state.netid)
+        .then(async response => {
+            const data = await response.json();
 
-    loadMessages() {
-      var messages = [];
-      messages.push({sender: "alamber2",
-                    receiver:"sjohns27",
-                    content: "Hello"},
-
-                    {sender: "sjohns27",
-                    receiver:"alamber2",
-                    content: "I want to make some longer content to test to see how the messages will be have and I dont want anything to break you know what I mean? I want to make some longer content to test to see how the messages will be have and I dont want anything to break you know what I mean? I want to make some longer content to test to see how the messages will be have and I dont want anything to break you know what I mean?"},
-
-                    {sender: "alamber2",
-                    receiver:"sjohns27",
-                    content: "Hello"},
-
-                     {sender: "alamber2",
-                    receiver:"sjohns27",
-                    content: "Hello"},
-
-                         {sender: "alamber2",
-                    receiver:"sjohns27",
-                    content: "Hello"});
-      this.setState({ messages });   
-    }
-
-    renderMessages() {
-        var messageList = [];
-        for(var message of this.state.messages) {
-            var content = message['content'];
-
-            if(message['sender'] == this.state.user) {
-                messageList.push(this.myMessage(content));
-            } else {
-                messageList.push(this.theirMessage(content));
+            // check for error response
+            if (!response.ok) {
+                // get error message from body or default to response status
+                const error = (data && data.message) || response.status;
+                return Promise.reject(error);
             }
-        }
+            // Choose most recent conversation for title and loaded messages
+            if (data.length > 0) {
+              this.setState({target     : (data[0].sender === this.state.netid ? data[0].receiver : data[0].sender),
+                             id         : data[0].id});
+              this.loadMessages(this.state.id, this.state.target);
+              this.setState({peopleMessaged : data});
+              this.setState({targetName : data[0].firstName + " " + data[0].lastName});
+            }
 
-        messageList.push(<div style={{ float:"left", clear: "both" }}ref={(el) => { this.messagesEnd = el; }}> </div>);
+      });
+    }
 
-        return(messageList);
+    // Load all messages from conversation based on id
+    loadMessages(id, target, name) {
+      console.log(id);
+      this.setState({...this.state, messages : [], target: target, targetName: name});
+      fetch('http://3.211.82.27:8800/messages?id=' + id)
+        .then(async response => {
+            const data = await response.json();
+
+            // check for error response
+            if (!response.ok) {
+                // get error message from body or default to response status
+                const error = (data && data.message) || response.status;
+                return Promise.reject(error);
+            }
+            console.log(data);
+            this.setState({id : id});
+            this.setState({messages : data});
+            this.scrollToBottom();
+      });
     }
 
     callbackText = (childData) => {
       this.setState({value: childData});
     }
 
-    callbackList = (childData) => {
-      this.setState({sender: childData});
+    // Send new message
+    addMessage(sender, receiver) {
+      const requestOptions = {
+          method: 'POST',
+          mode: 'cors',
+          body: JSON.stringify({
+        		"sender"   : this.state.netid,
+        		"receiver" : this.state.target,
+        		"content"  : this.state.value
+          })
+      };
+      fetch('http://3.211.82.27:8800/messages', requestOptions)
+      .then(async response => {
+            const data = await response.json();
 
-      this.loadMessages();
-    }
-
-    addMessage() {
-        const { messages } = this.state;
-        messages.push({sender: this.state.receiver,
-                       receiver: this.state.user,
-                        content: this.state.value});
-        this.setState({ messages });
-
-        this.scrollToBottom();
-        this.setState((prev) => ({update: prev.update+1}))
-        this.saveMessage();
-    }
-
-    saveMessage() {
+            // check for error response
+            if (!response.ok) {
+                // get error message from body or default to response status
+                const error = (data && data.message) || response.status;
+                return Promise.reject(error);
+                alert("Could not send message");
+            }
+            else {
+              this.setState((prev) => ({update: prev.update+1}))
+              this.loadSideBar();
+            }
+        })
+        .catch(error => {
+            console.error('There was an error!', error);
+        });
     }
 
     scrollToBottom = () => {
-      this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+      this.messagesEnd.scrollIntoView({ behavior: "auto" });
     }
 
     componentDidMount() {
@@ -154,15 +135,19 @@ class Chat extends React.Component {
 
     loadMessageSideView() {
         var messagedPeopleList = [];
+
         for(var person of this.state.peopleMessaged) {
-            messagedPeopleList.push(<MessageSideOption callback={this.callbackList} sender={person['sender']} user={person['user']} p={person['person']} message={person['lastMessage']} image={person['personImage']}/> );
+          var name = person['firstName'] + " " + person["lastName"];
+          var target = person.sender === this.state.netid ? person.receiver : person.sender;
+          var active = target === this.state.target? true : false;
+          messagedPeopleList.push(<MessageSideOption callback={this.loadMessages} id={person['id']} target={target} name={name} message={person['content']} image={person['image']} active={active}/> );
         }
 
         return messagedPeopleList;
     }
-   
+
     render() {
-    return(
+      return(
         <div id="Page" className="chatContainer">
             <SideBar pageWrapId={"page-wrap"} outerContainerId={"Page"} />
             <div id="page-wrap" className="chat-page">
@@ -170,26 +155,25 @@ class Chat extends React.Component {
                   <Row className="fillHeightChat">
                     <Col md={3} className="messageNavContainer">
                         <div className="messageNav">
-                            <h2 className="messagesTitle">Messages</h2>
-                            <hr className="messageLine" />
                             {this.loadMessageSideView()}
                         </div>
+                        <fade />
                     </Col>
                     <Col md={9} className="vChat">
                         <Row md={2} className="chatRoomTitle">
-                            <h2 className="chatRoomTitleFont">{this.state.sender}</h2>
+                            <h2 className="chatRoomTitleFont">{this.state.targetName}</h2>
                         </Row>
-                        <Row md={8} className="chatRoom-container">
-                            <div className="chatRoom">
-                                 <MessageList messages={this.state.messages} user={this.state.user} sender={this.state.sender}/>
-                                 <div style={{ float:"left", clear: "both" }}ref={(el) => { this.messagesEnd = el; }}> </div>
-                            </div>
+                        <Row md={8} className="chatRoom">
+                            <Col md={{ span: 10, offset: 1 }}>
+                                <MessageList messages={this.state.messages} user={this.state.netid}/>
+                               <div style={{ float:"left", clear: "both" }}ref={(el) => { this.messagesEnd = el; }}> </div>
+                            </Col>
                         </Row>
                         <Row md={2} className="sendtext-container">
-                            <Col md={9}>
-                                <Textarea parentCallback = {this.callbackText} update={this.state.update}/>
+                            <Col md={{ span: 9, offset: 1 }}>
+                                <Textarea parentCallback={this.callbackText} update={this.state.update}/>
                             </Col>
-                            <Col md={3}>
+                            <Col md={1}>
                                 <button onClick={this.addMessage} className='sendtext-button'>
                                     <img src={Arrow} className='sendtext-img'></img>
                                 </button>

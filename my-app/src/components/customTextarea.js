@@ -53,6 +53,7 @@ getExpandableField() {
             id="textarea"
             ref="bar"
             autoFocus={true}
+            maxlength={256}
             defaultValue={value}
             style={{
               height,
