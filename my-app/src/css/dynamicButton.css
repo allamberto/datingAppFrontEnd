@@ -1,6 +1,6 @@
 .delete-funfact {
   display: inline-block;
-  width: 80%;
+  width: 100%;
 }
 
 .delete-funfact-text {
@@ -9,7 +9,7 @@
   padding: 5px;
   border-radius: 4px;
   font-weight: 500 !important;
-  width: 550px;
+  width: 70%;
 }
 
 .delete-funfact-image {

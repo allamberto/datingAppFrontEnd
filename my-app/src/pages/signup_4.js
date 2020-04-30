@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { NavLink, withRouter} from "react-router-dom";
 import "./../css/signup.css";
-//import "./../css/signup_4.css";
+import "./../css/signup_4.css";
 import StepProgressBar from "./../components/progressbar";
 import ImageUpload from './../components/image';
 import Textbox from './../components/textbox';
@@ -269,7 +269,7 @@ render() {
 		  <p className="section-subfont">Upload your calendar's .iso file so we can setup dates for you and your matches.</p>
 		  <input type="file" name="file" className="file-input" onChange={this.setCalendar}/>
 
-                  <button type="submit" className="btn btn-primary btn-block" onClick={this.changePage}>Submit</button>
+                  <button type="submit" className="btn btn-primary submit-button-signup-long" onClick={this.changePage}>Submit</button>
 
                </div>
               </div>
