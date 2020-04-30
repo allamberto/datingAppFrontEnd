@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { NavLink, withRouter} from "react-router-dom";
 import "./../css/signup.css";
-import "./../css/signup_4.css";
+//import "./../css/signup_4.css";
 import StepProgressBar from "./../components/progressbar";
 import ImageUpload from './../components/image';
 import Textbox from './../components/textbox';
@@ -57,7 +57,7 @@ componentDidMount() {
                     return Promise.reject(error);
                 }
 
-		this.setState({promptQ: data.question}); 
+		this.setState({promptQ: data.question});
             })
             .catch(error => {
                 console.error('There was an error with profile pic!', error);
@@ -66,7 +66,7 @@ componentDidMount() {
 	fetch('http://3.211.82.27:8800/funfacts/'+this.state.netid)
           .then(async response => {
                 const data = await response.json();
-                
+
                 // check for error response
                 if (!response.ok) {
                     // get error message from body or default to response status
@@ -82,15 +82,15 @@ componentDidMount() {
 }
 
     changePage  = (event) => {
-    
+
       console.log(this.state.netid);
-      console.log(this.state.funfacts); 
-      console.log(this.state.funfactImages); 
-      console.log(this.state.profile); 
-      console.log(this.state.promptQ); 
-      console.log(this.state.calendar); 
+      console.log(this.state.funfacts);
+      console.log(this.state.funfactImages);
+      console.log(this.state.profile);
+      console.log(this.state.promptQ);
+      console.log(this.state.calendar);
       event.preventDefault();
-    
+
       if(this.state.profile != "") {
           const requestOptionsProfilePic = {
             method: 'POST',
@@ -119,19 +119,19 @@ componentDidMount() {
             method: 'POST',
             headers: { 'Content-Type': 'image/jpeg' },
             body: this.state.funfactImages[idx]
-          
+
           };
           fetch('http://3.211.82.27:8800/funfacts/'+this.state.netid+"?caption="+this.state.funfacts[idx], requestOptionsFunfacts)
           .then(async response => {
             const data = await response.json();
-            
+
             // check for error response
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
                 return Promise.reject(error);
             }
-              
+
             })
             .catch(error => {
                 console.error('There was an error with funfacts!', error);
@@ -183,20 +183,20 @@ componentDidMount() {
 	}
 
     this.props.history.push(this.state.path);
-  } 
+  }
 
-    setProfile = (event) => { 
+    setProfile = (event) => {
 	console.log(event.target.files[0]);
 	this.setState({profile: event.target.files[0]});
     }
 
    setPrompt(e) {
 	this.setState({promptQ: e.target.value});
-   } 
+   }
 
    setFunfacts(target, num) {
-   	const { funfacts } = this.state;	
-	funfacts[num - 1] = target;	
+   	const { funfacts } = this.state;
+	funfacts[num - 1] = target;
 	this.setState({ funfacts });
    }
 
@@ -218,7 +218,7 @@ componentDidMount() {
                 break;
             }
         }
-       
+
       const requestOptions = {
         method: 'DELETE'
       }
@@ -232,7 +232,7 @@ componentDidMount() {
             const error = (data && data.message) || response.status;
             return Promise.reject(error);
         }
-        
+
             this.setState({ oldFunfacts });
         })
         .catch(error => {
@@ -248,7 +248,7 @@ render() {
                 {step}
                 <div className="content-container">
                   <h3>Create Your Profile</h3>
-		
+
 		  <h2 className="section-header">Step 1: Upload Profile Picture</h2>
 		  <input type="file" className="file-input" onChange={this.setProfile}/>
 		  <hr className="divider" />
@@ -258,17 +258,17 @@ render() {
 		  <input placeholder="Enter Prompt Question" defaultValue={this.state.promptQ} className="form-control prompt-control" onChange={this.setPrompt}/>
 
 		  <hr className="divider" />
-			
+
 		  <h2 className="section-header">Step 3: Choose Your Fun Facts</h2>
 		  <p className="section-subfont">Your facts tell your matches more about you: hobbies, travels, memories. Each fun fact is accompanied by a photo. We recommend supplying four.</p>
 		  <DynamicButton oldFunfacts={this.state.oldFunfacts} callback={this.setFunfacts} fileCallback={this.setFileFunfacts} deleteCallback={this.setDeleteFunfact}/>
- 
+
 		  <hr className="divider" />
 
 		  <h2 className="section-header">Step 4: Upload Your Calendar</h2>
 		  <p className="section-subfont">Upload your calendar's .iso file so we can setup dates for you and your matches.</p>
-		  <input type="file" name="file" className="file-input" onChange={this.setCalendar}/>	
-	
+		  <input type="file" name="file" className="file-input" onChange={this.setCalendar}/>
+
                   <button type="submit" className="btn btn-primary btn-block" onClick={this.changePage}>Submit</button>
 
                </div>

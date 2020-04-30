@@ -99,7 +99,7 @@
 .sendtext-button {
    border: 2px solid black;
    background-color: lightblue;
-   border-radius: 5px;
+   border-radius: 8px;
    margin-bottom: 22px;
    float: left;
 }
@@ -205,4 +205,30 @@ fade {
         rgba(255, 255, 255, 0),
         rgba(255, 255, 255, 0.9)
     100%);
+}
+
+.send-button-col {
+  margin-left: 0px;
+  padding-left: 0px;
+}
+
+.date-button-col {
+  margin-right: 0px;
+  padding-right: 0px;
+}
+
+.plandate-button {
+   border: 2px solid black;
+   background-color: lightblue;
+   border-radius: 8px;
+   margin-bottom: 22px;
+   float: right;
+}
+
+.generatemessage-button {
+   border: 2px solid black;
+   background-color: lightblue;
+   border-radius: 8px;
+   margin-bottom: 22px;
+   float: right;
 }

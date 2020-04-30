@@ -9,7 +9,7 @@ constructor(props) {
   super(props);
   this.state = {
     height: DEFAULT_HEIGHT,
-    value: " ",
+    value: this.props.value,
   };
 
   this.setValue = this.setValue.bind(this);
@@ -18,6 +18,13 @@ constructor(props) {
 componentDidMount() {
   this.mounted = true;
   this.setFilledTextareaHeight();
+}
+
+// Update when messages change
+componentDidUpdate(prevProps, prevState) {
+  if (prevProps.value !== this.props.value) {
+    this.setState({value : this.props.value});
+  }
 }
 
 componentWillReceiveProps(nextProps){
@@ -54,7 +61,7 @@ getExpandableField() {
             ref="bar"
             autoFocus={true}
             maxlength={256}
-            defaultValue={value}
+            value={this.state.value}
             style={{
               height,
               resize: isOneLine ? "none" : null
