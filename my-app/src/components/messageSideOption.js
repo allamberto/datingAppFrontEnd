@@ -39,7 +39,6 @@ class MessageSideOption extends React.Component {
     }
 
     buildImagePath(image) {
-      console.log(image);
       if (image == undefined) {
         return Lep;
       }

@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom';
 import {Container, Row, Col, InputGroup, FormControl, Button} from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import SideBar from './../components/sidebar';
+import CustomModal from './../components/modal';
 import Textbox from './../components/textbox';
 import Textarea from './../components/customTextarea';
 import MessageList from './../components/messageList';
 import MessageSideOption from './../components/messageSideOption';
 import './../css/chat.css';
+import './../css/modal.css';
 import Arrow from './../img/upArrow.png';
 import Lep from './../img/lep.png';
 
@@ -16,11 +18,17 @@ class Chat extends React.Component {
         super(props);
 
         this.loadMessages = this.loadMessages.bind(this);
+        this.generateMessage = this.generateMessage.bind(this);
         this.callbackText = this.callbackText.bind(this);
         this.addMessage = this.addMessage.bind(this);
         this.scrollToBottom = this.scrollToBottom.bind(this);
         this.loadMessageSideView = this.loadMessageSideView.bind(this);
+        this.loadMatch = this.loadMatch.bind(this);
         this.loadSideBar = this.loadSideBar.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.getLunches = this.getLunches.bind(this);
+        this.modalUpdateText = this.modalUpdateText.bind(this);
 
         this.state = {
             netid: sessionStorage.getItem("netid"),
@@ -28,11 +36,17 @@ class Chat extends React.Component {
             targetName: "",
             messages: [],
             peopleMessaged: [],
-            value: "whyyy",
+            value: " ",
             user: 'alamber2',
             sender: 'sjohns37',
             id: 0,
             update: 0,
+            compatibility: [],
+            lunches: [],
+            courses: [],
+            generatedMessages: [],
+            attendsMass: false,
+            show: false
         }
         this.loadSideBar();
     }
@@ -61,8 +75,9 @@ class Chat extends React.Component {
               this.setState({target     : (data[0].sender === this.state.netid ? data[0].receiver : data[0].sender),
                              id         : data[0].id});
               this.loadMessages(this.state.id, this.state.target);
-              this.setState({peopleMessaged : data});
-              this.setState({targetName : data[0].firstName + " " + data[0].lastName});
+
+              this.setState({peopleMessaged : data,
+                             targetName     : data[0].firstName + " " + data[0].lastName});
             }
 
       });
@@ -83,12 +98,80 @@ class Chat extends React.Component {
                 return Promise.reject(error);
             }
             console.log(data);
-            this.setState({id : id});
-            this.setState({messages : data});
+            this.loadMatch();
+            this.setState({id : id,
+                           messages : data });
             this.scrollToBottom();
       });
     }
 
+    // Load all things in common with a user
+    loadMatch() {
+      fetch('http://3.211.82.27:8800/compatibility?viewer=' + this.state.netid + '&viewee=' + this.state.target)
+        .then(async response => {
+            const data = await response.json();
+
+            // check for error response
+            if (!response.ok) {
+                // get error message from body or default to response status
+                const error = (data && data.message) || response.status;
+                return Promise.reject(error);
+            }
+            else {
+              this.setState({lunches            : this.getLunches(data.lunches),
+                             courses            : this.getCourses(data.courses),
+                             compatibility      : data.compatibility,
+                             generatedMessages  : data.messages,
+                             attendsMass        : data.mass});
+            }
+            console.log(this.state.lunches);
+            console.log(this.state.courses);
+            console.log(this.state.compatibility);
+            console.log(this.state.messages);
+            console.log("is this null??");
+
+            console.log(this.state.attendsMass);
+
+      });
+    }
+
+    getLunches(lunches) {
+      var lunchOptions = [];
+      if (this.state.lunches != undefined) {
+        for(var l of lunches) {
+            lunchOptions.push({
+                label: l,
+                value: l
+            });
+        }
+      }
+      return lunchOptions
+    }
+
+    getCourses(courses) {
+      var courseOptions = [];
+      if (this.state.courses != undefined) {
+        for(var c of courses) {
+            courseOptions.push({
+                label: c,
+                value: c
+            });
+        }
+      }
+      return courseOptions
+    }
+
+    // Generate random message
+    generateMessage() {
+      var msg = ""
+      if (this.state.generatedMessages != undefined && this.state.generatedMessages.length > 0){
+        var ind = Math.floor(Math.random() * this.state.generatedMessages.length);
+        msg = this.state.generatedMessages[ind];
+      }
+      this.setState({value: msg});
+    }
+
+    // Updates value to be sent in message
     callbackText = (childData) => {
       this.setState({value: childData});
     }
@@ -140,10 +223,29 @@ class Chat extends React.Component {
           var name = person['firstName'] + " " + person["lastName"];
           var target = person.sender === this.state.netid ? person.receiver : person.sender;
           var active = target === this.state.target? true : false;
-          messagedPeopleList.push(<MessageSideOption callback={this.loadMessages} id={person['id']} target={target} name={name} message={person['content']} image={person['image']} active={active}/> );
+          if (person['content'] != undefined && person['content'].length > 0) {
+            messagedPeopleList.push(<MessageSideOption callback={this.loadMessages} id={person['id']} target={target} name={name} message={person['content']} image={person['image']} active={active}/> );
+          }
         }
 
         return messagedPeopleList;
+    }
+
+    openModal() {
+      this.setState({show: true});
+    }
+
+    closeModal() {
+      if (this.state.show) {
+        this.setState({show: false});
+      }
+    }
+
+    modalUpdateText(msg) {
+      if (msg !== this.state.value) {
+        this.setState({value: msg});
+      }
+      this.closeModal();
     }
 
     render() {
@@ -170,10 +272,20 @@ class Chat extends React.Component {
                             </Col>
                         </Row>
                         <Row md={2} className="sendtext-container">
-                            <Col md={{ span: 9, offset: 1 }}>
-                                <Textarea parentCallback={this.callbackText} update={this.state.update}/>
+                          <Col md={1} className='date-button-col'>
+                            <button onClick={this.openModal} className='plandate-button'>
+                                <img src={Arrow} className='sendtext-img'></img>
+                            </button>
+                          </Col>
+                          <Col md={1}>
+                            <button onClick={this.generateMessage} className='generatemessage-button'>
+                                <img src={Arrow} className='sendtext-img'></img>
+                            </button>
+                          </Col>
+                            <Col md={9} >
+                                <Textarea parentCallback={this.callbackText} value={this.state.value} update={this.state.update}/>
                             </Col>
-                            <Col md={1}>
+                            <Col md={1} className='send-button-col'>
                                 <button onClick={this.addMessage} className='sendtext-button'>
                                     <img src={Arrow} className='sendtext-img'></img>
                                 </button>
@@ -183,6 +295,7 @@ class Chat extends React.Component {
                   </Row>
                 </Container>
             </div>
+            <CustomModal show={this.state.show} target={this.state.target} lunches={this.state.lunches} courses={this.state.courses} attendsMass={this.state.attendsMass} handleSubmit={this.modalUpdateText} handleClose={this.closeModal}/>
         </div>
     );}
 }
