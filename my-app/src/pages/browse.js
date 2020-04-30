@@ -1,6 +1,6 @@
 import React from 'react';
 import SideBar from "./../components/sidebar";
-import { Navbar, Container, Row, Col, DropdownButton, Dropdown } from 'react-bootstrap';
+import { Navbar, Container, Row, Col, DropdownButton, Dropdown, Button } from 'react-bootstrap';
 import "./../css/browse.css";
 import FunFact from "./../components/funfact";
 import Profile from "./../components/profile";
@@ -16,7 +16,7 @@ import CustomDropdown from './../components/customDropdown';
 class CardContainer extends React.Component{
     constructor(props) {
         super(props);
-        
+
         if(this.props.funFacts == undefined) {
             return;
         }
@@ -29,9 +29,13 @@ class CardContainer extends React.Component{
     facts() {
         var facts = [];
         for(var fact of this.props.funFacts){
-            facts.push(<FunFact f={fact} />);
+            facts.push(
+              <Col md={6}>
+              <FunFact f={fact} />
+              </Col>
+            );
         }
-                
+
         return facts;
     }
 
@@ -40,7 +44,7 @@ class CardContainer extends React.Component{
               return null;
           }
     return (
-        <div><Container className="cards"><Row><Col lg={11}><Row>
+        <div><Container className="cards"><Row><Col lg={12}><Row>
             {this.facts()}
         </Row> </Col></Row></Container></div>
     );}
@@ -68,8 +72,9 @@ class Browse extends React.Component {
 	majorFilter: "",
 	minorFilter: "",
 	dormFilter: "",
-	dateFilter: false
-    } 
+  dateFilter: false,
+  filtersOpen: false
+    }
 
     this.getRecommendation = this.getRecommendation.bind(this);
     this.updateRecommendationInterest = this.updateRecommendationInterest.bind(this);
@@ -85,6 +90,7 @@ class Browse extends React.Component {
     this.setMinorFilter = this.setMinorFilter.bind(this);
     this.setDormFilter = this.setDormFilter.bind(this);
     this.reloadWithFilters = this.reloadWithFilters.bind(this);
+    this.expandFilters = this.expandFilters.bind(this);
 
     if(sessionStorage.getItem("netid") == sessionStorage.getItem("playingAs")) {
         this.getRecommendation();
@@ -167,7 +173,7 @@ class Browse extends React.Component {
 
   setMessage(e) {
     this.setState({message: e.target.value});
-  } 
+  }
 
   getProfile() {
     fetch('http://3.211.82.27:8800/browse?viewFor='+this.state.playingAs+'&viewBy='+this.state.netid)
@@ -191,7 +197,7 @@ class Browse extends React.Component {
 
 	    console.log(data);
             this.setState({person: Object.values(data)});
-            this.setState({lookingAt: data.netid}); 
+            this.setState({lookingAt: data.netid});
         })
         .catch(error => {
             console.error('There was an error!', error);
@@ -223,7 +229,7 @@ class Browse extends React.Component {
         })
         .catch(error => {
             console.error('There was an error!', error);
-        }); 
+        });
   }
 
   updateRecommendationInterest(interest) {
@@ -233,27 +239,27 @@ class Browse extends React.Component {
         body: JSON.stringify({"viewer": this.state.netid,
                               "viewee": this.state.lookingAt,
                               "status" : "interested",
-                              "message": this.state.message 
+                              "message": this.state.message
         })
     };
     fetch('http://3.211.82.27:8800/recommendation', requestOptions)
       .then(async response => {
             const data = await response.json();
-            
+
             // check for error response
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
                 return Promise.reject(error);
-            } 
-            
-          this.getRecommendation();          
- 
-        }) 
+            }
+
+          this.getRecommendation();
+
+        })
         .catch(error => {
             console.error('There was an error!', error);
         });
-  } 
+  }
 
   updateRecommendationPass(interest) {
     const requestOptions = {
@@ -273,10 +279,10 @@ class Browse extends React.Component {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
                 return Promise.reject(error);
-            } 
+            }
 
             this.getRecommendation();
-  
+
         })
         .catch(error => {
             console.error('There was an error!', error);
@@ -309,7 +315,7 @@ class Browse extends React.Component {
         .catch(error => {
             console.error('There was an error!', error);
         });
-  } 
+  }
 
   updateProfilePass() {
     console.log(this.state.playingAs + this.state.lookingAt + this.state.netid);
@@ -331,7 +337,7 @@ class Browse extends React.Component {
                 const error = (data && data.message) || response.status;
                 return Promise.reject(error);
             }
-            
+
 	    this.getProfile();
 
         })
@@ -345,6 +351,10 @@ class Browse extends React.Component {
     this.setState({ isMenuOpened: !this.state.isMenuOpened });
   }
 
+  expandFilters() {
+    this.setState({ filtersOpen: !this.state.filtersOpen });
+  }
+
   render() {
     if(this.state.show && this.state.playingAs == this.state.netid){
         return(
@@ -352,11 +362,12 @@ class Browse extends React.Component {
           <SideBar pageWrapId={"page-wrap"} outerContainerId={"Page"} />
 
            <div id="page-wrap">
+           <div className="headerContainer"></div>
               <div className="profile-wrapper">
                 <Container fluid>
                 <Row className="fill">
-                  <Col md={4}> 
-                    <Profile person={this.state.person}/> 
+                  <Col md={4}>
+                    <Profile person={this.state.person}/>
                     <Prompt question={this.state.person[9]} placeholder="Reply!" callback={this.setMessage} buttonCallback={this.updateRecommendationInterest}/>
                   </Col>
                  <Col md={8}> <CardContainer funFacts={this.state.person[11]}/> </Col>
@@ -380,27 +391,31 @@ class Browse extends React.Component {
         return (
           <div id="Page">
            <SideBar pageWrapId={"page-wrap"} outerContainerId={"Page"} />
- 
+
             <div id="page-wrap">
-                 <Navbar bg="dark" variant="dark" className="headerContainer">
-		  <Container fluid >
+                 <div className="headerContainer">
+		               <Container fluid >
                     <Row className="navbar-dropdown-container">
-  <Col md={2}><CustomDropdown filter={true} className="overall" ops="states" placeholder="Filter by State" value={this.state.stateFilter} callback={this.setStateFilter}/></Col>
-  <Col md={2}><CustomDropdown filter={true} className="overall" ops="years" placeholder="Filter by Year" value={this.state.yearFilter} callback={this.setYearFilter}/></Col>
-  <Col md={2}><CustomDropdown filter={true} className="overall" ops="dorms" placeholder="Filter by Dorm" value={this.state.dormFilter} callback={this.setDormFilter}/></Col>
-  <Col md={2}><CustomDropdown filter={true} className="overall" ops="majors" placeholder="Filter by Major" value={this.state.majorFilter} callback={this.setMajorFilter}/></Col>
-  <Col md={2}><CustomDropdown filter={true} ops="minors" className="overall" placeholder="Filter by Minor" value={this.state.minorFilter} callback={this.setMinorFilter}/></Col>
+                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="states" placeholder="Filter by State" value={this.state.stateFilter} callback={this.setStateFilter}/>}</Col>
+                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="years" placeholder="Filter by Year" value={this.state.yearFilter} callback={this.setYearFilter}/>}</Col>
+                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="dorms" placeholder="Filter by Dorm" value={this.state.dormFilter} callback={this.setDormFilter}/>}</Col>
+                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="majors" placeholder="Filter by Major" value={this.state.majorFilter} callback={this.setMajorFilter}/>}</Col>
+                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} ops="minors" className="overall header-dropdown" placeholder="Filter by Minor" value={this.state.minorFilter} callback={this.setMinorFilter}/>}</Col>
                     <Col md={2}>
-                        <div className="filter-div"  onClick={this.reloadWithFilters}>
-                            <p className="submit-filter-text">Update</p>
-                            <img className="submit-filter-button" src={Filter} />
-                        </div>
+                      {this.state.filtersOpen &&
+                      <div className="filter-div"  onClick={this.reloadWithFilters}>
+                			    <p className="submit-filter-text">Apply Filters</p>
+                			</div>
+                      }
+                      <div className="filter-toggle float-right"  onClick={this.expandFilters}>
+                          <img className="submit-filter-button" src={Filter} />
+                      </div>
                     </Col>
                    </Row>
                  </Container>
-		</Navbar>
+		             </div>
                  <div className="profile-wrapper">
-            
+
                     <h1 className="nothing-message">{this.state.showMessage}</h1>
                 </div>
             </div>
@@ -412,24 +427,28 @@ class Browse extends React.Component {
           <SideBar pageWrapId={"page-wrap"} outerContainerId={"Page"} limited={true}/>
 
            <div id="page-wrap">
-		<Navbar bg="dark" variant="dark" className="headerContainer">
+		<div className="headerContainer">
 		  <Container fluid >
-                    <Row className="navbar-dropdown-container">
-  <Col md={2}><CustomDropdown filter={true} className="overall" ops="states" placeholder="Filter by State" value={this.state.stateFilter} callback={this.setStateFilter}/></Col>
-  <Col md={2}><CustomDropdown filter={true} className="overall" ops="years" placeholder="Filter by Year" value={this.state.yearFilter} callback={this.setYearFilter}/></Col>
-  <Col md={2}><CustomDropdown filter={true} className="overall" ops="dorms" placeholder="Filter by Dorm" value={this.state.dormFilter} callback={this.setDormFilter}/></Col>
-  <Col md={2}><CustomDropdown filter={true} className="overall" ops="majors" placeholder="Filter by Major" value={this.state.majorFilter} callback={this.setMajorFilter}/></Col>
-  <Col md={2}><CustomDropdown filter={true} ops="minors" className="overall" placeholder="Filter by Minor" value={this.state.minorFilter} callback={this.setMinorFilter}/></Col>
+        <Row className="navbar-dropdown-container">
+        <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="states" placeholder="State" value={this.state.stateFilter} callback={this.setStateFilter}/>}</Col>
+        <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="years" placeholder="Grad Year" value={this.state.yearFilter} callback={this.setYearFilter}/>}</Col>
+        <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="dorms" placeholder="Dorm" value={this.state.dormFilter} callback={this.setDormFilter}/>}</Col>
+        <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="majors" placeholder="Major" value={this.state.majorFilter} callback={this.setMajorFilter}/>}</Col>
+        <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} ops="minors" className="overall" placeholder="Minor" value={this.state.minorFilter} callback={this.setMinorFilter}/>}</Col>
 		    <Col md={2}>
-			<div className="filter-div"  onClick={this.reloadWithFilters}>
-			    <p className="submit-filter-text">Update</p>
-			    <img className="submit-filter-button" src={Filter} />
-			</div>
+        {this.state.filtersOpen &&
+        <div className="filter-div"  onClick={this.reloadWithFilters}>
+  			    <p className="submit-filter-text">Apply Filters</p>
+  			</div>
+        }
+        <div className="filter-toggle float-right"  onClick={this.expandFilters}>
+            <img className="submit-filter-button" src={Filter} />
+        </div>
 		    </Col>
-                   </Row>
-                 </Container>
-		</Navbar>
-	     
+         </Row>
+       </Container>
+		</div>
+
               <div className="profile-wrapper">
                 <Container fluid>
                 <Row className="fill">
@@ -437,12 +456,13 @@ class Browse extends React.Component {
                     <Profile person={this.state.person}/>
                     <Row className="buttons">
                         <Col md={6} className="button1Col">
-                             <button onClick={this.updateProfileInterest} className="recommendButtonHigher">Recommend To {"\n"}{this.state.playingAsName}</button>
+                             <Button variant="secondary" onClick={this.updateProfileInterest} className="recommendButtonHigher">Recommend To {"\n"}{this.state.playingAsName}
+                             </Button>
                         </Col>
                         <Col md={6} className="button1Col">
-                            <button onClick={this.updateProfilePass} className="passButton passButtonNotMe">
-                                <p className="notMeButtonText">Not For {"\n"}{this.state.playingAsName}</p>
-                             </button>
+                            <Button variant="secondary" onClick={this.updateProfilePass} className="passButton passButtonNotMe">
+                                Not For {"\n"}{this.state.playingAsName}
+                             </Button>
                         </Col>
                     </Row>
                   </Col>

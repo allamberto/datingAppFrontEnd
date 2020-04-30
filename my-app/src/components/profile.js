@@ -8,16 +8,18 @@ class Profile extends React.Component {
         this.Front = this.Front.bind(this);
         this.Back = this.Back.bind(this);
     }
-    
+
     Front() {
         if( this.props.person == undefined || this.props.person[4] == undefined ) return;
-        var majors = "";//( this.props.person[4].length > 1 ) ?  this.props.person[4].join(" ") +" Majors" :  this.props.person[4].join(" ") + " Major";
-        var minors = "";//( this.props.person[5].length > 0 ) ?  (this.props.person[5].length > 1 ? this.props.person[5].join(" ") + " Minors" :  this.props.person[5].join(" ") +" Minor") : "";
-       
+        var majors = ( this.props.person[4].length > 1 ) ?  this.props.person[4].join(" - ") : this.props.person[4].join(" - ");
+        var minors = ( this.props.person[5].length > 1 ) ?  (this.props.person[5].length > 1 ? this.props.person[5].join(" - ") :  this.props.person[5].join(" ")) : "";
+
         var dorm = (this.props.person[8] == "Sorin" ? " College" : ((this.props.person[8] == "Zahm") ? "House" : " Hall"));
+        var photo = 'http://3.211.82.27:8800/images/' + this.props.person[10];
         return (
             <div className="profile-front">
-              <div className="info">
+            <img src={photo} className="profile-image-front"></img>
+              <div className="profile-info">
                 <h1>{this.props.person[1]} {this.props.person[2]}</h1>
                 <p>Class of {this.props.person[3]}</p>
                 <p>{majors}</p>
@@ -26,9 +28,9 @@ class Profile extends React.Component {
                 <p>{this.props.person[8]} {dorm}</p>
               </div>
             </div>
-      ); 
+      );
     }
-    
+
     Back() {
         if(this.props.person == undefined || this.props.person == undefined) return;
 	var photo = 'http://3.211.82.27:8800/images/' + this.props.person[10];
