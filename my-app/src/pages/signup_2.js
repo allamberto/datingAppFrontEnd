@@ -53,6 +53,8 @@ class Signup2 extends React.Component {
       this.setMajors      = this.setMajors.bind(this);
       this.setMinors      = this.setMinors.bind(this);
       this.setDorm        = this.setDorm.bind(this);
+      this.setHoroscope   = this.setHoroscope.bind(this);
+      this.setDate        = this.setDate.bind(this);
   }
 
   autoPopulate() {
@@ -77,7 +79,9 @@ class Signup2 extends React.Component {
               majors          : data.majors,
               minors          : data.minors,
               identity        : data.genderIdentity,
-              orientation     : data.browseGenderIdentity
+              orientation     : data.browseGenderIdentity,
+	      horoscope       : data.zodiacSign,
+              date            : data.danceInvite
             });
         })
         .catch(error => {
@@ -99,7 +103,9 @@ class Signup2 extends React.Component {
           		"majors"                : this.state.majors,
           		"minors"                : this.state.minors,
           		"browseGenderIdentity"  : this.state.orientation,
-          		"genderIdentity"        : this.state.identity
+          		"genderIdentity"        : this.state.identity,
+			"zodiacSign"            : this.state.horoscope,
+                        "danceInvite"           : this.state.date
             })
           };
           fetch('http://3.211.82.27:8800/students/'+this.state.netid, requestOptions)
@@ -138,6 +144,14 @@ class Signup2 extends React.Component {
 
   setIdentity(e) {
     this.setState({identity: e.value});
+  }
+
+  setHoroscope(e) {
+    this.setState({horoscope: e.value});
+  }
+
+  setDate(e) {
+    this.setState({date: e.value});
   }
 
   setOrientation(e) {
@@ -190,16 +204,19 @@ class Signup2 extends React.Component {
 
 		<Container>
 		  <Row md={12}>
-        <Col md={6} className="align">
-          <Textbox header="First Name" placeholder="Enter First Name" style="form-control" value={this.state.firstName} callback={this.setFirstName}/>
+                    <Col md={6} className="align">
+		      <label className="title-text-textbox move-to-dropheader">First Name</label>
+                      <input required type="text" className="form-control resize-to-dropdown"  value={this.state.firstName} placeholder="Enter First Name" onChange={this.setFirstName}/>
 		    </Col>
-        <Col md={6} className="align">
-			     <Textbox header="Last Name" placeholder="Enter Last Name" style="form-control" value={this.state.lastName} callback={this.setLastName}/>
-        </Col>
+                    <Col md={6} className="align">
+			<label className="title-text-textbox move-to-dropheader">Last Name</label>
+                        <input required type="text" className="form-control resize-to-dropdown"  value={this.state.lastName} placeholder="Enter Last Name" onChange={this.setLastName}/>
+                    </Col>
                   </Row>
 		  <Row md={12}>
                     <Col md={6} className="align">
-                    	<Textbox header="Hometown" placeholder="Enter Hometown" style="form-control-help" value={this.state.city} callback={this.setCity}/>
+			<label className="title-text-textbox move-to-dropheader">Hometown</label>
+                        <input required type="text" className="form-control resize-to-dropdown"  value={this.state.city} placeholder="Enter First Name" onChange={this.setCity}/>
 		    </Col>
                     <Col md={6} className="align">
                         <CustomDropdown ops="states"  multi={false} placeholder="Select State.." className="container-drop" header="Home State" value={this.state.state} callback={this.setStateVal}/>
@@ -224,14 +241,25 @@ class Signup2 extends React.Component {
 
 		  <Row md={12}>
                      <Col md={6} className="align">
-			<CustomDropdown ops="identity"  multi={false}  placeholder="Select How You Identify.." className="container-drop" header="How Do You Identify" value={this.state.identity} callback={this.setIdentity}/>
+			<CustomDropdown ops="identity"  multi={false}  placeholder="Select Identity .." className="container-drop" header="How Do You Identify" value={this.state.identity} callback={this.setIdentity}/>
                     </Col>
                     <Col md={6} className="align">
-			<CustomDropdown ops="orientation"  multi={true}  placeholder="Select Who You Are Looking For.." className="container-drop" header="Who Are You Looking For"  value={this.state.orientation} callback={this.setOrientation}/>
+			<CustomDropdown ops="orientation"  multi={true}  placeholder="Select Partner Identities.." className="container-drop" header="Who Do You Want To See"  value={this.state.orientation} callback={this.setOrientation}/>
 		    </Col>
 		  </Row>
+
+		  <Row md={12}>
+                     <Col md={6} className="align">
+                        <CustomDropdown ops="horoscope"  multi={false}  placeholder="Select Horoscope .." className="container-drop" header="Horoscope" value={this.state.horoscope} callback={this.setHoroscope}/>
+                    </Col>
+                    <Col md={6} className="align">
+                        <CustomDropdown ops="date"  multi={false}  placeholder="Select Dance Preference.." className="container-drop" header="Looking For Dance Date"  value={this.state.date} callback={this.setDate}/>
+                    </Col>
+                  </Row>
                 </Container>
-                <button type="submit" className="btn btn-primary btn-block signup-submit" onClick={this.changePage}>Submit</button>
+		<div className="align-submit">
+                  <button type="submit" className="btn btn-primary submit-button-signup" onClick={this.changePage}>Submit</button>
+		</div>
             </form>
             </div>
           </div>

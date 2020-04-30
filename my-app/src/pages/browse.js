@@ -7,7 +7,11 @@ import Profile from "./../components/profile";
 import Prompt from "./../components/prompt";
 import Modal from "./../components/modal";
 import Arrow from './../img/upArrow.png';
-
+import Filter from './../img/filter.png';
+import rightArrow from './../img/rightArrow.png';
+import collapseNav from './../components/collapseNav';
+import { OffCanvas, OffCanvasMenu, OffCanvasBody } from "react-offcanvas";
+import CustomDropdown from './../components/customDropdown';
 
 class CardContainer extends React.Component{
     constructor(props) {
@@ -56,7 +60,15 @@ class Browse extends React.Component {
         playingAsName: sessionStorage.getItem("playingAsName"),
         person: [],
         lookingAt: "",
-        show: true
+        show: true,
+	showMessage: "",
+	isMenuOpened: true,
+	stateFilter: "",
+	yearFilter: "",
+	majorFilter: "",
+	minorFilter: "",
+	dormFilter: "",
+	dateFilter: false
     } 
 
     this.getRecommendation = this.getRecommendation.bind(this);
@@ -67,6 +79,12 @@ class Browse extends React.Component {
     this.updateProfilePass = this.updateProfilePass.bind(this);
     this.setMessage = this.setMessage.bind(this);
     this.isEmpty = this.isEmpty.bind(this);
+    this.setStateFilter = this.setStateFilter.bind(this);
+    this.setYearFilter = this.setYearFilter.bind(this);
+    this.setMajorFilter = this.setMajorFilter.bind(this);
+    this.setMinorFilter = this.setMinorFilter.bind(this);
+    this.setDormFilter = this.setDormFilter.bind(this);
+    this.reloadWithFilters = this.reloadWithFilters.bind(this);
 
     if(sessionStorage.getItem("netid") == sessionStorage.getItem("playingAs")) {
         this.getRecommendation();
@@ -74,6 +92,70 @@ class Browse extends React.Component {
         this.getProfile();
     }
  }
+
+  componentWillMount() {
+    // sets the initial state
+    this.setState({
+      isMenuOpened: false
+    });
+  }
+
+  setStateFilter(e) {
+      this.setState({stateFilter: e.value});
+  }
+
+  setYearFilter(e) {
+      this.setState({yearFilter: e.value});
+  }
+
+  setMajorFilter(e) {
+      this.setState({majorFilter: e.value});
+  }
+
+  setMinorFilter(e) {
+      this.setState({minorFilter: e.value});
+  }
+
+  setDormFilter(e) {
+      this.setState({dormFilter: e.value});
+  }
+
+  reloadWithFilters(e) {
+    var whatToFetch = 'http://3.211.82.27:8800/browse?viewFor='+this.state.playingAs+'&viewBy='+this.state.netid;
+    if (this.state.yearFilter != "") whatToFetch += '&gradyear=' + this.state.yearFilter;
+    if (this.state.majorFilter != "") whatToFetch += '&major=' + this.state.majorFilter;
+    if (this.state.minorFilter != "") whatToFetch += '&minor=' + this.state.minorFilter;
+    if (this.state.dormFilter != "") whatToFetch += '&dorm=' + this.state.dormFilter;
+    if (this.state.stateFilter != "") whatToFetch += '&state=' + this.state.stateFilter;
+
+    fetch(whatToFetch)
+      .then(async response => {
+            const data = await response.json();
+
+            // check for error response
+            if (!response.ok) {
+                // get error message from body or default to response status
+                const error = (data && data.message) || response.status;
+                return Promise.reject(error);
+            }
+
+            console.log(data);
+
+	    if(this.isEmpty(data)) {
+                this.setState({show: false});
+		this.setState({showMessage: "There is no one that fits that description. Try different filter settings!"});
+		return;
+            } else {
+                this.setState({show: true});
+            }
+
+            this.setState({person: Object.values(data)});
+            this.setState({lookingAt: data.netid});
+        })
+        .catch(error => {
+            console.error('There was an error!', error);
+        });
+  }
 
   isEmpty(obj) {
     for(var key in obj) {
@@ -99,6 +181,14 @@ class Browse extends React.Component {
                 return Promise.reject(error);
             }
 
+	   if(this.isEmpty(data)) {
+                this.setState({show: false});
+		this.setState({showMessage: "There are no people left to browse."});
+		return;
+            } else {
+                this.setState({show: true});
+            }
+
 	    console.log(data);
             this.setState({person: Object.values(data)});
             this.setState({lookingAt: data.netid}); 
@@ -122,6 +212,8 @@ class Browse extends React.Component {
 
             if(this.isEmpty(data)) {
                 this.setState({show: false});
+		this.setState({showMessage: "You have no new recommendations right now. Ask your friends to recommend more people for you!"});
+		return;
             } else {
                 this.setState({show: true});
             }
@@ -248,6 +340,11 @@ class Browse extends React.Component {
         });
   }
 
+  handleClick() {
+    // toggles the menu opened state
+    this.setState({ isMenuOpened: !this.state.isMenuOpened });
+  }
+
   render() {
     if(this.state.show && this.state.playingAs == this.state.netid){
         return(
@@ -255,8 +352,7 @@ class Browse extends React.Component {
           <SideBar pageWrapId={"page-wrap"} outerContainerId={"Page"} />
 
            <div id="page-wrap">
-                <Navbar bg="dark" variant="dark" className="headerContainer"></Navbar>
-                <div className="profile-wrapper">
+              <div className="profile-wrapper">
                 <Container fluid>
                 <Row className="fill">
                   <Col md={4}> 
@@ -286,10 +382,26 @@ class Browse extends React.Component {
            <SideBar pageWrapId={"page-wrap"} outerContainerId={"Page"} />
  
             <div id="page-wrap">
-                 <Navbar bg="dark" variant="dark" className="headerContainer"></Navbar>
+                 <Navbar bg="dark" variant="dark" className="headerContainer">
+		  <Container fluid >
+                    <Row className="navbar-dropdown-container">
+  <Col md={2}><CustomDropdown filter={true} className="overall" ops="states" placeholder="Filter by State" value={this.state.stateFilter} callback={this.setStateFilter}/></Col>
+  <Col md={2}><CustomDropdown filter={true} className="overall" ops="years" placeholder="Filter by Year" value={this.state.yearFilter} callback={this.setYearFilter}/></Col>
+  <Col md={2}><CustomDropdown filter={true} className="overall" ops="dorms" placeholder="Filter by Dorm" value={this.state.dormFilter} callback={this.setDormFilter}/></Col>
+  <Col md={2}><CustomDropdown filter={true} className="overall" ops="majors" placeholder="Filter by Major" value={this.state.majorFilter} callback={this.setMajorFilter}/></Col>
+  <Col md={2}><CustomDropdown filter={true} ops="minors" className="overall" placeholder="Filter by Minor" value={this.state.minorFilter} callback={this.setMinorFilter}/></Col>
+                    <Col md={2}>
+                        <div className="filter-div"  onClick={this.reloadWithFilters}>
+                            <p className="submit-filter-text">Update</p>
+                            <img className="submit-filter-button" src={Filter} />
+                        </div>
+                    </Col>
+                   </Row>
+                 </Container>
+		</Navbar>
                  <div className="profile-wrapper">
             
-                    <h1>You have no new recommendations right now. Ask your friends to recommend more people for you!</h1>
+                    <h1 className="nothing-message">{this.state.showMessage}</h1>
                 </div>
             </div>
           </div>
@@ -300,8 +412,25 @@ class Browse extends React.Component {
           <SideBar pageWrapId={"page-wrap"} outerContainerId={"Page"} limited={true}/>
 
            <div id="page-wrap">
-                <Navbar bg="dark" variant="dark" className="headerContainer"></Navbar>
-                <div className="profile-wrapper">
+		<Navbar bg="dark" variant="dark" className="headerContainer">
+		  <Container fluid >
+                    <Row className="navbar-dropdown-container">
+  <Col md={2}><CustomDropdown filter={true} className="overall" ops="states" placeholder="Filter by State" value={this.state.stateFilter} callback={this.setStateFilter}/></Col>
+  <Col md={2}><CustomDropdown filter={true} className="overall" ops="years" placeholder="Filter by Year" value={this.state.yearFilter} callback={this.setYearFilter}/></Col>
+  <Col md={2}><CustomDropdown filter={true} className="overall" ops="dorms" placeholder="Filter by Dorm" value={this.state.dormFilter} callback={this.setDormFilter}/></Col>
+  <Col md={2}><CustomDropdown filter={true} className="overall" ops="majors" placeholder="Filter by Major" value={this.state.majorFilter} callback={this.setMajorFilter}/></Col>
+  <Col md={2}><CustomDropdown filter={true} ops="minors" className="overall" placeholder="Filter by Minor" value={this.state.minorFilter} callback={this.setMinorFilter}/></Col>
+		    <Col md={2}>
+			<div className="filter-div"  onClick={this.reloadWithFilters}>
+			    <p className="submit-filter-text">Update</p>
+			    <img className="submit-filter-button" src={Filter} />
+			</div>
+		    </Col>
+                   </Row>
+                 </Container>
+		</Navbar>
+	     
+              <div className="profile-wrapper">
                 <Container fluid>
                 <Row className="fill">
                   <Col md={4}>

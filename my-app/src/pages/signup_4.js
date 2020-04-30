@@ -77,7 +77,7 @@ componentDidMount() {
                 this.setState({oldFunfacts: data});
             })
             .catch(error => {
-                console.error('There was an error with profile pic!', error);
+                console.error('There was an error with fun facts!', error);
             });
 }
 
@@ -186,7 +186,6 @@ componentDidMount() {
   } 
 
     setProfile = (event) => { 
-	console.log(event.target.files[0]);
 	this.setState({profile: event.target.files[0]});
     }
 
@@ -202,7 +201,7 @@ componentDidMount() {
 
    setFileFunfacts(target, num) {
 	const { funfactImages } = this.state;
-        funfactImages[num - 1] = target;
+        funfactImages[num - 1] = target.files[0];
         this.setState({ funfactImages });
    }
 

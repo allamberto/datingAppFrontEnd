@@ -36,8 +36,8 @@ h1,h2,h3,h4,h5,h6,label,span {
 }
 
 .form-control {
-  width: 70%;
-  border-color: #167bff;
+  border-color: lightgray !important;
+  width: 90%;
   box-shadow: none;
   margin-right: 40px;
   margin-top: 10px;

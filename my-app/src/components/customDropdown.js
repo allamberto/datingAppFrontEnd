@@ -6,8 +6,8 @@ import './../css/customDropdown.css';
 class App extends React.Component {
     constructor(props) {
         super(props);
-
-        this.checkOptions = this.checkOptions.bind(this);
+        
+	this.checkOptions = this.checkOptions.bind(this);
         this.loadStates = this.loadStates.bind(this);
         this.loadMajors = this.loadMajors.bind(this);
         this.loadMinors = this.loadMinors.bind(this);
@@ -21,19 +21,38 @@ class App extends React.Component {
             majorOptions: [],
             minorOptions: [],
             dorms: [],
-            years:
-          		[ {label: "2020", value: "2020"},
-          		  {label: "2021", value: "2021"},
-          		  {label: "2022", value: "2022"},
-                {label: "2023", value: "2023"}],
-  	        identity:
-		          [ {label: "Male", value: "male"},
-                {label: "Female", value: "female"},
-                {label: "Choose Not to Identify", value: "nonbinary"}],
-	          orientation:
-		          [ {label: "Male", value: "male"},
-                {label: "Female", value: "female"},
-                {label: "Choose Not to Identify", value: "nonbinary"}]
+            years: [
+		     {label: "2020", value: "2020"},
+          	     {label: "2021", value: "2021"},
+          	     {label: "2022", value: "2022"},
+                     {label: "2023", value: "2023"}
+                   ],
+  	    identity: [
+			{label: "Male", value: "male"},
+                        {label: "Female", value: "female"},
+                        {label: "Choose Not to Identify", value: "nonbinary"}
+                      ],
+	    orientation: [ 
+			   {label: "Male", value: "male"},
+                           {label: "Female", value: "female"},
+                           {label: "Choose Not to Identify", value: "nonbinary"}
+                         ],
+	    horoscope: [
+                        {label: "Aries", value: "aries"},
+                        {label: "Taurus", value: "taurus"},
+                        {label: "Gemini", value: "gemini"},
+                        {label: "Cancer", value: "cancer"},
+                        {label: "Leo", value: "leo"},
+			{label: "Virgo", value: "virgo"},
+                        {label: "Libra", value: "libra"},
+                        {label: "Scorpio", value: "scorpio"},
+                        {label: "Sagittarius", value: "sagittarius"},
+			{label: "Capricorn", value: "capricorn"},
+                        {label: "Aquarius", value: "aquarius"},
+                        {label: "Pisces", value: "pisces"}
+		       ],
+            date: [{label: "Yes", value: "1"},
+		   {label: "No", value: "0"}]
         }
 
       	this.loadStates();
@@ -54,15 +73,15 @@ class App extends React.Component {
             console.error('There was an error!', error);
             return Promise.reject(error);
         }
-        var s = [];
+        const { states } = this.state;
         for(var state of data) {
-            s.push({
+            states.push({
                 label: state.name,
                 value: state.code
             });
         }
 
-	this.setState({states: s});
+	this.setState({ states });
      })
      .catch(error => {
        console.error('There was an error!', error);
@@ -82,14 +101,14 @@ class App extends React.Component {
             return Promise.reject(error);
         }
 
-        var majors = [];
+        var {majorOptions} = this.state;
         for(var major of data) {
-            majors.push({
+            majorOptions.push({
                 label: major,
                 value: major
             });
         }
-        this.setState({majorOptions: majors});
+        this.setState({majorOptions});
      })
       .catch(error => {
         console.error('There was an error!', error);
@@ -108,14 +127,14 @@ class App extends React.Component {
             return Promise.reject(error);
         }
 
-        var minors = [];
+        const { minorOptions } = this.state;
         for(var minor of data) {
-            minors.push({
+            minorOptions.push({
                 label: minor,
                 value: minor
             });
         }
-        this.setState({minorOptions: minors});
+        this.setState({minorOptions});
 
      })
       .catch(error => {
@@ -135,14 +154,14 @@ class App extends React.Component {
             return Promise.reject(error);
         }
 
-     	var dorms = [];
+     	const { dorms } = this.state;
         for(var dorm of data) {
             dorms.push({
                 label: dorm.dorm,
                 value: dorm.dorm
             });
         }
-        this.setState({dorms: dorms});
+        this.setState({dorms});
 
      })
       .catch(error => {
@@ -165,6 +184,10 @@ class App extends React.Component {
       return this.state.identity;
     } else if (this.props.ops == "orientation") {
       return this.state.orientation;
+    } else if (this.props.ops == "horoscope") {
+      return this.state.horoscope;
+    } else if (this.props.ops == "date") {
+      return this.state.date;
     }
   }
 
@@ -172,25 +195,19 @@ class App extends React.Component {
     if (!this.props.value) {
       return false;
     }
-    console.log("sadfasfasgassfda");
-    console.log(this.state.multi);
     if (!this.state.multi) {
       return option.value === this.props.value;
     }
-    console.log("sadfasfasgassfda");
-    console.log("---->" + this.props.value);
-    console.log("---->" + option.value);
     return this.props.value.includes(option.value);
   }
 
   changes(e) {
     if(e == null) return;
-    console.log(e);
   }
 
    render() {
-     console.log(this.props.value);
       var options = this.checkArray();
+      if(this.props.filter) options.unshift( {label: "None", value: ""});
       var textClass = (this.props.textClassName != null) ? this.props.textClassName : "title-textbox";
 	return(
 	      <div>

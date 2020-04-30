@@ -267,7 +267,7 @@ class Settings extends React.Component {
             <SideBar pageWrapId={"page-wrap"} outerContainerId={"Page"} />
             <div id="page-wrap" className="settings">
               <div className="wrapperSettings">
-                <Tabs value={index} fullWidth onChange={this.handleChange} className="tabs" >
+                <Tabs value={index} onChange={this.handleChange} className="tabs" >
                   <Tab label="Change Password" />
                   <Tab label="Update Personal Information" />
                 </Tabs>
@@ -306,7 +306,7 @@ class Settings extends React.Component {
                                 </div>
                                 <NavLink to="/signup_2" className="changeButton">Here</NavLink>
                             </Col>
-                            <div class="vl"></div>
+                            <div className="vl"></div>
                             <Col>
                                 <h2 className="changeTitle">Change Personal Preferences</h2>
                                 <div className="bulletOptions">
@@ -319,7 +319,7 @@ class Settings extends React.Component {
                                 </div>
                                  <NavLink to="/signup_3" className="changeButton">Here</NavLink>
                             </Col>
-                            <div class="vl"></div>
+                            <div className="vl"></div>
                             <Col>
                                 <h2 className="changeTitle">Change Profile Content</h2>
                                 <div className="bulletOptions">
