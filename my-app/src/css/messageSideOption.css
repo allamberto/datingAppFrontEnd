@@ -6,6 +6,10 @@
     overflow: hidden;
 }
 
+.messageSideButton:hover {
+    cursor: pointer;
+}
+
 .messageSideButton-container {
   margin: 0px;
   margin-top: 10px;
