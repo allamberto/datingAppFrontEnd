@@ -1,10 +1,10 @@
 .headerContainer {
-    width: 90%;
     margin-left: 10%;
     margin-top: 28px;
     height: 60px;
     margin-right: 0px;
-    border-radius: 7px 0px 0px 7px
+    border-radius: 7px 0px 0px 7px;
+    width: auto;
 }
 
 
@@ -29,17 +29,16 @@
 }
 
 .recommendButton {
-    background-color: #D39F10;
+    border: 2px solid #090C32;
     border-radius: 4px;
-    border: 1px solid black;
+    background-color: #84BD69;
+    font-weight: 500;
+    box-shadow: 2px 2px #090C32;
     float: left;
     height: 50px;
     padding: 10px 10px 10px 10px;
     font-weight: 600;
-    border-style: solid;
-    border-width: 2px;
-    border-radius: 5px;
-    border-color: #051038;
+    border-radius: 4px;
 }
 
 .recommendButton:hover {
@@ -47,43 +46,38 @@
 }
 
 .passButton {
-    background-color: #79A9C3;
+    border: 2px solid #090C32;
     border-radius: 4px;
-    border: 1px solid black;
+    background-color: #84BD69;
+    font-weight: 500;
+    font-size: 20px;
+    box-shadow: 2px 2px #090C32;
     float: right;
     padding: 10px 10px 10px 10px;
-    font-weight: 600;
     height: 50px;
-    border-style: solid;
-    border-width: 2px;
-    border-radius: 5px;
-    border-color: #051038;
 }
 
 .passButton:hover {
-    background-color: #95C3D5;
+    font-weight: 700;
 }
 
 .recommendButtonHigher {
-    background-color: #79A9C3;
+    border: 2px solid #090C32;
     border-radius: 4px;
-    border: 1px solid black;
+    background-color: #84BD69;
+    font-weight: 500;
+    box-shadow: 1px 1px #090C32;
     margin-top: -15px;
     padding: 10px 10px 10px 10px;
-    font-weight: 700;
     float: right;
     font-size: 20px;
     width: 183px;
     height: 80px;
     white-space: pre-line;
-    border-style: solid;
-    border-width: 2px;
-    border-radius: 5px;
-    border-color: #051038;
 }
 
 .recommendButtonHigher:hover {
-    background-color: #95C3D5;
+    font-weight: 700;
 }
 
 .notMeButtonText {
@@ -115,7 +109,7 @@
 }
 
 .passButtonNotMe:hover {
-    background-color: #95C3D5;
+    font-weight: 700;
 }
 
 
@@ -145,19 +139,28 @@
 }
 
 .nothing-message {
+  margin-right: 100px;
+  margin-left: 100px;
+  margin-top: 200px;
+  background-color: #84BD69;
+  border: 2px double #090C32;
+  border-radius: 5px;
+  padding: 20px;
 }
-
-
 
 .filter-div {
   display: inline-block;
-  background-color: white;
+  border: 2px solid #090C32;
   border-radius: 4px;
-  border: 2px solid black;
+  background-color: #84BD69;
+  font-weight: 500;
+  box-shadow: 1px 1px #090C32;
+  font-size: 15px;
   padding: 5px 5px;
   height: 40px;
   cursor: pointer;
   margin-top: 2px;
+  text-align: center;
 }
 
 .submit-filter-button {
@@ -170,6 +173,11 @@
   font-size: 14px;
   margin-right: 5px;
   display: inline-block;
+  font-weight: 500;
+  margin-left: 2px;
+}
+
+.submit-filter-text:hover {
   font-weight: 600;
 }
 
@@ -203,4 +211,13 @@
 .recommended-by {
   text-align: right;
   padding-right: 40px;
+  width: auto;
+}
+
+.recommendby-header {
+  background-color: #84BD69;
+  border: 2px solid #090C32;
+  padding: 5px 5px 5px 5px;
+  width: auto;
+  border-radius: 5px;
 }

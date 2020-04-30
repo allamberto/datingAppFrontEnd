@@ -25,6 +25,7 @@ import React from 'react';
    );
  }
 
+ 
   function ModalControl(props) {
    const [modalShow, setModalShow] = React.useState(false);
 
@@ -37,7 +38,7 @@ import React from 'react';
         <MyVerticallyCenteredModal
          content={props.content}
          show={modalShow}
-         onHide={() => setModalShow(false)}
+	 onHide={() => {setModalShow(false); props.onHide();}}
        />
      </>
    );

@@ -366,7 +366,7 @@ class Browse extends React.Component {
 
            <div id="page-wrap">
            <div className="headerContainer recommended-by">
-            <h4>Recommended by {this.state.recommendedBy}</h4>
+            <h4 className="recommendby-header">Recommended by {this.state.recommendedBy}</h4>
            </div>
               <div className="profile-wrapper">
                 <Container fluid>
@@ -472,13 +472,13 @@ class Browse extends React.Component {
                     <Profile person={this.state.person}/>
                     <Row className="buttons">
                         <Col md={6} className="button1Col">
-                             <Button variant="secondary" onClick={this.updateProfileInterest} className="recommendButtonHigher">Recommend To {"\n"}{this.state.playingAsName}
-                             </Button>
+                             <button onClick={this.updateProfileInterest} className="recommendButtonHigher">Recommend To {"\n"}{this.state.playingAsName}
+                             </button>
                         </Col>
                         <Col md={6} className="button1Col">
-                            <Button variant="secondary" onClick={this.updateProfilePass} className="passButton passButtonNotMe">
+                            <button  onClick={this.updateProfilePass} className="passButton passButtonNotMe">
                                 Not For {"\n"}{this.state.playingAsName}
-                             </Button>
+                             </button>
                         </Col>
                     </Row>
                   </Col>

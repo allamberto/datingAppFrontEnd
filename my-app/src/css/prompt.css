@@ -2,12 +2,14 @@
     display: inline-block;
     text-align: center;  
     margin-right: 3px;
-    font-weight: bold;
     line-height: 35px;
+    font-weight: 500;
+    font-size: 20px;
+    margin-top: 4px;
 }
 
 .buttonMessage:hover {
-    background-color: #d4af37;
+    font-weight: 700;
 }
 
 .tjImage {
@@ -17,11 +19,13 @@
 }
 
 .promptButton {
-    background-color: #D39F10;
-    border-radius: 8px;
-    border: 1px solid black;
-    width: 165px;
-    height: 45px;
+    border: 2px solid #090C32;
+    border-radius: 4px;
+    background-color: #84BD69;
+    font-weight: 500;
+    box-shadow: 2px 2px #090C32;
+    width: 190px;
+    height: 50px;
     float: right;
     margin-right: -15px;
 }
