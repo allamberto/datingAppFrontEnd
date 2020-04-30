@@ -12,6 +12,7 @@
   font-style: italic;
   margin-left: 25px;
   font-weight: 500;
+  margin-right: 40px;
 }
 
 .prompt-control {
@@ -35,4 +36,8 @@
   margin-bottom: 25px;
   margin-top: 10pz;
   margin-left: 50px;
+}
+
+.move-up {
+  margin-top: -15px;
 }

@@ -11,7 +11,9 @@ import MessageSideOption from './../components/messageSideOption';
 import './../css/chat.css';
 import './../css/modal.css';
 import Arrow from './../img/upArrow.png';
-import Lep from './../img/lep.png';
+import Moses from './../img/first_down.png';
+import Shuffle from './../img/shuffle.png';
+import Calendar from './../img/calendar.png';
 
 class Chat extends React.Component {
     constructor(props) {
@@ -274,12 +276,12 @@ class Chat extends React.Component {
                         <Row md={2} className="sendtext-container">
                           <Col md={1} className='date-button-col'>
                             <button onClick={this.openModal} className='plandate-button'>
-                                <img src={Arrow} className='sendtext-img'></img>
+                                <img src={Calendar} className='sendtext-img'></img>
                             </button>
                           </Col>
                           <Col md={1}>
                             <button onClick={this.generateMessage} className='generatemessage-button'>
-                                <img src={Arrow} className='sendtext-img'></img>
+                                <img src={Shuffle} className='sendtext-img'></img>
                             </button>
                           </Col>
                             <Col md={9} >
@@ -287,7 +289,7 @@ class Chat extends React.Component {
                             </Col>
                             <Col md={1} className='send-button-col'>
                                 <button onClick={this.addMessage} className='sendtext-button'>
-                                    <img src={Arrow} className='sendtext-img'></img>
+                                    <img src={Moses} className='sendtext-img'></img>
                                 </button>
                             </Col>
                         </Row>

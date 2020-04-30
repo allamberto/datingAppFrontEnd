@@ -134,7 +134,7 @@ render() {
                   { this.state && this.state.loaded &&
  		                 <MultipleChoice netid={this.state.netid} selected={this.state.selected} callback={this.setSelected}/>
                   }
-                  <button type="submit" className="btn btn-primary submit-button-signup" onClick={this.changePage}>Submit</button>
+                  <button type="submit" className="btn btn-primary submit-button-signup-long" onClick={this.changePage}>Submit</button>
                </div>
               </div>
             </div>

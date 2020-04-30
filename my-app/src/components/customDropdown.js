@@ -14,6 +14,8 @@ class App extends React.Component {
         this.loadDorms = this.loadDorms.bind(this);
         this.checkArray = this.checkArray.bind(this);
         this.changes = this.changes.bind(this);
+	
+	var none = (this.props.filter) ? [{label: "None", value: ""}] : [];
 
         this.state = {
             multi: this.props.multi,
@@ -21,12 +23,12 @@ class App extends React.Component {
             majorOptions: [],
             minorOptions: [],
             dorms: [],
-            years: [
+            years: [...none, ...[
 		     {label: "2020", value: "2020"},
           	     {label: "2021", value: "2021"},
           	     {label: "2022", value: "2022"},
                      {label: "2023", value: "2023"}
-                   ],
+                   ]],
   	    identity: [
 			{label: "Male", value: "male"},
                         {label: "Female", value: "female"},
@@ -73,15 +75,16 @@ class App extends React.Component {
             console.error('There was an error!', error);
             return Promise.reject(error);
         }
-        const { states } = this.state;
+        var s = [];
         for(var state of data) {
-            states.push({
+            s.push({
                 label: state.name,
                 value: state.code
             });
         }
 
-	this.setState({ states });
+	var none = (this.props.filter) ? [{label: "None", value: ""}] : [];
+	this.setState({ states : none.concat(s)});
      })
      .catch(error => {
        console.error('There was an error!', error);
@@ -101,14 +104,16 @@ class App extends React.Component {
             return Promise.reject(error);
         }
 
-        var {majorOptions} = this.state;
+        var majors = [];
         for(var major of data) {
-            majorOptions.push({
+            majors.push({
                 label: major,
                 value: major
             });
         }
-        this.setState({majorOptions});
+	
+	var none = (this.props.filter) ? [{label: "None", value: ""}] : [];
+        this.setState({majorOptions : none.concat(majors)});
      })
       .catch(error => {
         console.error('There was an error!', error);
@@ -127,14 +132,16 @@ class App extends React.Component {
             return Promise.reject(error);
         }
 
-        const { minorOptions } = this.state;
+        var minors = [];
         for(var minor of data) {
-            minorOptions.push({
+            minors.push({
                 label: minor,
                 value: minor
             });
         }
-        this.setState({minorOptions});
+
+	var none = (this.props.filter) ? [{label: "None", value: ""}] : [];
+        this.setState({minorOptions : none.concat(minors)});
 
      })
       .catch(error => {
@@ -154,14 +161,15 @@ class App extends React.Component {
             return Promise.reject(error);
         }
 
-     	const { dorms } = this.state;
+     	var dorms = [];
         for(var dorm of data) {
             dorms.push({
                 label: dorm.dorm,
                 value: dorm.dorm
             });
         }
-        this.setState({dorms});
+	var none = (this.props.filter) ? [{label: "None", value: ""}] : [];
+        this.setState({dorms : none.concat(dorms)});
 
      })
       .catch(error => {
@@ -207,7 +215,6 @@ class App extends React.Component {
 
    render() {
       var options = this.checkArray();
-      if(this.props.filter) options.unshift( {label: "None", value: ""});
       var textClass = (this.props.textClassName != null) ? this.props.textClassName : "title-textbox";
 	return(
 	      <div>
