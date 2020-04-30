@@ -1,58 +1,113 @@
-.profile-front {
-  border-style: double;
-  padding: 20px 20px 20px 20px;
-  display:inline-block;
-  width: 400px;
-  height: 400px;
-  background-color: #85C7F2;
-}
+
 
 .funfact-front {
   border-style: double;
   padding: 20px 20px 20px 20px;
   display:inline-block;
-  width: 400px;
+  width: 95%;
   height: 250px;
-  background-color: #85C7F2;
-}
-
-.profile-back {
-  border-style: double;
-  padding: 20px 20px 20px 20px;
-  display:inline-block;
-  width: 400px;
-  height: 400px;
-  background-color: #85C7F2;
+  background-color: white;
+  border-style: solid;
+  border-width: 4px;
+  border-radius: 5px;
+  border-color: #051038;
 }
 
 .funfact-back {
   border-style: double;
   padding: 20px 20px 20px 20px;
   display:inline-block;
-  width: 400px;
+  width: 95%;
   height: 250px;
-  background-color: #85C7F2;
-}
-
-
-.profile-image {
-  border: 2px solid black;
-  height: 380px;
-  width: 380px;;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); 
+  background-color: white;
+  border-style: solid;
+  border-width: 4px;
+  border-radius: 5px;
+  border-color: #051038;
 }
 
 .funfact-image {
-  border: 2px solid black;
-  width: 380px;
-  height: 230px;;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 5px;
+  border-color: #051038;
+  width: 95%;
+  height: 250px;;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  object-fit: cover;
+}
+
+.funfact-image-front {
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 5px;
+  border-color: #051038;
+  width: 85%;
+  height: 230px;;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scaleY(-1) ;
+  object-fit: cover;
+  filter: blur(20px) opacity(0.6);
+}
+
+.profile-front {
+  border-style: double;
+  padding: 20px 20px 20px 20px;
+  display:inline-block;
+  width: 100%;
+  height: 400px;
+  background-color: white;
+  border-style: solid;
+  border-width: 4px;
+  border-radius: 5px;
+  border-color: #051038;
+}
+
+.profile-back {
+  border-style: double;
+  padding: 20px 20px 20px 20px;
+  display:inline-block;
+  width: 100%;
+  height: 400px;
+  background-color: #85C7F2;
+  border-style: solid;
+  border-width: 4px;
+  border-radius: 5px;
+  border-color: #051038;
+}
+
+.profile-image-front {
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 5px;
+  border-color: #051038;
+  height: 380px;
+  width: 95%;;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  filter: blur(20px) opacity(0.6);
+}
+
+.profile-image {
+  height: 400px;
+  width: 100%;;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  border-style: solid;
+  border-width: 3px;
+  border-radius: 5px;
+  border-color: #051038;
 }
 
 .sameline {
@@ -63,8 +118,35 @@
 
 .info {
   position: fixed;
+  padding: 10px;
   top: 50%;
   left: 50%;
+  max-height: 100%;
+  max-width: 100%;
   transform: translate(-50%, -50%);
+  background-color: white;
+  border-style: solid;
+  border-width: 3px;
+  border-radius: 5px;
+  border-color: #051038;
 }
 
+.profile-info {
+  position: fixed;
+  padding: 10px;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  max-width: 100%;
+  max-height: 100%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-style: solid;
+  border-width: 3px;
+  border-radius: 5px;
+  border-color: #051038;
+}
+
+.fun-fact-caption {
+  margin-bottom: 0px;
+}

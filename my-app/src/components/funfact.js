@@ -10,17 +10,19 @@ class FunFact extends React.Component {
     }
 
     Front() {
+      var img = (this.props.f.image != undefined && this.props.f.image != "") ? 'http://3.211.82.27:8800/images/' + this.props.f.image : Lep;
       return (
-        <div className="funfact-front">
+        <div className="funfact-back">
+          <img src={img} className="funfact-image-front"></img>
           <div className="info">
-            <h1>{this.props.f.caption}</h1> 
-          </div>          
-        </div>        
-      ); 
+            <p className="fun-fact-caption">{this.props.f.caption}</p>
+          </div>
+        </div>
+      );
     }
 
     Back() {
-      var img = (this.props.f.image != "") ? 'http://3.211.82.27:8800/images/' + this.props.f.image : Lep;
+      var img = (this.props.f.image != undefined && this.props.f.image != "") ? 'http://3.211.82.27:8800/images/' + this.props.f.image : Lep;
         return (
             <div className="funfact-back">
              <img src={img} className="funfact-image"></img>
