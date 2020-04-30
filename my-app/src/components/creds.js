@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter, NavLink } from 'react-router-dom';
 import { Overlay, Tooltip } from 'react-bootstrap';
+import Popup from 'react-popup';
 
 function RememberMe(props) {
 
@@ -33,9 +34,11 @@ function Signup(props) {
 
 function Login(props) {
     return (
+      <div className="login-return">
         <p className="forgot-password text-right">
             Already registered <NavLink to="/login">Sign in?</NavLink>
         </p>
+      </div>
     );
 }
 
@@ -77,7 +80,7 @@ class Creds extends React.Component {
                 if (!response.ok) {
                     // get error message from body or default to response status
                     const error = (data && data.message) || response.status;
-                    alert("\tYou have entered an incorrect username or password.\n \t\t\t\t\t Please try again.");
+                    alert("You have entered an incorrect username or password.");
                     return Promise.reject(error);
                 }
 
@@ -89,19 +92,18 @@ class Creds extends React.Component {
             });
         } else if(this.props.create) {
             if(this.state.netid == "") {
-                alert("\t\t\t\tPlease Enter Your NetID.");
+                alert("Please Enter Your NetID.");
                 return;
             }
-
+		
             if(this.state.password == this.state.passwordConfirm) {
                 const requestOptions = {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({"netid": this.state.netid,
                                           "password": this.state.password
                    })
                   };
-                  fetch('http://3.211.82.27:8800//students', requestOptions)
+                  fetch('http://3.211.82.27:8800/students', requestOptions)
                   .then(async response => {
                         const data = await response.json();
 
@@ -109,7 +111,7 @@ class Creds extends React.Component {
                         if (!response.ok) {
                             // get error message from body or default to response status
                             const error = (data && data.message) || response.status;
-                            alert("\tThere was an error creating your account.\n \t\t\t\t\t Please try again.");
+                            alert("There was an error creating your account. Please try again.");
                             return Promise.reject(error);
                         }
                     
@@ -118,7 +120,7 @@ class Creds extends React.Component {
                     }) 
                     .catch(error => {
                         console.error('There was an error!', error);
-                        alert("\t\tThere was an error creating your account.\n \t\t\t\t\t Please try again.");
+                        alert("There was an error creating your account. Please try again.");
                     });
             } else {
                 alert("Your passwords do not match. Please try again.");
@@ -164,17 +166,17 @@ class Creds extends React.Component {
 
                 <div className="form-group">
                     <label className="form-group-text">NetID</label>
-                    <input type="text" className="form-control" value={this.state.netid} placeholder="Enter NetID" onChange={this.onChangeUser}/>
+                    <input required type="text" className="form-control" value={this.state.netid} placeholder="Enter NetID" onChange={this.onChangeUser}/>
                 </div>
 
                 <div className="form-group">
                     <label className="form-group-text">Password</label>
-                    <input type="password" className="form-control" placeholder="Enter Password" onChange={this.onChangePassword}/>
+                    <input required type="password" className="form-control" placeholder="Enter Password" onChange={this.onChangePassword}/>
                 </div>
                 
                 {extra1}
 
-                <button type="submit" className="btn btn-primary btn-block">Submit</button>
+                <button type="submit" className="btn btn-primary submit-button-signup">Submit</button>
                 {extra2}
         </form>
     );}

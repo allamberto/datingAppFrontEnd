@@ -1,5 +1,5 @@
 .headerContainer {
-    width: 84%;
+    width: 90%;
     margin-left: 8%;
     margin-top: 20px;
     height: 50px;
@@ -112,3 +112,52 @@
 .button2Col {
     width: 170px;
 }
+
+.pop-open-button {
+    width: 30px;
+    height: 30px;
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+    margin-top: 25px;
+    float: right;
+}
+
+.navbar-dropdown-container {
+  width: 100%;
+  margin: 0;
+}
+
+.nothing-message {
+}
+
+.filter-div {
+  display: inline-block;
+  background-color: white;
+  border-radius: 4px;
+  border: 2px solid black;
+  padding: 5px 5px;
+  height: 40px; 
+  cursor: pointer;
+  margin-top: 2px;
+}
+
+.submit-filter-button {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+}
+
+.submit-filter-text {
+  font-size: 14px;
+  margin-right: 5px;
+  display: inline-block;  
+  font-weight: 600;
+}
+
+.overall { 
+  margin-top: -20px;
+}
+

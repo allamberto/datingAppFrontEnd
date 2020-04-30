@@ -6,14 +6,16 @@ import './../css/customDropdown.css';
 class App extends React.Component {
     constructor(props) {
         super(props);
-
-        this.checkOptions = this.checkOptions.bind(this);
+        
+	this.checkOptions = this.checkOptions.bind(this);
         this.loadStates = this.loadStates.bind(this);
         this.loadMajors = this.loadMajors.bind(this);
         this.loadMinors = this.loadMinors.bind(this);
         this.loadDorms = this.loadDorms.bind(this);
         this.checkArray = this.checkArray.bind(this);
         this.changes = this.changes.bind(this);
+	
+	var none = (this.props.filter) ? [{label: "None", value: ""}] : [];
 
         this.state = {
             multi: this.props.multi,
@@ -21,19 +23,38 @@ class App extends React.Component {
             majorOptions: [],
             minorOptions: [],
             dorms: [],
-            years:
-          		[ {label: "2020", value: "2020"},
-          		  {label: "2021", value: "2021"},
-          		  {label: "2022", value: "2022"},
-                {label: "2023", value: "2023"}],
-  	        identity:
-		          [ {label: "Male", value: "male"},
-                {label: "Female", value: "female"},
-                {label: "Choose Not to Identify", value: "nonbinary"}],
-	          orientation:
-		          [ {label: "Male", value: "male"},
-                {label: "Female", value: "female"},
-                {label: "Choose Not to Identify", value: "nonbinary"}]
+            years: [...none, ...[
+		     {label: "2020", value: "2020"},
+          	     {label: "2021", value: "2021"},
+          	     {label: "2022", value: "2022"},
+                     {label: "2023", value: "2023"}
+                   ]],
+  	    identity: [
+			{label: "Male", value: "male"},
+                        {label: "Female", value: "female"},
+                        {label: "Choose Not to Identify", value: "nonbinary"}
+                      ],
+	    orientation: [ 
+			   {label: "Male", value: "male"},
+                           {label: "Female", value: "female"},
+                           {label: "Choose Not to Identify", value: "nonbinary"}
+                         ],
+	    horoscope: [
+                        {label: "Aries", value: "aries"},
+                        {label: "Taurus", value: "taurus"},
+                        {label: "Gemini", value: "gemini"},
+                        {label: "Cancer", value: "cancer"},
+                        {label: "Leo", value: "leo"},
+			{label: "Virgo", value: "virgo"},
+                        {label: "Libra", value: "libra"},
+                        {label: "Scorpio", value: "scorpio"},
+                        {label: "Sagittarius", value: "sagittarius"},
+			{label: "Capricorn", value: "capricorn"},
+                        {label: "Aquarius", value: "aquarius"},
+                        {label: "Pisces", value: "pisces"}
+		       ],
+            date: [{label: "Yes", value: "1"},
+		   {label: "No", value: "0"}]
         }
 
       	this.loadStates();
@@ -62,7 +83,8 @@ class App extends React.Component {
             });
         }
 
-	this.setState({states: s});
+	var none = (this.props.filter) ? [{label: "None", value: ""}] : [];
+	this.setState({ states : none.concat(s)});
      })
      .catch(error => {
        console.error('There was an error!', error);
@@ -89,7 +111,9 @@ class App extends React.Component {
                 value: major
             });
         }
-        this.setState({majorOptions: majors});
+	
+	var none = (this.props.filter) ? [{label: "None", value: ""}] : [];
+        this.setState({majorOptions : none.concat(majors)});
      })
       .catch(error => {
         console.error('There was an error!', error);
@@ -115,7 +139,9 @@ class App extends React.Component {
                 value: minor
             });
         }
-        this.setState({minorOptions: minors});
+
+	var none = (this.props.filter) ? [{label: "None", value: ""}] : [];
+        this.setState({minorOptions : none.concat(minors)});
 
      })
       .catch(error => {
@@ -142,7 +168,8 @@ class App extends React.Component {
                 value: dorm.dorm
             });
         }
-        this.setState({dorms: dorms});
+	var none = (this.props.filter) ? [{label: "None", value: ""}] : [];
+        this.setState({dorms : none.concat(dorms)});
 
      })
       .catch(error => {
@@ -165,6 +192,10 @@ class App extends React.Component {
       return this.state.identity;
     } else if (this.props.ops == "orientation") {
       return this.state.orientation;
+    } else if (this.props.ops == "horoscope") {
+      return this.state.horoscope;
+    } else if (this.props.ops == "date") {
+      return this.state.date;
     }
   }
 
@@ -172,24 +203,17 @@ class App extends React.Component {
     if (!this.props.value) {
       return false;
     }
-    console.log("sadfasfasgassfda");
-    console.log(this.state.multi);
     if (!this.state.multi) {
       return option.value === this.props.value;
     }
-    console.log("sadfasfasgassfda");
-    console.log("---->" + this.props.value);
-    console.log("---->" + option.value);
     return this.props.value.includes(option.value);
   }
 
   changes(e) {
     if(e == null) return;
-    console.log(e);
   }
 
    render() {
-     console.log(this.props.value);
       var options = this.checkArray();
       var textClass = (this.props.textClassName != null) ? this.props.textClassName : "title-textbox";
 	return(

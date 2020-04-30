@@ -10,7 +10,7 @@ class Players extends React.Component {
 
     this.state = {
         netid: sessionStorage.getItem("netid"),
-        recommenders: [],
+        recommendees: [],
         num: 0
     };
 
@@ -26,11 +26,11 @@ class Players extends React.Component {
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
-                console.log("Error pulling recommenders");
+                console.log("Error pulling recommendees");
                 return Promise.reject(error);
             }
             console.log(data);
-            this.setState({recommenders: data.recommenders});
+            this.setState({recommendees: data.recommendees});
         })
         .catch(error => {
             console.error('There was an error!', error);
@@ -44,7 +44,7 @@ class Players extends React.Component {
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
-                console.log("Error pulling recommenders");
+                console.log("Error pulling recommendees");
                 return Promise.reject(error);
             }
             console.log(data.requestsReceived.length);
@@ -83,7 +83,7 @@ class Players extends React.Component {
     var people = [];
     people.push(<ListPlayers playingAs={this.state.netid} message="Play as Me" />);
     
-    for(var r of this.state.recommenders) {
+    for(var r of this.state.recommendees) {
         var name = r.firstName + " " + r.lastName;
         people.push(<ListPlayers playingAs={r.netid} playingAsName={r.firstName} message={name} />);
     }

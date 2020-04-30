@@ -5,9 +5,9 @@ import "./../css/multipleChoice.css";
 
 const optionStyle = {"option":
 		      {
-			"width": "700px",
+			"width": "100%",
 			"marginLeft" : "40px",
-			"textAlign" : "left",
+			"textAlign" : "left"
 		      }
 		    };
 
@@ -24,13 +24,13 @@ class MC extends React.Component {
   }
 
   check() {
-		this.props.callback(this.state.selectedOptions);
+    this.props.callback(this.state.selectedOptions);
   }
 
   render() {
     return (
      <div className="multiple-choice-container" onClick={this.check}>
-        <Test onOptionSelect={selectedOptions => this.setState({ selectedOptions })}>
+        <Test style={{"width": "90%", "text-align": "right"}} onOptionSelect={selectedOptions => this.setState({ selectedOptions })}>
           <QuestionGroup defaultValue={this.state.selectedOptions.temperament} questionNumber={"temperament"}>
             <h2 className="question-text">Question 1 of 14: Which best describes you?</h2>
             <Option value="introverted" style={optionStyle}><p className="text-test">Introverted</p></Option>
@@ -66,7 +66,7 @@ class MC extends React.Component {
 	 <QuestionGroup defaultValue={this.state.selectedOptions.idealDate} questionNumber={"idealDate"}>
             <h2 className="question-text">Question 4 of 14: What is your ideal first date?</h2>
 
-            <Option value="lakes" style={optionStyle}><p className="text-test">Walking around the lakes (not holding hands of course)</p></Option>
+            <Option value="lakes" style={optionStyle}><p className="text-test">Walking around the lakes</p></Option>
             <Option value="glee" style={optionStyle}><p className="text-test">Glee Club concert</p></Option>
             <Option value="coffee" style={optionStyle}><p className="text-test">Grabbing coffee at the Haggerty Cafe</p></Option>
             <Option value="newfs" style={optionStyle}><p className="text-test">Meeting up at Newfs</p></Option>
