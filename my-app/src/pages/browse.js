@@ -1,6 +1,6 @@
 import React from 'react';
 import SideBar from "./../components/sidebar";
-import { Navbar, Container, Row, Col, DropdownButton, Dropdown } from 'react-bootstrap';
+import { Navbar, Container, Row, Col, DropdownButton, Dropdown, Button } from 'react-bootstrap';
 import "./../css/browse.css";
 import FunFact from "./../components/funfact";
 import Profile from "./../components/profile";
@@ -72,7 +72,8 @@ class Browse extends React.Component {
 	majorFilter: "",
 	minorFilter: "",
 	dormFilter: "",
-	dateFilter: false
+  dateFilter: false,
+  filtersOpen: false
     }
 
     this.getRecommendation = this.getRecommendation.bind(this);
@@ -89,6 +90,7 @@ class Browse extends React.Component {
     this.setMinorFilter = this.setMinorFilter.bind(this);
     this.setDormFilter = this.setDormFilter.bind(this);
     this.reloadWithFilters = this.reloadWithFilters.bind(this);
+    this.expandFilters = this.expandFilters.bind(this);
 
     if(sessionStorage.getItem("netid") == sessionStorage.getItem("playingAs")) {
         this.getRecommendation();
@@ -349,6 +351,10 @@ class Browse extends React.Component {
     this.setState({ isMenuOpened: !this.state.isMenuOpened });
   }
 
+  expandFilters() {
+    this.setState({ filtersOpen: !this.state.filtersOpen });
+  }
+
   render() {
     if(this.state.show && this.state.playingAs == this.state.netid){
         return(
@@ -356,6 +362,7 @@ class Browse extends React.Component {
           <SideBar pageWrapId={"page-wrap"} outerContainerId={"Page"} />
 
            <div id="page-wrap">
+           <div className="headerContainer"></div>
               <div className="profile-wrapper">
                 <Container fluid>
                 <Row className="fill">
@@ -386,23 +393,27 @@ class Browse extends React.Component {
            <SideBar pageWrapId={"page-wrap"} outerContainerId={"Page"} />
 
             <div id="page-wrap">
-                 <Navbar bg="dark" variant="dark" className="headerContainer">
+                 <div className="headerContainer">
 		               <Container fluid >
                     <Row className="navbar-dropdown-container">
-                      <Col md={2}><CustomDropdown filter={true} className="overall" ops="states" placeholder="Filter by State" value={this.state.stateFilter} callback={this.setStateFilter}/></Col>
-                      <Col md={2}><CustomDropdown filter={true} className="overall" ops="years" placeholder="Filter by Year" value={this.state.yearFilter} callback={this.setYearFilter}/></Col>
-                      <Col md={2}><CustomDropdown filter={true} className="overall" ops="dorms" placeholder="Filter by Dorm" value={this.state.dormFilter} callback={this.setDormFilter}/></Col>
-                      <Col md={2}><CustomDropdown filter={true} className="overall" ops="majors" placeholder="Filter by Major" value={this.state.majorFilter} callback={this.setMajorFilter}/></Col>
-                      <Col md={2}><CustomDropdown filter={true} ops="minors" className="overall" placeholder="Filter by Minor" value={this.state.minorFilter} callback={this.setMinorFilter}/></Col>
+                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="states" placeholder="Filter by State" value={this.state.stateFilter} callback={this.setStateFilter}/>}</Col>
+                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="years" placeholder="Filter by Year" value={this.state.yearFilter} callback={this.setYearFilter}/>}</Col>
+                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="dorms" placeholder="Filter by Dorm" value={this.state.dormFilter} callback={this.setDormFilter}/>}</Col>
+                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="majors" placeholder="Filter by Major" value={this.state.majorFilter} callback={this.setMajorFilter}/>}</Col>
+                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} ops="minors" className="overall header-dropdown" placeholder="Filter by Minor" value={this.state.minorFilter} callback={this.setMinorFilter}/>}</Col>
                     <Col md={2}>
-                        <div className="filter-div"  onClick={this.reloadWithFilters}>
-                            <p className="submit-filter-text">Update</p>
-                            <img className="submit-filter-button" src={Filter} />
-                        </div>
+                      {this.state.filtersOpen &&
+                      <div className="filter-div"  onClick={this.reloadWithFilters}>
+                			    <p className="submit-filter-text">Apply Filters</p>
+                			</div>
+                      }
+                      <div className="filter-toggle float-right"  onClick={this.expandFilters}>
+                          <img className="submit-filter-button" src={Filter} />
+                      </div>
                     </Col>
                    </Row>
                  </Container>
-		             </Navbar>
+		             </div>
                  <div className="profile-wrapper">
 
                     <h1 className="nothing-message">{this.state.showMessage}</h1>
@@ -416,23 +427,27 @@ class Browse extends React.Component {
           <SideBar pageWrapId={"page-wrap"} outerContainerId={"Page"} limited={true}/>
 
            <div id="page-wrap">
-		<Navbar bg="dark" variant="dark" className="headerContainer">
+		<div className="headerContainer">
 		  <Container fluid >
         <Row className="navbar-dropdown-container">
-        <Col md={2}><CustomDropdown filter={true} className="overall" ops="states" placeholder="State" value={this.state.stateFilter} callback={this.setStateFilter}/></Col>
-        <Col md={2}><CustomDropdown filter={true} className="overall" ops="years" placeholder="Grad Year" value={this.state.yearFilter} callback={this.setYearFilter}/></Col>
-        <Col md={2}><CustomDropdown filter={true} className="overall" ops="dorms" placeholder="Dorm" value={this.state.dormFilter} callback={this.setDormFilter}/></Col>
-        <Col md={2}><CustomDropdown filter={true} className="overall" ops="majors" placeholder="Major" value={this.state.majorFilter} callback={this.setMajorFilter}/></Col>
-        <Col md={2}><CustomDropdown filter={true} ops="minors" className="overall" placeholder="Minor" value={this.state.minorFilter} callback={this.setMinorFilter}/></Col>
+        <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="states" placeholder="State" value={this.state.stateFilter} callback={this.setStateFilter}/>}</Col>
+        <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="years" placeholder="Grad Year" value={this.state.yearFilter} callback={this.setYearFilter}/>}</Col>
+        <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="dorms" placeholder="Dorm" value={this.state.dormFilter} callback={this.setDormFilter}/>}</Col>
+        <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="majors" placeholder="Major" value={this.state.majorFilter} callback={this.setMajorFilter}/>}</Col>
+        <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} ops="minors" className="overall" placeholder="Minor" value={this.state.minorFilter} callback={this.setMinorFilter}/>}</Col>
 		    <Col md={2}>
-  			<div className="filter-div"  onClick={this.reloadWithFilters}>
-  			    <p className="submit-filter-text">Filter</p>
-  			    <img className="submit-filter-button" src={Filter} />
+        {this.state.filtersOpen &&
+        <div className="filter-div"  onClick={this.reloadWithFilters}>
+  			    <p className="submit-filter-text">Apply Filters</p>
   			</div>
+        }
+        <div className="filter-toggle float-right"  onClick={this.expandFilters}>
+            <img className="submit-filter-button" src={Filter} />
+        </div>
 		    </Col>
          </Row>
        </Container>
-		</Navbar>
+		</div>
 
               <div className="profile-wrapper">
                 <Container fluid>
@@ -441,12 +456,13 @@ class Browse extends React.Component {
                     <Profile person={this.state.person}/>
                     <Row className="buttons">
                         <Col md={6} className="button1Col">
-                             <button onClick={this.updateProfileInterest} className="recommendButtonHigher">Recommend To {"\n"}{this.state.playingAsName}</button>
+                             <Button variant="secondary" onClick={this.updateProfileInterest} className="recommendButtonHigher">Recommend To {"\n"}{this.state.playingAsName}
+                             </Button>
                         </Col>
                         <Col md={6} className="button1Col">
-                            <button onClick={this.updateProfilePass} className="passButton passButtonNotMe">
-                                <p className="notMeButtonText">Not For {"\n"}{this.state.playingAsName}</p>
-                             </button>
+                            <Button variant="secondary" onClick={this.updateProfilePass} className="passButton passButtonNotMe">
+                                Not For {"\n"}{this.state.playingAsName}
+                             </Button>
                         </Col>
                     </Row>
                   </Col>
