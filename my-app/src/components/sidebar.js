@@ -1,7 +1,7 @@
 import React from 'react';
 import { slide as Menu } from "react-burger-menu";
 import { NavLink } from "react-router-dom";
-import Logo from '../img/logo.png';
+import Logo from '../img/logo-2.png';
 import Browse from '../img/browse.png';
 import Chat from '../img/chat.png';
 import Settings from '../img/settings.png';
@@ -20,8 +20,8 @@ class Sidebar extends React.Component {
 		<Menu {...this.props}>
 		  <img className="logo" src={Logo} alt="Sidebar Logo"></img>
 		  <SidebarOpt nav="/browse" message="Browse" badge={false} img={Browse} alt="Sidebar Browse"/>
-		  <SidebarOpt nav="/chat" message="Message" badge={false} num="4" img={Chat} alt="Sidebar Chat"/>
 		  <SidebarOpt nav="/players" message="Player Setup" badge={playersBadge} num={numPlayers} img={Rec} alt="Sidebar Recs"/>
+		  <SidebarOpt nav="/chat" message="Message" badge={false} num="4" img={Chat} alt="Sidebar Chat"/>
 		  <SidebarOpt nav="/settings" message="Settings" badge={false} img={Settings} alt="Sidebar Settings"/>
 		  <SidebarOpt nav="/" message="Logout" badge={false}  img={Logout} alt="Sidebar Logout" logout={true}/>
 		  <div className="bottom-sidebar" />
