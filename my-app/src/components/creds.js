@@ -42,6 +42,8 @@ function Login(props) {
     );
 }
 
+
+
 class Creds extends React.Component {
     constructor(props) {
       super(props);
@@ -148,8 +150,8 @@ class Creds extends React.Component {
     }
 
     render() {
-        let extra1;
         let extra2;
+        let extra1;
         if(this.props.login) {
             extra1 = <RememberMe callback={this.saveSessionUsername}/>
             extra2 = <Signup />

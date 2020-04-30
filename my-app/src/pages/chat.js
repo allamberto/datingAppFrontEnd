@@ -289,7 +289,7 @@ class Chat extends React.Component {
                             </Col>
                             <Col md={1} className='send-button-col'>
                                 <button onClick={this.addMessage} className='sendtext-button'>
-                                    <img src={Moses} className='sendtext-img'></img>
+                                    <img src={Arrow} className='sendtext-img'></img>
                                 </button>
                             </Col>
                         </Row>

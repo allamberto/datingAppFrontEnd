@@ -88,6 +88,8 @@ body {
   margin-right: auto;
   height: 20%;
   margin-top: -15px;
+  border: 3px solid #7BB661;
+  border-radius: 4px;
 }
 
 .menu-text {
@@ -101,6 +103,7 @@ body {
 }
 
 .menu-text:hover {
+  color: #7BB661;
   font-weight: 900;
 }
 

@@ -39,7 +39,6 @@ body, html, .App, #root, .auth-wrapper {
   justify-content: center;
   flex-direction: column;
   text-align: left;
-  margin-top: -50px;
 }
 
 .auth-inner {
@@ -50,6 +49,7 @@ body, html, .App, #root, .auth-wrapper {
   padding: 40px 55px 45px 55px;
   border-radius: 15px;
   transition: all .3s;
+  margin-top: 150px;
 }
 
 .auth-wrapper .form-control:focus {
@@ -66,6 +66,7 @@ body, html, .App, #root, .auth-wrapper {
 
 .custom-control-label {
   font-weight: 400;
+  font-size: 16px;
 }
 
 .custom-checkbox {
@@ -95,3 +96,13 @@ body, html, .App, #root, .auth-wrapper {
   margin-bottom: 10px;
   margin-right: 40px;
 }
+
+.logo-top {
+  top: 20px;
+  left:20px;
+  width: 40%;
+  height: 15%;
+  position: absolute;
+}
+
+

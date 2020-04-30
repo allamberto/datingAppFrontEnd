@@ -5,15 +5,15 @@ import "./../css/flipcard.css";
 
 function Front(props) {
   return (
-    <div className="front-container" onClick={props.flip}>
-        {props.content()}    
+    <div onClick={props.flip}>
+        {props.content()}
     </div>
   );
-}      
+}
 
 function Back(props) {
     return (
-        <div className="back-container" onClick={props.flip}>
+        <div onClick={props.flip}>
             {props.content()}
         </div>
     );
@@ -42,7 +42,7 @@ export default class FlipCard extends React.Component {
       return (
        <ReactCardFlip isFlipped={this.state.isFlipped} flipDirection="vertical">
         <Front content={this.props.front} flip={this.handleClick}/>
- 
+
         <Back content={this.props.back} flip={this.handleClick} />
       </ReactCardFlip>
       );
