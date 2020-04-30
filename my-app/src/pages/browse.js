@@ -1,6 +1,7 @@
 import React from 'react';
+import TJ from "./../img/TJ.png";
 import SideBar from "./../components/sidebar";
-import { Navbar, Container, Row, Col, DropdownButton, Dropdown, Button } from 'react-bootstrap';
+import { Navbar, Container, Row, Col, DropdownButton, Dropdown, Button, Form } from 'react-bootstrap';
 import "./../css/browse.css";
 import FunFact from "./../components/funfact";
 import Profile from "./../components/profile";
@@ -65,15 +66,16 @@ class Browse extends React.Component {
         person: [],
         lookingAt: "",
         show: true,
-	showMessage: "",
-	isMenuOpened: true,
-	stateFilter: "",
-	yearFilter: "",
-	majorFilter: "",
-	minorFilter: "",
-	dormFilter: "",
-  dateFilter: false,
-  filtersOpen: false
+      	showMessage: "",
+      	isMenuOpened: true,
+      	stateFilter: "",
+      	yearFilter: "",
+      	majorFilter: "",
+      	minorFilter: "",
+      	dormFilter: "",
+        dateFilter: false,
+        filtersOpen: false,
+        recommendedBy: "",
     }
 
     this.getRecommendation = this.getRecommendation.bind(this);
@@ -226,6 +228,7 @@ class Browse extends React.Component {
 
             this.setState({person: Object.values(data)});
             this.setState({lookingAt: data.netid});
+            this.setState({recommendedBy: data.recommendedBy});
         })
         .catch(error => {
             console.error('There was an error!', error);
@@ -362,25 +365,38 @@ class Browse extends React.Component {
           <SideBar pageWrapId={"page-wrap"} outerContainerId={"Page"} />
 
            <div id="page-wrap">
-           <div className="headerContainer"></div>
+           <div className="headerContainer recommended-by">
+            <h4 className="recommendby-header">Recommended by {this.state.recommendedBy}</h4>
+           </div>
               <div className="profile-wrapper">
                 <Container fluid>
                 <Row className="fill">
                   <Col md={4}>
                     <Profile person={this.state.person}/>
-                    <Prompt question={this.state.person[9]} placeholder="Reply!" callback={this.setMessage} buttonCallback={this.updateRecommendationInterest}/>
+                    <Form onSubmit={this.updateRecommendationInterest}>
+                    <div className="prompt-container">
+                      <Form.Group controlId="prompt.Textarea">
+                        <Form.Control as="textarea" rows="1" placeholder={this.state.person[9]} className="question-response" onChange={this.setMessage}/>
+                      </Form.Group>
+                      <Row>
+                      <Col md={6}>
+                      <button type="submit" className="promptButton" onClick={this.updateRecommendationInterest}>
+                        <p className="buttonMessage">Send Message</p>
+                        <img src={TJ} className="tjImage" />
+                      </button>
+                      </Col>
+                      <Col md={6}>
+                      <button onClick={this.updateRecommendationPass} className="passButton">
+                          Not For Me
+                          <img src={Arrow} className="notMeButtonArrow" />
+                      </button>
+                      </Col>
+                      </Row>
+                    </div>
+                    </Form>
+
                   </Col>
                  <Col md={8}> <CardContainer funFacts={this.state.person[11]}/> </Col>
-                </Row>
-                <Row className="buttons">
-                    <Col md={6}>
-                    </Col>
-                    <Col md={6}>
-                        <button onClick={this.updateRecommendationPass} className="passButton">
-                            <p className="notMeButtonText">Not For Me</p>
-                            <img src={Arrow} className="notMeButtonArrow" />
-                        </button>
-                    </Col>
                 </Row>
                 </Container>
             </div>
@@ -456,13 +472,13 @@ class Browse extends React.Component {
                     <Profile person={this.state.person}/>
                     <Row className="buttons">
                         <Col md={6} className="button1Col">
-                             <Button variant="secondary" onClick={this.updateProfileInterest} className="recommendButtonHigher">Recommend To {"\n"}{this.state.playingAsName}
-                             </Button>
+                             <button onClick={this.updateProfileInterest} className="recommendButtonHigher">Recommend To {"\n"}{this.state.playingAsName}
+                             </button>
                         </Col>
                         <Col md={6} className="button1Col">
-                            <Button variant="secondary" onClick={this.updateProfilePass} className="passButton passButtonNotMe">
+                            <button  onClick={this.updateProfilePass} className="passButton passButtonNotMe">
                                 Not For {"\n"}{this.state.playingAsName}
-                             </Button>
+                             </button>
                         </Col>
                     </Row>
                   </Col>

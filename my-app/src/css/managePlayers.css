@@ -43,7 +43,8 @@
 .stretchPeople {
   overflow-x: hidden;
   overflow-y: auto;
-  width: 100%
+  width: 100%;
+  margin-top: 40px;
 }
 
 .slide2 {

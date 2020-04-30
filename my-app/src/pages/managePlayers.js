@@ -40,7 +40,8 @@ class RenderPeople extends React.Component {
             var peeps = [];
             for(var p of this.props.people) {
                 var netid = p[this.props.netid];
-                if(this.props.pending) {                
+                if(this.props.pending) {   
+		    console.log(p);             
                     peeps.push(<ListItemWithDelete pending={true} netid={netid} name={p['firstName'] + " " + p['lastName']} callback={this.deleteItem} accept={this.props.accept} decline={this.props.decline}/>);
                 } else {
                     peeps.push(<ListItemWithDelete netid={netid} name={p['firstName'] + " " + p['lastName']} callback={this.deleteItem} accept={this.props.accept} decline={this.props.decline}/>);
@@ -257,7 +258,7 @@ getReqs() {
     });
   }
 
-  addRecommendee() {
+  addRecommendee(e) {
    var netid = this.state.addedRec;
    if(netid.length < 5 || netid.length > 8) return;
    const requestOptions = {
@@ -280,7 +281,7 @@ getReqs() {
     })
     .catch(error => {
         console.error('There was an error!', error);
-        alert("\t\t\t\tThat student does not exist. \t\t\t\t\t\t\tPlease try again.");
+        alert("That student does not exist. Please try again.");
     }); 
   }
 

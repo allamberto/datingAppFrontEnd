@@ -50,9 +50,11 @@ h1,h2,h3,h4,h5,h6,label,span {
 }
 
 .manageButton {
-    border: 2px solid black;
-    border-radius: 6px;
-    background-color: lightgrey;
+    border: 2px solid #090C32;
+    border-radius: 4px;
+    background-color: #84BD69;
+    font-weight: 500;
+    box-shadow: 1px 1px #090C32;
     height: 50px;
     width: 200px;
     text-align: center;
@@ -61,6 +63,11 @@ h1,h2,h3,h4,h5,h6,label,span {
     margin-right: -30px;
     margin-top: 45px;
 }
+
+.manageButton:hover {
+  font-weight: 700;
+}
+
 
 .manageText {
     line-height: 50px;

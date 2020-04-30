@@ -268,8 +268,8 @@ class Settings extends React.Component {
             <div id="page-wrap" className="settings">
               <div className="wrapperSettings">
                 <Tabs value={index} onChange={this.handleChange} className="tabs" >
-                  <Tab label="Change Password" />
                   <Tab label="Update Personal Information" />
+                  <Tab label="Change Password" />
                 </Tabs>
                 <SwipeableViews index={index} onChangeIndex={this.handleChangeIndex}>
                     <div className="slide1Settings">
