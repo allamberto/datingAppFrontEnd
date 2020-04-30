@@ -1,7 +1,7 @@
 .messageSideButton {
     width: 104%;
     height: 92.3px;
-    background-color: transparent;
+    background-color: white;
     border-bottom: 2px solid black;
     overflow: hidden;
 }
@@ -46,4 +46,8 @@
   margin-left: 10px;
   height: 12px;
   margin-top: -10px;
+}
+
+.activeConversation {
+  background-color: #84BD69;
 }

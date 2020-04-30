@@ -11,9 +11,10 @@ import MessageSideOption from './../components/messageSideOption';
 import './../css/chat.css';
 import './../css/modal.css';
 import Arrow from './../img/upArrow.png';
-import Moses from './../img/first_down.png';
+import Lep from './../img/lep.png';
 import Shuffle from './../img/shuffle.png';
 import Calendar from './../img/calendar.png';
+import Lib from './../img/lib1.jpg';
 
 class Chat extends React.Component {
     constructor(props) {
@@ -264,6 +265,7 @@ class Chat extends React.Component {
                         <fade />
                     </Col>
                     <Col md={9} className="vChat">
+		      <img src={Lib} className="opaque-background" />
                         <Row md={2} className="chatRoomTitle">
                             <h2 className="chatRoomTitleFont">{this.state.targetName}</h2>
                         </Row>
