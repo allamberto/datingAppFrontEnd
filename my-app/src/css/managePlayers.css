@@ -38,13 +38,12 @@
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   height: 425px;
-  overflow-y: hidden;
 }
 
 .stretchPeople {
   overflow-x: hidden;
   overflow-y: auto;
-  height: 365px;
+  width: 100%
 }
 
 .slide2 {
@@ -65,19 +64,17 @@
   border-radius: 10px;
   background-color: #fff; 
   box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
-  height: 425px;
+  height: 60%;
 }
 
 .plus {
   background: url(./../img/add.png);
   background-size: cover;
-  float: right;
   width: 30px;
   height: 30px;
-  margin-right: 3px;
-  margin-left: -10px;
-  margin-top: 5px;
   border-radius: 75%;
+  border: 1px solid green;
+  margin-left: -15px;
 }
 
 .add-player-text {
@@ -86,7 +83,7 @@
   font-size: 18px;
   font-weight: 600;
   width: 150px;
-  margin-left: ;
+  text-align: right;
 } 
 
 .modal-text {
@@ -101,4 +98,16 @@
 
 .modal-content-container {
     text-align: center;
+}
+
+.plus-button-container {
+  line-height: 1px;
+}
+
+.plus-button-container-col {
+  text-align: left;
+}
+
+.plus-text-col {
+  text-align: right;
 }

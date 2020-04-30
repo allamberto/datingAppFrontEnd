@@ -12,7 +12,7 @@ import './../css/managePlayers.css';
 import backArrow from './../img/upArrow.png';
 import Add from './../img/add.png';
 import ListItemWithDelete from './../components/listItemWithDelete';
-import Modal from './../components/modal';
+import Modal from './../components/customModal';
 
 class RenderPeople extends React.Component {
     constructor(props) {
@@ -314,12 +314,24 @@ getReqs() {
                 </Tabs>
                 <SwipeableViews index={index} onChangeIndex={this.handleChangeIndex}>
                     <div className="slide1">
-                      <div className="stretchPeople">
-                        <RenderPeople people={this.state.recommenders} callback={this.setRecommenders} netid="netid" />
-                        <RenderPeople people={this.state.requestsSent} callback={this.setRequestsSent} netid="sender" pending={true}/>
-                      </div>
-                      <p className="add-player-text"> Add a Player </p>
-                      <Modal buttonClass="plus" image={this.addImage} onHide={this.addRecommendee} content={{header: "Choose Player", content: this.recommend(), exit: "Send Request"}}/>
+		      <Container fluid>
+			<Row md={1} className="plus-button-container">
+                          <Col md={11} className="plus-text-col">
+                            <p className="add-player-text"> Add a Player </p>
+                          </Col>
+                          <Col md={1} className="plus-button-container-col">
+                            <Modal buttonClass="plus" image={this.addImage} onHide={this.addRecommendee} content={{header: "Choose Player", content: this.recommend(), exit: "Send Request"}}/>
+                          </Col>
+                        </Row>
+			<Row md={11}>
+			  <Col md={12}>
+                            <div className="stretchPeople">
+                               <RenderPeople people={this.state.recommenders} callback={this.setRecommenders} netid="netid" />
+                               <RenderPeople people={this.state.requestsSent} callback={this.setRequestsSent} netid="sender" pending={true}/>
+                            </div>
+			  </Col>
+			</Row>
+		      </Container>
                     </div>
                     <div className="slide2">
                       <RenderPeople people={this.state.recommendees} callback={this.setRecommendees} netid="netid"/>

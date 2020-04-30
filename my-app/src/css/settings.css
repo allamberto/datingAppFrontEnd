@@ -3,7 +3,7 @@
   background: url(./../img/grotto4.jpg) no-repeat;
   height: 100%;
   width: 100%;
-  background-size: 100%;
+  background-size: cover;
 }
 
 .settingsContainer {
@@ -112,7 +112,7 @@
   background-color: #fff;
   padding: 15px;
   min-height: 100px;
-  height: 200px;
+  height: 100%;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
@@ -121,7 +121,7 @@
   background-color: #fff;
   padding: 15px;
   min-height: 100px;
-  height: 200px;
+  height: 100%;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 } 
@@ -146,3 +146,4 @@ label {
   margin-left: -25px;
   font-size: 24px;
 }
+

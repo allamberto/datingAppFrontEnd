@@ -273,26 +273,7 @@ class Settings extends React.Component {
                 </Tabs>
                 <SwipeableViews index={index} onChangeIndex={this.handleChangeIndex}>
                     <div className="slide1Settings">
-                        <div className="changeTextBoxContainer">
-                            <div className="form-group">
-                                <label>Confirm Old Password</label>
-                                <input type="password" className="form-control"  placeholder="Enter Old Password" onChange={this.setOld}/>
-                            </div>
-                            <div className="form-group">
-                                <label>New Password</label>
-                                <input type="password" className="form-control"  placeholder="Enter New Password" onChange={this.setNew}/>
-                            </div>
-                            <div className="form-group">
-                                <label>Confirm New Password</label>
-                                <input type="password" className="form-control"  placeholder="Re-enter New Password" onChange={this.setConfirm}/>
-                            </div>
-                            <OverlayTrigger trigger="click" placement="right" overlay={ this.state.show ? (this.state.pop ? popoverGood : popoverBad) : renderNothing} >
-                                <button onClick={this.onSubmit} className="changePasswordButton">Submit</button>
-                             </OverlayTrigger> 
-                      </div>
-                    </div>
-                    <div className="slide2Settings">
-                        <Container className="changeOptions">
+                      <Container className="changeOptions">
                           <Row>
                             <Col>
                                 <h2 className="changeTitle">Change Basic Information</h2>
@@ -334,6 +315,25 @@ class Settings extends React.Component {
                             </Col>
                           </Row>
                         </Container>
+                    </div>
+                    <div className="slide2Settings">
+			<div className="changeTextBoxContainer">
+                            <div className="form-group">
+                                <label>Confirm Old Password</label>
+                                <input type="password" className="form-control change-password"  placeholder="Enter Old Password" onChange={this.setOld}/>
+                            </div>
+                            <div className="form-group">
+                                <label>New Password</label>
+                                <input type="password" className="form-control change-password"  placeholder="Enter New Password" onChange={this.setNew}/>
+                            </div>
+                            <div className="form-group">
+                                <label>Confirm New Password</label>
+                                <input type="password" className="form-control"  placeholder="Re-enter New Password" onChange={this.setConfirm}/>
+                            </div>
+                            <OverlayTrigger trigger="click" placement="right" overlay={ this.state.show ? (this.state.pop ? popoverGood : popoverBad) : renderNothing} >
+                                <button onClick={this.onSubmit} className="changePasswordButton">Submit</button>
+                             </OverlayTrigger>
+                      </div>
                     </div>
                 </SwipeableViews>
            </div>
