@@ -196,13 +196,13 @@ componentDidMount() {
 
    setFunfacts(target, num) {
    	const { funfacts } = this.state;
-	funfacts[num - 1] = target;
+	funfacts[num] = target;
 	this.setState({ funfacts });
    }
 
    setFileFunfacts(target, num) {
 	const { funfactImages } = this.state;
-        funfactImages[num - 1] = target.files[0];
+        funfactImages[num] = target.files[0];
         this.setState({ funfactImages });
    }
 
