@@ -23,7 +23,7 @@
 .v {
   margin-left: 75px;
   height: 100%;
-} 
+}
 
 .tabs {
   background-color: #F8F8F8;
@@ -31,7 +31,7 @@
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
 }
-  
+
 .slide1 {
   background-color: #fff;
   padding: 15px;
@@ -55,7 +55,7 @@
   height: 100%;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-} 
+}
 
 .wrapper {
   position: fixed;
@@ -64,7 +64,7 @@
   transform: translate(-50%, -50%);
   width: 50%;
   border-radius: 10px;
-  background-color: #fff; 
+  background-color: #fff;
   box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
   height: 60%;
 }
@@ -78,6 +78,7 @@
   margin-left: -15px;
   background-color: #84BD69;
   border: 1px solid #84BD69;
+  border: black;
 }
 
 .add-player-text {
@@ -87,7 +88,7 @@
   font-weight: 600;
   width: 150px;
   text-align: right;
-} 
+}
 
 .modal-text {
     display: inline-block;

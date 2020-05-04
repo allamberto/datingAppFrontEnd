@@ -1,7 +1,7 @@
 import React from 'react';
 import TJ from "./../img/TJ.png";
 import SideBar from "./../components/sidebar";
-import { Navbar, Container, Row, Col, DropdownButton, Dropdown, Button, Form } from 'react-bootstrap';
+import { Navbar, Container, Row, Col, DropdownButton, Dropdown, Button, Form, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import "./../css/browse.css";
 import FunFact from "./../components/funfact";
 import Profile from "./../components/profile";
@@ -9,6 +9,10 @@ import Prompt from "./../components/prompt";
 import Modal from "./../components/modal";
 import Arrow from './../img/upArrow.png';
 import Filter from './../img/filter.png';
+import LunchIcon from './../img/lunch.png';
+import BookIcon from './../img/book.png';
+import ChurchIcon from './../img/church.png';
+import DanceIcon from './../img/dance.png';
 import rightArrow from './../img/rightArrow.png';
 import collapseNav from './../components/collapseNav';
 import { OffCanvas, OffCanvasMenu, OffCanvasBody } from "react-offcanvas";
@@ -78,7 +82,11 @@ class Browse extends React.Component {
         filtersOpen: false,
         recommendedBy: "",
         toAlert: false,
-        alertMessage: ""
+        alertMessage: "",
+        lunches: 0,
+        courses: 0,
+        mass: false,
+        danceInvite: false
     }
 
     this.getRecommendation = this.getRecommendation.bind(this);
@@ -137,10 +145,10 @@ class Browse extends React.Component {
       this.setState({toAlert: true});
       this.setState({alertMessage: message});
   }
-  
+
   closeAlert() {
      this.setState({toAlert: false});
-  } 
+  }
 
   reloadWithFilters(e) {
     var whatToFetch = 'http://3.211.82.27:8800/browse?viewFor='+this.state.playingAs+'&viewBy='+this.state.netid;
@@ -158,11 +166,9 @@ class Browse extends React.Component {
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
-                this.sendAlert("The page couldn't be reload. Please try again.");
+                this.sendAlert("The page couldn't be reloaded. Please try again.");
 	        return Promise.reject(error);
             }
-
-            console.log(data);
 
 	    if(this.isEmpty(data)) {
                 this.setState({show: false});
@@ -177,7 +183,7 @@ class Browse extends React.Component {
         })
         .catch(error => {
             console.error('Filter couldnt reload page!', error);
-            this.sendAlert("The page couldn't be reload. Please try again.");
+            this.sendAlert("The page couldn't be reloaded. Please try again.");
 	});
   }
 
@@ -213,7 +219,6 @@ class Browse extends React.Component {
                 this.setState({show: true});
             }
 
-	    console.log(data);
             this.setState({person: Object.values(data)});
             this.setState({lookingAt: data.netid});
         })
@@ -231,21 +236,29 @@ class Browse extends React.Component {
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
-		console.log("Getting Next Person Failed");
+		            console.log("Getting Next Person Failed");
                 return Promise.reject(error);
             }
 
             if(this.isEmpty(data)) {
                 this.setState({show: false});
+                this.setState({ lunches       : 0,
+                                courses       : 0,
+                                mass          : false,
+                                danceInvite   : false});
 		this.setState({showMessage: "You have no new recommendations right now. Ask your friends to recommend more people for you!"});
 		return;
             } else {
                 this.setState({show: true});
             }
 
-            this.setState({person: Object.values(data)});
-            this.setState({lookingAt: data.netid});
-            this.setState({recommendedBy: data.recommendedBy});
+            this.setState({ person        : Object.values(data),
+                            lookingAt     : data.netid,
+                            recommendedBy : data.recommendedBy,
+                            lunches       : data.lunches,
+                            courses       : data.courses,
+                            mass          : data.mass,
+                            danceInvite   : data.danceInvite});
         })
         .catch(error => {
             console.error('There was an error!', error);
@@ -255,7 +268,6 @@ class Browse extends React.Component {
   updateRecommendationInterest(e) {
     e.preventDefault();
 
-    console.log(this.state.netid, this.state.lookingAt, this.state.message);
     const requestOptions = {
         method: "PUT",
         body: JSON.stringify({"viewer": this.state.netid,
@@ -272,7 +284,7 @@ class Browse extends React.Component {
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
-		console.log("Error getting next match");
+		              console.log("Error getting next match");
                 return Promise.reject(error);
             }
 
@@ -291,28 +303,27 @@ class Browse extends React.Component {
         method: "PUT",
         body: JSON.stringify({"viewer": this.state.netid,
                               "viewee": this.state.lookingAt,
-                              "status" : "pass",
-                              "message": this.state.message
+                              "status" : "pass"
         })
     };
     fetch('http://3.211.82.27:8800/recommendation', requestOptions)
       .then(async response => {
-            const data = await response.json();
+            const data = await response;
             // check for error response
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
-		console.log("Error getting next match");
-                this.sendAlert("There was an error logging your response. Please try again.");
+		            console.log("Error getting next match");
+                this.sendAlert("There was an error recording your response. Please try again.");
                 return Promise.reject(error);
             }
-	    
+
             this.getRecommendation();
 
         })
         .catch(error => {
             console.error('There was an error!', error);
-            this.sendAlert("There was an error logging your response. Please try again.");
+            this.sendAlert("There was an error recording your response. Please try again.");
         });
   }
 
@@ -345,7 +356,6 @@ class Browse extends React.Component {
   }
 
   updateProfilePass() {
-    console.log(this.state.playingAs + this.state.lookingAt + this.state.netid);
     const requestOptions = {
         method: "POST",
         body: JSON.stringify({"viewedFor": this.state.playingAs,
@@ -362,15 +372,15 @@ class Browse extends React.Component {
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
-                this.sendAlert("There was an error logging your response. Please try again.");
+                this.sendAlert("There was an error recording your response. Please try again.");
                 return Promise.reject(error);
             }
 
-	    this.getProfile();
+	           this.getProfile();
 
         })
         .catch(error => {
-            this.sendAlert("There was an error logging your response. Please try again.");
+            this.sendAlert("There was an error recording your response. Please try again.");
             console.error('There was an error!', error);
         });
   }
@@ -393,8 +403,35 @@ class Browse extends React.Component {
            <div id="page-wrap">
            <Alert message={this.state.alertMessage} toAlert={this.state.toAlert} closeCallback={this.closeAlert}/>
            <div className="headerContainer recommended-by">
-            <h4 className="recommendby-header">Recommended by {this.state.recommendedBy}</h4>
-           </div>
+            <h4 className="recommendby-header">
+            {
+              this.state.danceInvite > 0 &&
+              <OverlayTrigger key='bottom' placement='bottom' overlay={<Tooltip>Looking for a dance date!</Tooltip>}>
+              <img className="header-icon" src={DanceIcon} />
+              </OverlayTrigger>
+            }
+            {
+              this.state.lunches > 0 &&
+              <OverlayTrigger key='bottom' placement='bottom' overlay={<Tooltip><strong>{this.state.lunches}</strong> lunch{this.state.lunches > 1 && 'es'} together!</Tooltip>}>
+              <img className="header-icon" src={LunchIcon} />
+              </OverlayTrigger>
+            }
+            {
+              this.state.courses > 0 &&
+              <OverlayTrigger key='bottom' placement='bottom' overlay={<Tooltip><strong>{this.state.courses}</strong> course{this.state.courses > 1 && 's'} together!</Tooltip>}>
+              <img className="header-icon" src={BookIcon} />
+              </OverlayTrigger>
+            }
+            {
+              this.state.mass &&
+              <OverlayTrigger key='bottom' placement='bottom' overlay={<Tooltip>Also attends mass regularly!</Tooltip>}>
+              <img className="header-icon" src={ChurchIcon} />
+              </OverlayTrigger>
+            }
+            Recommended by {this.state.recommendedBy}
+            </h4>
+            </div>
+
               <div className="profile-wrapper">
                 <Container fluid>
                 <Row className="fill">
@@ -439,11 +476,11 @@ class Browse extends React.Component {
                  <div className="headerContainer">
 		               <Container fluid >
                     <Row className="navbar-dropdown-container">
-                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="states" placeholder="Filter by State" value={this.state.stateFilter} callback={this.setStateFilter}/>}</Col>
-                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="years" placeholder="Filter by Year" value={this.state.yearFilter} callback={this.setYearFilter}/>}</Col>
-                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="dorms" placeholder="Filter by Dorm" value={this.state.dormFilter} callback={this.setDormFilter}/>}</Col>
-                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="majors" placeholder="Filter by Major" value={this.state.majorFilter} callback={this.setMajorFilter}/>}</Col>
-                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} ops="minors" className="overall header-dropdown" placeholder="Filter by Minor" value={this.state.minorFilter} callback={this.setMinorFilter}/>}</Col>
+                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="states" placeholder="State" value={this.state.stateFilter} callback={this.setStateFilter}/>}</Col>
+                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="years" placeholder="Grad Year" value={this.state.yearFilter} callback={this.setYearFilter}/>}</Col>
+                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="dorms" placeholder="Dorm" value={this.state.dormFilter} callback={this.setDormFilter}/>}</Col>
+                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} className="overall header-dropdown" ops="majors" placeholder="Major" value={this.state.majorFilter} callback={this.setMajorFilter}/>}</Col>
+                      <Col md={2}>{this.state.filtersOpen && <CustomDropdown filter={true} ops="minors" className="overall header-dropdown" placeholder="Minor" value={this.state.minorFilter} callback={this.setMinorFilter}/>}</Col>
                     <Col md={2}>
                       {this.state.filtersOpen &&
                       <div className="filter-div"  onClick={this.reloadWithFilters}>

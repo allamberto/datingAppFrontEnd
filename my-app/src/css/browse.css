@@ -221,3 +221,14 @@
   width: auto;
   border-radius: 5px;
 }
+
+.header-icon {
+  height: 20px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.recommended-by-words {
+  margin-right: 10px;
+  margin-left: 10px;
+}

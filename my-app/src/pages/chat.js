@@ -15,6 +15,7 @@ import Lep from './../img/lep.png';
 import Shuffle from './../img/shuffle.png';
 import Calendar from './../img/calendar.png';
 import Lib from './../img/lib1.jpg';
+import Alert from './../components/alertError';
 
 class Chat extends React.Component {
     constructor(props) {
@@ -49,7 +50,9 @@ class Chat extends React.Component {
             courses: [],
             generatedMessages: [],
             attendsMass: false,
-            show: false
+            show: false,
+            toAlert: false,
+            alertMessage: "",
         }
         this.loadSideBar();
     }
@@ -60,16 +63,24 @@ class Chat extends React.Component {
         }
     }
 
+    sendAlert(message) {
+        this.setState({toAlert: true});
+        this.setState({alertMessage: message});
+    }
+
+    closeAlert() {
+       this.setState({toAlert: false});
+    }
+
     // Load all a user's conversations
     loadSideBar() {
-      console.log(this.state.netid);
       fetch('http://3.211.82.27:8800/conversations/' + this.state.netid)
         .then(async response => {
             const data = await response.json();
 
             // check for error response
             if (!response.ok) {
-                // get error message from body or default to response status
+                this.sendAlert("The page couldn't be reloaded. Please try again.");
                 const error = (data && data.message) || response.status;
                 return Promise.reject(error);
             }
@@ -88,7 +99,6 @@ class Chat extends React.Component {
 
     // Load all messages from conversation based on id
     loadMessages(id, target, name) {
-      console.log(id);
       this.setState({...this.state, messages : [], target: target, targetName: name});
       fetch('http://3.211.82.27:8800/messages?id=' + id)
         .then(async response => {
@@ -98,9 +108,9 @@ class Chat extends React.Component {
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
+                this.sendAlert("The page couldn't be reloaded. Please try again.");
                 return Promise.reject(error);
             }
-            console.log(data);
             this.loadMatch();
             this.setState({id : id,
                            messages : data });
@@ -127,14 +137,6 @@ class Chat extends React.Component {
                              generatedMessages  : data.messages,
                              attendsMass        : data.mass});
             }
-            console.log(this.state.lunches);
-            console.log(this.state.courses);
-            console.log(this.state.compatibility);
-            console.log(this.state.messages);
-            console.log("is this null??");
-
-            console.log(this.state.attendsMass);
-
       });
     }
 
@@ -197,9 +199,9 @@ class Chat extends React.Component {
             // check for error response
             if (!response.ok) {
                 // get error message from body or default to response status
+                this.sendAlert("The message could not be sent. Please try again.");
                 const error = (data && data.message) || response.status;
                 return Promise.reject(error);
-                alert("Could not send message");
             }
             else {
               this.setState((prev) => ({update: prev.update+1}))
