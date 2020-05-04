@@ -28,6 +28,7 @@ class Countdown extends Component {
 
   calculateCountdown(endDate) {
     let diff = (Date.parse(new Date(endDate)) - Date.parse(new Date())) / 1000;
+    console.log(Date.parse(new Date()));
 
     // clear countdown when date is reached
     if (diff <= 0) return false;
@@ -41,7 +42,7 @@ class Countdown extends Component {
     };
 
     // calculate time difference between now and expected date
-    if (diff >= (365.25 * 86400)) { // 365.25 * 24 * 60 * 60
+    if (diff >= (365 * 86400)) { // 365.25 * 24 * 60 * 60
       timeLeft.years = Math.floor(diff / (365.25 * 86400));
       diff -= timeLeft.years * 365.25 * 86400;
     }
@@ -78,24 +79,25 @@ class Countdown extends Component {
     const countDown = this.state;
 
     return (
-      <div className="Countdown">
-        <span className="Countdown-col">
-          <span className="Countdown-col-element">
+      <div className="Countdown selectDisable">
+
+        <span className="Countdown-col selectDisable">
+          <span className="Countdown-col-element selectDisable">
             <strong>{this.addLeadingZeros(countDown.hours)}</strong>
             <span> Hours</span>
           </span>
         </span>
 
 
-        <span className="Countdown-col">
-          <span className="Countdown-col-element">
+        <span className="Countdown-col selectDisable">
+          <span className="Countdown-col-element selectDisable">
             <strong>{this.addLeadingZeros(countDown.min)}</strong>
             <span> Min</span>
           </span>
         </span>
 
-        <span className="Countdown-col">
-          <span className="Countdown-col-element">
+        <span className="Countdown-col selectDisable">
+          <span className="Countdown-col-element selectDisable">
             <strong>{this.addLeadingZeros(countDown.sec)}</strong>
             <span> Sec</span>
           </span>

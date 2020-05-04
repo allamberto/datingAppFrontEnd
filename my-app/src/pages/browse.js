@@ -13,6 +13,7 @@ import rightArrow from './../img/rightArrow.png';
 import collapseNav from './../components/collapseNav';
 import { OffCanvas, OffCanvasMenu, OffCanvasBody } from "react-offcanvas";
 import CustomDropdown from './../components/customDropdown';
+import Alert from './../components/alertError';
 
 class CardContainer extends React.Component{
     constructor(props) {
@@ -76,6 +77,8 @@ class Browse extends React.Component {
         dateFilter: false,
         filtersOpen: false,
         recommendedBy: "",
+        toAlert: false,
+        alertMessage: ""
     }
 
     this.getRecommendation = this.getRecommendation.bind(this);
@@ -93,6 +96,8 @@ class Browse extends React.Component {
     this.setDormFilter = this.setDormFilter.bind(this);
     this.reloadWithFilters = this.reloadWithFilters.bind(this);
     this.expandFilters = this.expandFilters.bind(this);
+    this.sendAlert = this.sendAlert.bind(this);
+    this.closeAlert = this.closeAlert.bind(this);
 
     if(sessionStorage.getItem("netid") == sessionStorage.getItem("playingAs")) {
         this.getRecommendation();
@@ -128,6 +133,15 @@ class Browse extends React.Component {
       this.setState({dormFilter: e.value});
   }
 
+  sendAlert(message) {
+      this.setState({toAlert: true});
+      this.setState({alertMessage: message});
+  }
+  
+  closeAlert() {
+     this.setState({toAlert: false});
+  } 
+
   reloadWithFilters(e) {
     var whatToFetch = 'http://3.211.82.27:8800/browse?viewFor='+this.state.playingAs+'&viewBy='+this.state.netid;
     if (this.state.yearFilter != "") whatToFetch += '&gradyear=' + this.state.yearFilter;
@@ -144,7 +158,8 @@ class Browse extends React.Component {
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
-                return Promise.reject(error);
+                this.sendAlert("The page couldn't be reload. Please try again.");
+	        return Promise.reject(error);
             }
 
             console.log(data);
@@ -161,8 +176,9 @@ class Browse extends React.Component {
             this.setState({lookingAt: data.netid});
         })
         .catch(error => {
-            console.error('There was an error!', error);
-        });
+            console.error('Filter couldnt reload page!', error);
+            this.sendAlert("The page couldn't be reload. Please try again.");
+	});
   }
 
   isEmpty(obj) {
@@ -215,6 +231,7 @@ class Browse extends React.Component {
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
+		console.log("Getting Next Person Failed");
                 return Promise.reject(error);
             }
 
@@ -235,7 +252,9 @@ class Browse extends React.Component {
         });
   }
 
-  updateRecommendationInterest(interest) {
+  updateRecommendationInterest(e) {
+    e.preventDefault();
+
     console.log(this.state.netid, this.state.lookingAt, this.state.message);
     const requestOptions = {
         method: "PUT",
@@ -247,12 +266,13 @@ class Browse extends React.Component {
     };
     fetch('http://3.211.82.27:8800/recommendation', requestOptions)
       .then(async response => {
-            const data = await response.json();
+            const data = await response;
 
             // check for error response
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
+		console.log("Error getting next match");
                 return Promise.reject(error);
             }
 
@@ -264,7 +284,9 @@ class Browse extends React.Component {
         });
   }
 
-  updateRecommendationPass(interest) {
+  updateRecommendationPass(e) {
+    e.preventDefault();
+
     const requestOptions = {
         method: "PUT",
         body: JSON.stringify({"viewer": this.state.netid,
@@ -275,20 +297,22 @@ class Browse extends React.Component {
     };
     fetch('http://3.211.82.27:8800/recommendation', requestOptions)
       .then(async response => {
-            const data = await response;
-
+            const data = await response.json();
             // check for error response
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
+		console.log("Error getting next match");
+                this.sendAlert("There was an error logging your response. Please try again.");
                 return Promise.reject(error);
             }
-
+	    
             this.getRecommendation();
 
         })
         .catch(error => {
             console.error('There was an error!', error);
+            this.sendAlert("There was an error logging your response. Please try again.");
         });
   }
 
@@ -338,6 +362,7 @@ class Browse extends React.Component {
             if (!response.ok) {
                 // get error message from body or default to response status
                 const error = (data && data.message) || response.status;
+                this.sendAlert("There was an error logging your response. Please try again.");
                 return Promise.reject(error);
             }
 
@@ -345,6 +370,7 @@ class Browse extends React.Component {
 
         })
         .catch(error => {
+            this.sendAlert("There was an error logging your response. Please try again.");
             console.error('There was an error!', error);
         });
   }
@@ -365,6 +391,7 @@ class Browse extends React.Component {
           <SideBar pageWrapId={"page-wrap"} outerContainerId={"Page"} />
 
            <div id="page-wrap">
+           <Alert message={this.state.alertMessage} toAlert={this.state.toAlert} closeCallback={this.closeAlert}/>
            <div className="headerContainer recommended-by">
             <h4 className="recommendby-header">Recommended by {this.state.recommendedBy}</h4>
            </div>
@@ -380,7 +407,7 @@ class Browse extends React.Component {
                       </Form.Group>
                       <Row>
                       <Col md={6}>
-                      <button type="submit" className="promptButton" onClick={this.updateRecommendationInterest}>
+                      <button className="promptButton" onClick={this.updateRecommendationInterest}>
                         <p className="buttonMessage">Send Message</p>
                         <img src={TJ} className="tjImage" />
                       </button>
@@ -431,7 +458,6 @@ class Browse extends React.Component {
                  </Container>
 		             </div>
                  <div className="profile-wrapper">
-
                     <h1 className="nothing-message">{this.state.showMessage}</h1>
                 </div>
             </div>

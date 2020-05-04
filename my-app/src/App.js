@@ -1,78 +1,43 @@
-
-/*function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
-export default App;*/
-
 import React from "react";
-import ReactDOM from "react-dom";
-import Public from "./pages/public";
-import Login from "./pages/login";
-import Browse from "./pages/browse";
-import Settings from "./pages/settings";
-
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  Redirect,
-  NavLink,
-  withRouter
+  Link
 } from "react-router-dom";
 
-import EnsuredLogin from "./components/ensuredLogin";
+import Login from "./pages/login";
+import Browse from "./pages/browse";
+import Players from "./pages/players";
+import Public from "./pages/public";
+import Signup from "./pages/signup_1";
+import Signup2 from "./pages/signup_2";
+import Signup3 from "./pages/signup_3";
+import Signup4 from "./pages/signup_4";
+import Settings from "./pages/settings";
+import Chat from "./pages/chat";
+import Manage from "./pages/managePlayers";
 
-function NotFound(){
-  return (
-    <Redirect to="/login" />
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+function App() {
+  return (<Router>
+    <div className="App">
+          <Switch>
+            <Route exact path='/' component={Login} />
+            <Route path="/login" component={Login} />
+            <Route path="/signup_1" component={Signup} />
+            <Route path="/signup_2" component={Signup2} />
+            <Route path="/signup_3" component={Signup3} />
+            <Route path="/signup_4" component={Signup4} />
+            <Route path="/browse" component={Browse} />
+            <Route path="/players" component={Players} />
+            <Route path="/settings" component={Settings} />
+            <Route path="/chat" component={Chat} />
+            <Route path="/managePlayers" component={Manage} />
+          </Switch>
+    </div></Router>
   );
-}
-
-function Temp() {
-    return (
-        <div><h1>Login</h1></div>
-    );
-}
-
-class App extends React.Component {
-  render(){
-  return (
-      <div>
-        <Router>
-            <h1>hello</h1>
-            <Switch>
-              <Route exact path="" component={withRouter(NotFound)}/>
-              <Route path="/public" component={Public}/>
-              <Route path="/login" render={() => (
-                <Login />
-              )}/>
-              <Route component={EnsuredLogin}>
-                <Route path="/browse" component={Browse}/>
-                <Route path="/settings" component={Settings}/>
-              </Route>
-            </Switch>     
-        </Router>
-      </div>
-  );}
 }
 
 export default App;

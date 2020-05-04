@@ -1,7 +1,7 @@
 import React from 'react';
 import './../css/listItemWithDelete.css';
 import X from './../img/x.png';
-import Pending from './../img/tilde.png';
+import Pending from './../img/tilde-black.png';
 import Check from './../img/check.png';
 
 class ListItemWithDelete extends React.Component {

@@ -132,7 +132,7 @@ class MC extends React.Component {
 
             <Option value="kegs" style={optionStyle}><p className="text-test">Kegs & eggs</p></Option>
             <Option value="tailgate" style={optionStyle}><p className="text-test">Work at my club's concession stand</p></Option>
-            <Option value="cheer" style={optionStyle}><p className="text-test">In the stadium early for the best spot</p></Option>
+            <Option value="cheer" style={optionStyle}><p className="text-test">Get to the stadium early for the best spot</p></Option>
             <Option value="library" style={optionStyle}><p className="text-test">Watch the action from Hes</p></Option>
          </QuestionGroup>
 

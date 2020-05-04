@@ -11,13 +11,14 @@
   transform: rotate(-90deg);
   width: 50px;
   height: 50px;
-  border: 1px solid black;
-  border-radius: 50%;
   padding: 5px;
   margin-top: 20px;
   margin-left: 20px;
-  background-color: white;
   float: left;
+  border: 2px solid #090C32;
+  border-radius: 50%;
+  background-color: white;
+  font-weight: 500;
 }
 .v {
   margin-left: 75px;
@@ -74,8 +75,9 @@
   width: 30px;
   height: 30px;
   border-radius: 75%;
-  border: 1px solid green;
   margin-left: -15px;
+  background-color: #84BD69;
+  border: 1px solid #84BD69;
 }
 
 .add-player-text {

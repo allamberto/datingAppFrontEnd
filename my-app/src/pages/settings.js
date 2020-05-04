@@ -307,7 +307,7 @@ class Settings extends React.Component {
                                     <ul>
                                       <li>Photos</li>
                                       <li>Fun Facts</li>
-                                      <li>Calender</li>
+                                      <li>Calendar</li>
                                       <li>Prompt Question</li>
                                     </ul>
                                 </div>
