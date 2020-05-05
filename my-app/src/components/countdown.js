@@ -27,8 +27,7 @@ class Countdown extends Component {
   }
 
   calculateCountdown(endDate) {
-    let diff = (Date.parse(new Date(endDate)) - Date.parse(new Date())) / 1000;
-    console.log(Date.parse(new Date()));
+    let diff = (Date.parse(new Date(endDate).toUTCString()) - Date.parse(new Date().toUTCString())) / 1000;
 
     // clear countdown when date is reached
     if (diff <= 0) return false;
@@ -112,7 +111,7 @@ Countdown.propTypes = {
 };
 
 Countdown.defaultProps = {
-  date: new Date()
+  date: new Date().toUTCString()
 };
 
 export default Countdown;
