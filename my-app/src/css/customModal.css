@@ -1,0 +1,22 @@
+.custom-modal-button {
+  border: 2px solid #090C32;
+  border-radius: 4px;
+  background-color: #84BD69;
+  font-weight: 500;
+  box-shadow: 1px 1px #090C32;
+  padding: 5px;
+}
+
+.custom-modal-button:hover {
+  font-weight: 700;
+}
+
+.custom-modal-textbox {
+  width: 60%;
+  margin-top: 15px;
+  border-radius: 2px;
+}
+
+.custom-modal-title {
+  font-size: 20px;
+}
