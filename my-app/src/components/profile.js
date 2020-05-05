@@ -1,6 +1,6 @@
 import React from 'react';
 import FlipCard from "./flipcard";
-import Lep from "./../img/logo.png";
+import Lep from "./../img/logo-2.png";
 
 class Profile extends React.Component {
     constructor(props) {
@@ -15,7 +15,7 @@ class Profile extends React.Component {
         var minors = ( this.props.person[5].length > 1 ) ?  (this.props.person[5].length > 1 ? this.props.person[5].join(" - ") :  this.props.person[5].join(" ")) : "";
 
         var dorm = (this.props.person[8] == "Sorin" ? " College" : ((this.props.person[8] == "Zahm") ? "House" : " Hall"));
-        var photo = 'http://3.211.82.27:8800/images/' + this.props.person[10];
+        var photo = (this.props.person[10] != undefined && this.props.person[10] != "" && this.props.person[10] != null) ? 'http://3.211.82.27:8800/images/' + this.props.person[10] : Lep;
         return (
             <div className="profile-front">
             <img src={photo} className="profile-image-front"></img>
@@ -33,8 +33,8 @@ class Profile extends React.Component {
 
     Back() {
         if(this.props.person == undefined || this.props.person == undefined) return;
-	var photo = 'http://3.211.82.27:8800/images/' + this.props.person[10];
-        return (
+        var photo = (this.props.person[10] != undefined && this.props.person[10] != "" && this.props.person[10] != null) ? 'http://3.211.82.27:8800/images/' + this.props.person[10] : Lep;
+	return (
             <div className="profile-back">
              <img src={photo} className="profile-image"></img>
             </div>

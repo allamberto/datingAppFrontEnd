@@ -304,8 +304,7 @@ class ManagePlayers extends React.Component {
   recommend() {
     return(
         <div className="modal-content-container">
-        <h4 className="modal-title">Who would you like to send a request to?</h4>
-        <input className="modal-input" type="text" placeholder="Enter NetID" onChange={this.setAddedRec} />
+        <input className="modal-input custom-modal-textbox" type="text" placeholder="Enter NetID" onChange={this.setAddedRec} />
         </div>
     );
   }
@@ -334,7 +333,7 @@ class ManagePlayers extends React.Component {
                             <p className="add-player-text"> Add a Player </p>
                           </Col>
                           <Col md={1} className="plus-button-container-col">
-                            <Modal buttonClass="plus" image={this.addImage} onHide={this.addRecommendee} content={{header: "Choose Player", content: this.recommend(), exit: "Send Request"}}/>
+                            <Modal buttonClass="plus" image={this.addImage} onHide={this.addRecommendee} content={{header: "Who would you like to send a request to?", content: this.recommend(), exit: "Send Request"}}/>
                           </Col>
                         </Row>
 			<Row md={11}>

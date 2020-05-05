@@ -20,3 +20,7 @@
     -o-user-select: none;
     user-select: none;
 }
+
+#Page > div:nth-child(1) > div.bm-menu-wrap > div.bm-menu > nav > div.bm-item.counter-wrapper.selectDisable{
+    outline:none;
+}

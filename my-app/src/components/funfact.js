@@ -1,6 +1,6 @@
 import React from 'react';
 import FlipCard from "./flipcard";
-import Lep from "./../img/logo.png";
+import Lep from "./../img/logo-2.png";
 
 class FunFact extends React.Component {
     constructor(props) {
@@ -10,7 +10,7 @@ class FunFact extends React.Component {
     }
 
     Front() {
-      var img = (this.props.f.image != undefined && this.props.f.image != "") ? 'http://3.211.82.27:8800/images/' + this.props.f.image : Lep;
+      var img = (this.props.f.image != undefined && this.props.f.image != "" && this.props.f.image != null) ? 'http://3.211.82.27:8800/images/' + this.props.f.image : Lep;
       return (
         <div className="funfact-back">
           <img src={img} className="funfact-image-front"></img>
@@ -22,7 +22,7 @@ class FunFact extends React.Component {
     }
 
     Back() {
-      var img = (this.props.f.image != undefined && this.props.f.image != "") ? 'http://3.211.82.27:8800/images/' + this.props.f.image : Lep;
+      var img = (this.props.f.image != undefined && this.props.f.image != "" && this.props.f.image != null) ? 'http://3.211.82.27:8800/images/' + this.props.f.image : Lep;
         return (
             <div className="funfact-back">
              <img src={img} className="funfact-image"></img>
@@ -32,7 +32,7 @@ class FunFact extends React.Component {
 
     render() {
         return (
-            <FlipCard front={this.Front} person={this.props.person} back={this.Back}/>
+            <FlipCard front={this.Front} person={this.props.person} back={this.Back} />
         );
     }
 }
