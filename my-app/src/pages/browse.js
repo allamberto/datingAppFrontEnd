@@ -15,6 +15,41 @@ import DanceIcon from './../img/dance.png';
 import CustomDropdown from './../components/customDropdown';
 import Alert from './../components/alertError';
 
+class HoverIcon extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      show     : this.props.show,
+      message  : this.props.message,
+      icon     : this.props.icon
+    }
+  }
+
+  // Update visibility
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.show !== this.props.show) {
+      this.setState({show : this.props.show});
+    }
+    if (prevState.message !== this.props.message) {
+      this.setState({message : this.props.message});
+    }
+  }
+
+  render() {
+    if (this.state.show) {
+      return (
+        <OverlayTrigger key='bottom' placement='bottom' overlay=<Tooltip>{this.state.message}</Tooltip>>
+        <img className="header-icon" src={this.state.icon} alt=""/>
+        </OverlayTrigger>
+      )
+    }
+    else {
+      return null;
+    }
+  }
+}
+
 class CardContainer extends React.Component{
     constructor(props) {
         super(props);
@@ -193,6 +228,7 @@ class Browse extends React.Component {
 
   setMessage(e) {
     this.setState({message: e.target.value});
+    e.preventDefault();
   }
 
   getProfile() {
@@ -207,10 +243,10 @@ class Browse extends React.Component {
                 return Promise.reject(error);
             }
 
-	   if(this.isEmpty(data)) {
-                this.setState({show: false});
-		this.setState({showMessage: "There are no people left to browse."});
-		return;
+	          if(this.isEmpty(data)) {
+              this.setState({show: false});
+              this.setState({showMessage: "There are no people left to browse."});
+              return;
             } else {
                 this.setState({show: true});
             }
@@ -224,6 +260,10 @@ class Browse extends React.Component {
   }
 
   getRecommendation() {
+    this.setState({ lunches       : 0,
+                    courses       : 0,
+                    mass          : false,
+                    danceInvite   : false});
     fetch('http://3.211.82.27:8800/recommendation?netid=' + this.state.netid)
       .then(async response => {
             const data = await response.json();
@@ -238,10 +278,6 @@ class Browse extends React.Component {
 
             if(this.isEmpty(data)) {
                 this.setState({show: false});
-                this.setState({ lunches       : 0,
-                                courses       : 0,
-                                mass          : false,
-                                danceInvite   : false});
 		this.setState({showMessage: "You have no new recommendations right now. Ask your friends to recommend more people for you!"});
 		return;
             } else {
@@ -324,6 +360,10 @@ class Browse extends React.Component {
   }
 
   updateProfileInterest() {
+    this.setState({ lunches       : 0,
+                    courses       : 0,
+                    mass          : false,
+                    danceInvite   : false});
     const requestOptions = {
         method: "POST",
         body: JSON.stringify({"viewedFor": this.state.playingAs,
@@ -352,6 +392,11 @@ class Browse extends React.Component {
   }
 
   updateProfilePass() {
+
+    this.setState({ lunches       : 0,
+                    courses       : 0,
+                    mass          : false,
+                    danceInvite   : false});
     const requestOptions = {
         method: "POST",
         body: JSON.stringify({"viewedFor": this.state.playingAs,
@@ -400,30 +445,10 @@ class Browse extends React.Component {
            <Alert message={this.state.alertMessage} toAlert={this.state.toAlert} closeCallback={this.closeAlert}/>
            <div className="headerContainer recommended-by">
             <h4 className="recommendby-header">
-            {
-              this.state.danceInvite > 0 &&
-              <OverlayTrigger key='bottom' placement='bottom' overlay={<Tooltip>Looking for a dance date!</Tooltip>}>
-              <img className="header-icon" src={DanceIcon} alt=""/>
-              </OverlayTrigger>
-            }
-            {
-              this.state.lunches > 0 &&
-              <OverlayTrigger key='bottom' placement='bottom' overlay={<Tooltip><strong>{this.state.lunches}</strong> lunch{this.state.lunches > 1 && 'es'} together!</Tooltip>}>
-              <img className="header-icon" src={LunchIcon} alt=""/>
-              </OverlayTrigger>
-            }
-            {
-              this.state.courses > 0 &&
-              <OverlayTrigger key='bottom' placement='bottom' overlay={<Tooltip><strong>{this.state.courses}</strong> course{this.state.courses > 1 && 's'} together!</Tooltip>}>
-              <img className="header-icon" src={BookIcon} alt=""/>
-              </OverlayTrigger>
-            }
-            {
-              this.state.mass &&
-              <OverlayTrigger key='bottom' placement='bottom' overlay={<Tooltip>Also attends mass regularly!</Tooltip>}>
-              <img className="header-icon" src={ChurchIcon} alt=""/>
-              </OverlayTrigger>
-            }
+            <HoverIcon show={this.state.danceInvite > 0} message="Looking for a dance date!" icon={DanceIcon}></HoverIcon>
+            <HoverIcon show={this.state.lunches > 0} message={(this.state.lunches + ' lunch') + (this.state.lunches > 1 ? 'es together!' : ' together!')} icon={LunchIcon}></HoverIcon>
+            <HoverIcon show={this.state.courses > 0} message={this.state.courses + ' course' + (this.state.courses > 1 ? 's together!' : ' together!')} icon={BookIcon}></HoverIcon>
+            <HoverIcon show={this.state.mass} message="Also attends mass regularly!" icon={ChurchIcon}></HoverIcon>
             Recommended by {this.state.recommendedBy}
             </h4>
             </div>
