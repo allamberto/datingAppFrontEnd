@@ -24,7 +24,7 @@ class Sidebar extends React.Component {
 		<Menu {...this.props}>
 		  <div className="counter-wrapper selectDisable">
 		  <img className="logo selectDisable" src={Logo} alt="Sidebar Logo"/>
-		  <Countdown date={`${year}-12-24T00:00:00`} />
+		  <Countdown date={`${year}-12-24T04:00:00Z`} />
 		  </div>
 		  <SidebarOpt nav="/browse" message="Browse" badge={false} img={Browse} alt="Sidebar Browse"/>
 		  <SidebarOpt nav="/players" message="Player Setup" badge={playersBadge} num={numPlayers} img={Rec} alt="Sidebar Recs"/>
