@@ -13,6 +13,7 @@ import backArrow from './../img/upArrow.png';
 import Add from './../img/add.png';
 import ListItemWithDelete from './../components/listItemWithDelete';
 import Modal from './../components/customModal';
+import Alert from './../components/alertError';
 
 class RenderPeople extends React.Component {
     constructor(props) {
@@ -21,6 +22,7 @@ class RenderPeople extends React.Component {
             people: this.props.people
         }
         this.deleteItem = this.deleteItem.bind(this);
+
     }
 
     deleteItem(name) {
@@ -40,8 +42,8 @@ class RenderPeople extends React.Component {
             var peeps = [];
             for(var p of this.props.people) {
                 var netid = p[this.props.netid];
-                if(this.props.pending) {   
-		    console.log(p);             
+                if(this.props.pending) {
+		    console.log(p);
                     peeps.push(<ListItemWithDelete pending={true} netid={netid} name={p['firstName'] + " " + p['lastName']} callback={this.deleteItem} accept={this.props.accept} decline={this.props.decline}/>);
                 } else {
                     peeps.push(<ListItemWithDelete netid={netid} name={p['firstName'] + " " + p['lastName']} callback={this.deleteItem} accept={this.props.accept} decline={this.props.decline}/>);
@@ -63,7 +65,9 @@ class ManagePlayers extends React.Component {
       requestsSent: [],
       requestsReceived: [],
       netid: sessionStorage.getItem("netid"),
-      addedRec: ""
+      addedRec: "",
+      toAlert: false,
+      alertMessage: ""
     };
 
     if(sessionStorage.getItem("netid") == null){
@@ -84,53 +88,65 @@ class ManagePlayers extends React.Component {
     this.recommend = this.recommend.bind(this);
     this.getRecs = this.getRecs.bind(this);
     this.getReqs = this.getReqs.bind(this);
-    
+    this.sendAlert = this.sendAlert.bind(this);
+    this.closeAlert = this.closeAlert.bind(this);
+
     this.getRecs();
     this.getReqs();
-}
+  }
 
-getRecs() {
-    fetch('http://3.211.82.27:8800/recommenders?netid=' + this.state.netid)
-      .then(async response => {
-            const data = await response.json();
+  getRecs() {
+      fetch('http://3.211.82.27:8800/recommenders?netid=' + this.state.netid)
+        .then(async response => {
+              const data = await response.json();
 
-            // check for error response
-            if (!response.ok) {
-                // get error message from body or default to response status
-                const error = (data && data.message) || response.status;
-                console.log("Error pulling recommendees");
-                return Promise.reject(error);
-            }
-            console.log(data);
-            this.setState({recommendees: data.recommendees});
-            this.setState({recommenders: data.recommenders});
-        })
-        .catch(error => {
-            console.error('There was an error!', error);
-    });
-}
+              // check for error response
+              if (!response.ok) {
+                  // get error message from body or default to response status
+                  this.sendAlert("Unable to load recommenders. Please try again.")
+                  const error = (data && data.message) || response.status;
+                  return Promise.reject(error);
+              }
+              console.log(data);
+              this.setState({recommendees: data.recommendees});
+              this.setState({recommenders: data.recommenders});
+          })
+          .catch(error => {
+              console.error('There was an error!', error);
+      });
+  }
 
-getReqs() {
-    fetch('http://3.211.82.27:8800/requests?netid=' + this.state.netid)
-      .then(async response => {
-            const data = await response.json();
+  getReqs() {
+      fetch('http://3.211.82.27:8800/requests?netid=' + this.state.netid)
+        .then(async response => {
+              const data = await response.json();
 
-            // check for error response
-            if (!response.ok) {
-                // get error message from body or default to response status
-                const error = (data && data.message) || response.status;
-                console.log("Error pulling requests");
-                return Promise.reject(error);
-            }
-            console.log(data);
-            this.setState({requestsReceived: data.requestsReceived});
-            this.setState({requestsSent: data.requestsSent});
-        })
-        .catch(error => {
-            console.error('There was an error!', error);
-    });
-}
- 
+              // check for error response
+              if (!response.ok) {
+                  // get error message from body or default to response status
+                  this.sendAlert("Unable to load requests. Please try again.")
+                  const error = (data && data.message) || response.status;
+                  return Promise.reject(error);
+              }
+              console.log(data);
+              this.setState({requestsReceived: data.requestsReceived});
+              this.setState({requestsSent: data.requestsSent});
+          })
+          .catch(error => {
+              console.error('There was an error!', error);
+      });
+  }
+
+
+  sendAlert(message) {
+      this.setState({toAlert: true});
+      this.setState({alertMessage: message});
+  }
+
+  closeAlert() {
+     this.setState({toAlert: false});
+  }
+
   handleChange = (event, value) => {
     this.setState({
       index: value,
@@ -157,16 +173,15 @@ getReqs() {
             // check for error response
             if (!response.ok) {
                 // get error message from body or default to response status
+                this.sendAlert("Unable to delete recommender relationship. Please try again.")
                 const error = (data && data.message) || response.status;
-                console.log("Error creating request");
                 return Promise.reject(error);
             }
-           
-            this.getRecs(); 
+
+            this.getRecs();
     })
         .catch(error => {
             console.error('There was an error!', error);
-            alert("\t\t\t\tThat student can't be deleted. \t\t\t\t\t\t\tPlease try again.");
     });
   }
 
@@ -183,15 +198,14 @@ getReqs() {
             // check for error response
             if (!response.ok) {
                 // get error message from body or default to response status
+                this.sendAlert("Unable to delete recommender relationship. Please try again.")
                 const error = (data && data.message) || response.status;
-                console.log("Error creating request");
                 return Promise.reject(error);
             }
             this.getRecs();
-    })  
+    })
         .catch(error => {
             console.error('There was an error!', error);
-            alert("\t\t\t\tThat student can't be deleted. \t\t\t\t\t\t\tPlease try again.");
     });
   }
 
@@ -219,8 +233,8 @@ getReqs() {
         // check for error response
         if (!response.ok) {
             // get error message from body or default to response status
+            this.sendAlert("Unable to accept request. Please try again.")
             const error = (data && data.message) || response.status;
-            console.log("Error creating request");
             return Promise.reject(error);
         }
 
@@ -229,7 +243,6 @@ getReqs() {
     })
     .catch(error => {
         console.error('There was an error!', error);
-        alert("\t\t\t\t\tAcceptance Failed. \t\t\t\t\t\t\tPlease try again.");
     });
   }
 
@@ -245,11 +258,11 @@ getReqs() {
         // check for error response
         if (!response.ok) {
             // get error message from body or default to response status
+            this.sendAlert("Unable to update status of request. Please try again.")
             const error = (data && data.message) || response.status;
-            console.log("Error creating request");
             return Promise.reject(error);
         }
-        
+
         this.getRecs();
         this.getReqs();
   })
@@ -260,7 +273,6 @@ getReqs() {
 
   addRecommendee(e) {
    var netid = this.state.addedRec;
-   if(netid.length < 5 || netid.length > 8) return;
    const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -273,16 +285,16 @@ getReqs() {
         // check for error response
         if (!response.ok) {
             // get error message from body or default to response status
+            this.sendAlert("Unable to send request. Please make sure student with given netid exists.")
             const error = (data && data.message) || response.status;
-            console.log("Error creating request");
             return Promise.reject(error);
         }
         this.getReqs();
     })
     .catch(error => {
+      this.sendAlert("Unable to send request. Please make sure student with given netid exists.")
         console.error('There was an error!', error);
-        alert("That student does not exist. Please try again.");
-    }); 
+    });
   }
 
   addImage() {
@@ -304,8 +316,9 @@ getReqs() {
 
     return(
         <div id="Page">
+            <Alert message={this.state.alertMessage} toAlert={this.state.toAlert} closeCallback={this.closeAlert}/>
             <div id="page-wrap" className="managePlayers">
-              <NavLink to="/players"> 
+              <NavLink to="/players">
                 <img src={backArrow} className="backButton" />
               </NavLink>
               <div className="wrapper">

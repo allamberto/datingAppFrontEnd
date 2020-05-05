@@ -24,17 +24,18 @@
   margin-top: -50px;
   background-image: url( '../img/add.png' );
   background-size: cover;
+  background-color: #84BD69;
   float: right;
   margin-right: 30px;
   border-radius: 50%;
   width: 30px;
   height: 30px;
-  border: 2px solid green;
+  border: 1px solid #84BD69;
 }
 
 .file-input {
   margin-bottom: 25px;
-  margin-top: 10pz;
+  margin-top: 10px;
   margin-left: 50px;
 }
 

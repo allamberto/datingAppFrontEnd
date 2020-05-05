@@ -22,9 +22,9 @@ class Sidebar extends React.Component {
 	   if(!this.props.limited) {
 	      return (
 		<Menu {...this.props}>
-		  <div className="counter-wrapper">
-		  <img className="logo" src={Logo} alt="Sidebar Logo"></img>
-		  <Countdown date={`${year}-12-24T00:00:00`} />
+		  <div className="counter-wrapper selectDisable">
+		  <img className="logo selectDisable" src={Logo} alt="Sidebar Logo"/>
+		  <Countdown date={`${year}-12-24T04:00:00Z`} />
 		  </div>
 		  <SidebarOpt nav="/browse" message="Browse" badge={false} img={Browse} alt="Sidebar Browse"/>
 		  <SidebarOpt nav="/players" message="Player Setup" badge={playersBadge} num={numPlayers} img={Rec} alt="Sidebar Recs"/>
@@ -37,11 +37,10 @@ class Sidebar extends React.Component {
 	  } else {
 	    return (
 		<Menu {...this.props}>
-		  <div className="counter-wrapper">
-                  <img className="logo" src={Logo} alt="Sidebar Logo"></img>
+		  <div className="counter-wrapper selectDisable">
+                  <img className="logo selectDisable" src={Logo} alt="Sidebar Logo"></img>
                   <Countdown date={`${year}-12-24T00:00:00`} />
                   </div>
-		  <SidebarOpt nav="/browse" message="Browse" badge={false} img={Browse} alt="Sidebar Browse"/>
 		  <SidebarOpt nav="/players" message="Player Setup" img={Rec} alt="Sidebar Recs"/>
 		  <SidebarOpt nav="/" message="Logout" badge={false}  img={Logout} alt="Sidebar Logout" logout={true}/>
 		</Menu>

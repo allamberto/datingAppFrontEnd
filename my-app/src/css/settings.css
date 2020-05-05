@@ -39,11 +39,10 @@
 }
 
 .changeButton:hover {
-    font-size: 25px;
-    text-align: center;
-    color: black;
-    font-weight: 700px;
     text-decoration: none;
+    color: black;
+    font-size: 24px;
+    font-weight: 800px;
 }
 
 .changeBoxes {
@@ -51,11 +50,14 @@
 }
 
 .changeButton {
+    text-decoration: none;
     color: black;
-    border: 2px solid black;
+    border: 2px solid #090C32;
     border-radius: 4px;
-    font-weight: 600px;
-    background-color: white;
+    background-color: #84BD69;
+    font-size: 20px;
+    font-weight: 500;
+    box-shadow: 1px 1px #090C32;
     padding: 5px 10px 5px 10px;
     font-size: 24px;
     margin-bottom: 10px;
@@ -72,25 +74,24 @@
 } 
 
 .changePasswordButton:hover {
-    font-size: 18px;
-    text-align: center;
-    color: black;
-    font-weight: 800;
     text-decoration: none;
+    color: black;
+    font-weight: 700;
 }
 
 .changePasswordButton {
     color: black;
-    border: 2px solid black;
-    border-radius: 4px;
-    font-weight: 600;
-    background-color: white;
+    text-decoration: none;
     padding: 5px 10px 5px 10px;
-    font-size: 18px;
     margin-bottom: 10px;
     float: right;
     margin-right: -15px;
-
+    color: black;
+    border: 2px solid #090C32;
+    border-radius: 4px;
+    background-color: #84BD69;
+    font-weight: 500;
+    box-shadow: 1px 1px #090C32;
 }
 
 .bulletOptions {

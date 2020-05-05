@@ -6,6 +6,7 @@ import StepProgressBar from "./../components/progressbar";
 import ImageUpload from './../components/image';
 import Textbox from './../components/textbox';
 import DynamicButton from './../components/dynamicButton';
+import Alert from './../components/alertError';
 
 class Signup4 extends React.Component {
 
@@ -26,14 +27,16 @@ constructor(props) {
       sessionStorage.setItem("settingsNav", "false");
 
       this.state = {
-	netid: sessionStorage.getItem("netid"),
-	profile: "",
-	promptQ: "",
-	funfacts: [],
-	funfactImages: [],
-	calendar: "",
-	oldFunfacts: [],
-        path: pathOp
+      	netid: sessionStorage.getItem("netid"),
+      	profile: "",
+      	promptQ: "",
+      	funfacts: [],
+      	funfactImages: [],
+      	calendar: "",
+      	oldFunfacts: [],
+        path: pathOp,
+        toAlert: false,
+        alertMessage: ""
       }
 
       this.changePage = this.changePage.bind(this);
@@ -43,6 +46,17 @@ constructor(props) {
       this.setFileFunfacts = this.setFileFunfacts.bind(this);
       this.setCalendar = this.setCalendar.bind(this);
       this.setDeleteFunfact = this.setDeleteFunfact.bind(this);
+      this.sendAlert = this.sendAlert.bind(this);
+      this.closeAlert = this.closeAlert.bind(this);
+}
+
+sendAlert(message) {
+    this.setState({toAlert: true});
+    this.setState({alertMessage: message});
+}
+
+closeAlert() {
+   this.setState({toAlert: false});
 }
 
 componentDidMount() {
@@ -53,6 +67,7 @@ componentDidMount() {
                 // check for error response
                 if (!response.ok) {
                     // get error message from body or default to response status
+                    this.sendAlert("Unable to load existing student question. Please try again.");
                     const error = (data && data.message) || response.status;
                     return Promise.reject(error);
                 }
@@ -60,7 +75,7 @@ componentDidMount() {
 		this.setState({promptQ: data.question});
             })
             .catch(error => {
-                console.error('There was an error with profile pic!', error);
+                console.error('There was an error loading question!', error);
             });
 
 	fetch('http://3.211.82.27:8800/funfacts/'+this.state.netid)
@@ -70,6 +85,7 @@ componentDidMount() {
                 // check for error response
                 if (!response.ok) {
                     // get error message from body or default to response status
+                    this.sendAlert("Unable to load student's existing fun facts. Please try again.");
                     const error = (data && data.message) || response.status;
                     return Promise.reject(error);
                 }
@@ -104,6 +120,7 @@ componentDidMount() {
                 // check for error response
                 if (!response.ok) {
                     // get error message from body or default to response status
+                    this.sendAlert("Unable to update student profile picture. Please try again.");
                     const error = (data && data.message) || response.status;
                     return Promise.reject(error);
                 }
@@ -128,6 +145,7 @@ componentDidMount() {
             // check for error response
             if (!response.ok) {
                 // get error message from body or default to response status
+                this.sendAlert("Unable to create fun fact. Please try again.");
                 const error = (data && data.message) || response.status;
                 return Promise.reject(error);
             }
@@ -150,6 +168,7 @@ componentDidMount() {
 		// check for error response
 		if (!response.ok) {
 		    // get error message from body or default to response status
+        this.sendAlert("Unable to update student prompt question. Please try again.");
 		    const error = (data && data.message) || response.status;
 		    return Promise.reject(error);
 		}
@@ -172,6 +191,7 @@ componentDidMount() {
 		// check for error response
 		if (!response.ok) {
 		    // get error message from body or default to response status
+        this.sendAlert("Unable to update student schedule. Please try again.");
 		    const error = (data && data.message) || response.status;
 		    return Promise.reject(error);
 		}
@@ -196,13 +216,13 @@ componentDidMount() {
 
    setFunfacts(target, num) {
    	const { funfacts } = this.state;
-	funfacts[num - 1] = target;
+	funfacts[num] = target;
 	this.setState({ funfacts });
    }
 
    setFileFunfacts(target, num) {
 	const { funfactImages } = this.state;
-        funfactImages[num - 1] = target.files[0];
+        funfactImages[num] = target.files[0];
         this.setState({ funfactImages });
    }
 
@@ -229,6 +249,7 @@ componentDidMount() {
         // check for error response
         if (!response.ok) {
             // get error message from body or default to response status
+            this.sendAlert("Unable to delete existing fun fact. Please try again.");
             const error = (data && data.message) || response.status;
             return Promise.reject(error);
         }
@@ -244,30 +265,31 @@ render() {
     var step = (this.state.path != "/settings") ? <StepProgressBar level="75"/> : <div />;
         return (
             <div className="signup">
+              <Alert message={this.state.alertMessage} toAlert={this.state.toAlert} closeCallback={this.closeAlert}/>
               <div className="backdrop">
                 {step}
                 <div className="content-container">
                   <h3>Create Your Profile</h3>
 
-		  <h2 className="section-header">Step 1: Upload Profile Picture</h2>
-		  <input type="file" className="file-input" onChange={this.setProfile}/>
-		  <hr className="divider" />
+            		  <h2 className="section-header">Step 1: Upload Profile Picture</h2>
+            		  <input type="file" className="file-input" onChange={this.setProfile}/>
+            		  <hr className="divider" />
 
-		  <h2 className="section-header">Step 2: Choose a Prompt Question</h2>
-		  <p className="section-subfont">Each of your matches will answer your question in order to chat with you.</p>
-		  <input placeholder="Enter Prompt Question" defaultValue={this.state.promptQ} className="form-control prompt-control" onChange={this.setPrompt}/>
+            		  <h2 className="section-header">Step 2: Choose a Prompt Question</h2>
+            		  <p className="section-subfont">Each of your matches will answer your question in order to chat with you.</p>
+            		  <input placeholder="Enter Prompt Question" defaultValue={this.state.promptQ} className="form-control prompt-control" onChange={this.setPrompt}/>
 
-		  <hr className="divider" />
+            		  <hr className="divider" />
 
-		  <h2 className="section-header">Step 3: Choose Your Fun Facts</h2>
-		  <p className="section-subfont">Your facts tell your matches more about you: hobbies, travels, memories. Each fun fact is accompanied by a photo. We recommend supplying four.</p>
-		  <DynamicButton oldFunfacts={this.state.oldFunfacts} callback={this.setFunfacts} fileCallback={this.setFileFunfacts} deleteCallback={this.setDeleteFunfact}/>
+            		  <h2 className="section-header">Step 3: Choose Your Fun Facts</h2>
+            		  <p className="section-subfont">Your facts tell your matches more about you: hobbies, travels, memories. Each fun fact is accompanied by a photo. We recommend supplying four.</p>
+            		  <DynamicButton oldFunfacts={this.state.oldFunfacts} callback={this.setFunfacts} fileCallback={this.setFileFunfacts} deleteCallback={this.setDeleteFunfact}/>
 
-		  <hr className="divider" />
+            		  <hr className="divider" />
 
-		  <h2 className="section-header">Step 4: Upload Your Calendar</h2>
-		  <p className="section-subfont">Upload your calendar's .iso file so we can setup dates for you and your matches.</p>
-		  <input type="file" name="file" className="file-input" onChange={this.setCalendar}/>
+            		  <h2 className="section-header">Step 4: Upload Your Calendar</h2>
+            		  <p className="section-subfont">Upload your calendar's .iso file so we can setup dates for you and your matches.</p>
+            		  <input type="file" name="file" className="file-input" onChange={this.setCalendar}/>
 
                   <button type="submit" className="btn btn-primary submit-button-signup-long" onClick={this.changePage}>Submit</button>
 

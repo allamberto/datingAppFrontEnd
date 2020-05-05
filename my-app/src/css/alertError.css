@@ -1,0 +1,9 @@
+.alertButton {
+    border: 2px solid #090C32;
+    border-radius: 4px;
+    background-color: #84BD69;
+    font-weight: 500;
+    box-shadow: 1px 1px #090C32;
+    font-size: 15px;
+    padding: 10px;
+}

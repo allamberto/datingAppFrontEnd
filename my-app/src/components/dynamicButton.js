@@ -3,14 +3,18 @@ import { Button } from "react-bootstrap";
 import X from './../img/x.png';
 import './../css/dynamicButton.css';
 
-function Funfact(props) {
+class Funfact extends React.Component {
+
+  render() {
+    console.log(this.props.i.split("-")[1]);
     return (
       <div>
 	<p className="section-subclass">Fun Fact Caption</p>
-	<input placeholder="Enter Fun Fact" className="form-control prompt-control" onChange={event => props.callback(event.target.value, props.num)}/>
-        <input type="file" className="file-input" onChange={event => props.fileCallback(event.target, props.num)}/>
+	<input placeholder="Enter Fun Fact" className="form-control prompt-control" onChange={event => this.props.callback(event.target.value, this.props.i.split("-")[1])}/>
+        <input type="file" className="file-input" onChange={event => this.props.fileCallback(event.target, this.props.i.split("-")[1])}/>
       </div>
     );
+  }
 }
 
 class LoadOld extends React.Component {
@@ -42,7 +46,7 @@ class DynamicButton extends React.Component {
             <div>
             <div id="dynamicInput">
 		        <LoadOld items={this.props.oldFunfacts} deleteCallback={this.props.deleteCallback}/>
-                {this.state.inputs.map(input => <Funfact fileCallback={this.props.fileCallback} callback={this.props.callback} num={this.state.inputs.length}/>)}
+                {this.state.inputs.map(input => <Funfact fileCallback={this.props.fileCallback} callback={this.props.callback} i={input} num={this.state.inputs.length}/>)}
             </div>
             <div className="plus-container-dynamic">
                <button className="plus-dynamic" onClick={ () => this.appendInput() }/>

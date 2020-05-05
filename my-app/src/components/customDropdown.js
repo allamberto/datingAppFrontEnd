@@ -2,11 +2,12 @@ import React from 'react';
 import Select from 'react-select';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './../css/customDropdown.css';
+import Alert from './../components/alertError';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
-        
+
 	this.checkOptions = this.checkOptions.bind(this);
         this.loadStates = this.loadStates.bind(this);
         this.loadMajors = this.loadMajors.bind(this);
@@ -14,7 +15,9 @@ class App extends React.Component {
         this.loadDorms = this.loadDorms.bind(this);
         this.checkArray = this.checkArray.bind(this);
         this.changes = this.changes.bind(this);
-	
+        this.sendAlert = this.sendAlert.bind(this);
+        this.closeAlert = this.closeAlert.bind(this);
+
 	var none = (this.props.filter) ? [{label: "None", value: ""}] : [];
 
         this.state = {
@@ -34,7 +37,7 @@ class App extends React.Component {
                         {label: "Female", value: "female"},
                         {label: "Choose Not to Identify", value: "nonbinary"}
                       ],
-	    orientation: [ 
+	    orientation: [
 			   {label: "Male", value: "male"},
                            {label: "Female", value: "female"},
                            {label: "Choose Not to Identify", value: "nonbinary"}
@@ -54,7 +57,9 @@ class App extends React.Component {
                         {label: "Pisces", value: "pisces"}
 		       ],
             date: [{label: "Yes", value: "1"},
-		   {label: "No", value: "0"}]
+		   {label: "No", value: "0"}],
+         toAlert: false,
+         alertMessage: ""
         }
 
       	this.loadStates();
@@ -71,8 +76,8 @@ class App extends React.Component {
         // check for error response
         if (!response.ok) {
             // get error message from body or default to response status
+            this.sendAlert("Unable to load states. Please try again.")
             const error = (data && data.message) || response.status;
-            console.error('There was an error!', error);
             return Promise.reject(error);
         }
         var s = [];
@@ -99,7 +104,7 @@ class App extends React.Component {
 
         // check for error response
         if (!response.ok) {
-            // get error message from body or default to response status
+            this.sendAlert("Unable to load majors. Please try again.")
             const error = (data && data.message) || response.status;
             return Promise.reject(error);
         }
@@ -111,7 +116,7 @@ class App extends React.Component {
                 value: major
             });
         }
-	
+
 	var none = (this.props.filter) ? [{label: "None", value: ""}] : [];
         this.setState({majorOptions : none.concat(majors)});
      })
@@ -128,6 +133,7 @@ class App extends React.Component {
         // check for error response
         if (!response.ok) {
             // get error message from body or default to response status
+            this.sendAlert("Unable to load minors. Please try again.")
             const error = (data && data.message) || response.status;
             return Promise.reject(error);
         }
@@ -157,6 +163,7 @@ class App extends React.Component {
         // check for error response
         if (!response.ok) {
             // get error message from body or default to response status
+            this.sendAlert("Unable to load dorms. Please try again.")
             const error = (data && data.message) || response.status;
             return Promise.reject(error);
         }
@@ -213,11 +220,21 @@ class App extends React.Component {
     if(e == null) return;
   }
 
+  sendAlert(message) {
+      this.setState({toAlert: true});
+      this.setState({alertMessage: message});
+  }
+
+  closeAlert() {
+     this.setState({toAlert: false});
+  }
+
    render() {
       var options = this.checkArray();
       var textClass = (this.props.textClassName != null) ? this.props.textClassName : "title-textbox";
 	return(
 	      <div>
+        <Alert message={this.state.alertMessage} toAlert={this.state.toAlert} closeCallback={this.closeAlert}/>
 		<label className={textClass}>{this.props.header}</label>
 		<Select options={options} isMulti={this.state.multi} isSearchable={true} placeholder={this.props.placeholder} value={options.filter(option => this.checkOptions(option))} className={this.props.className} onChange={this.props.callback}/>
 	      </div>
