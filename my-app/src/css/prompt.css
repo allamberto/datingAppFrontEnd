@@ -1,6 +1,6 @@
 .buttonMessage {
     display: inline-block;
-    text-align: center;  
+    text-align: center;
     margin-right: 3px;
     line-height: 35px;
     font-weight: 500;
@@ -14,8 +14,8 @@
 
 .tjImage {
     display: inline-block;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
 }
 
 .promptButton {

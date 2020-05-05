@@ -6,6 +6,7 @@ import {DropdownButton, Dropdown, Container, Col, Row} from "react-bootstrap";
 import StepProgressBar from "./../components/progressbar";
 import DynamicButton from "./../components/dynamicButton";
 import CustomDropdown from "./../components/customDropdown";
+import Alert from './../components/alertError';
 
 class Signup2 extends React.Component {
 
@@ -37,7 +38,9 @@ class Signup2 extends React.Component {
         majors: [],
         minors: [],
         identity: "",
-        orientation: []
+        orientation: [],
+        toAlert: false,
+        alertMessage: ""
       }
 
       this.autoPopulate();
@@ -55,6 +58,17 @@ class Signup2 extends React.Component {
       this.setDorm        = this.setDorm.bind(this);
       this.setHoroscope   = this.setHoroscope.bind(this);
       this.setDate        = this.setDate.bind(this);
+      this.sendAlert = this.sendAlert.bind(this);
+      this.closeAlert = this.closeAlert.bind(this);
+  }
+
+  sendAlert(message) {
+      this.setState({toAlert: true});
+      this.setState({alertMessage: message});
+  }
+
+  closeAlert() {
+     this.setState({toAlert: false});
   }
 
   autoPopulate() {
@@ -65,6 +79,7 @@ class Signup2 extends React.Component {
             // check for error response
             if (!response.ok) {
                 // get error message from body or default to response status
+                this.sendAlert("Unable to load existing student information. Please try again.");
                 const error = (data && data.message) || response.status;
                 return Promise.reject(error);
             }
@@ -80,7 +95,7 @@ class Signup2 extends React.Component {
               minors          : data.minors,
               identity        : data.genderIdentity,
               orientation     : data.browseGenderIdentity,
-	      horoscope       : data.zodiacSign,
+	            horoscope       : data.zodiacSign,
               date            : data.danceInvite
             });
         })
@@ -104,8 +119,8 @@ class Signup2 extends React.Component {
           		"minors"                : this.state.minors,
           		"browseGenderIdentity"  : this.state.orientation,
           		"genderIdentity"        : this.state.identity,
-			"zodiacSign"            : this.state.horoscope,
-                        "danceInvite"           : this.state.date
+			        "zodiacSign"            : this.state.horoscope,
+              "danceInvite"           : this.state.date
             })
           };
           fetch('http://3.211.82.27:8800/students/'+this.state.netid, requestOptions)
@@ -115,11 +130,13 @@ class Signup2 extends React.Component {
                 // check for error response
                 if (!response.ok) {
                     // get error message from body or default to response status
+                    this.sendAlert("Unable to update student information. Please try again.");
                     const error = (data && data.message) || response.status;
                     return Promise.reject(error);
                 }
-
-                this.props.history.push(this.state.path);
+                else {
+                  this.props.history.push(this.state.path);
+                }
             })
             .catch(error => {
                 console.error('There was an error!', error);
@@ -196,6 +213,7 @@ class Signup2 extends React.Component {
     var step = (this.state.path != "/settings") ? <StepProgressBar level="35"/> : <div />;
 	return (
             <div className="signup">
+              <Alert message={this.state.alertMessage} toAlert={this.state.toAlert} closeCallback={this.closeAlert}/>
                  <div className="backdrop">
                 {step}
                 <div className="content-container">

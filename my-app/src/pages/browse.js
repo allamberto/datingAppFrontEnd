@@ -1,21 +1,17 @@
 import React from 'react';
 import TJ from "./../img/TJ.png";
 import SideBar from "./../components/sidebar";
-import { Navbar, Container, Row, Col, DropdownButton, Dropdown, Button, Form, OverlayTrigger, Tooltip} from 'react-bootstrap';
+import { Container, Row, Col, Form, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import "./../css/browse.css";
+import "./../css/prompt.css";
 import FunFact from "./../components/funfact";
 import Profile from "./../components/profile";
-import Prompt from "./../components/prompt";
-import Modal from "./../components/modal";
 import Arrow from './../img/upArrow.png';
 import Filter from './../img/filter.png';
 import LunchIcon from './../img/lunch.png';
 import BookIcon from './../img/book.png';
 import ChurchIcon from './../img/church.png';
 import DanceIcon from './../img/dance.png';
-import rightArrow from './../img/rightArrow.png';
-import collapseNav from './../components/collapseNav';
-import { OffCanvas, OffCanvasMenu, OffCanvasBody } from "react-offcanvas";
 import CustomDropdown from './../components/customDropdown';
 import Alert from './../components/alertError';
 
@@ -407,25 +403,25 @@ class Browse extends React.Component {
             {
               this.state.danceInvite > 0 &&
               <OverlayTrigger key='bottom' placement='bottom' overlay={<Tooltip>Looking for a dance date!</Tooltip>}>
-              <img className="header-icon" src={DanceIcon} />
+              <img className="header-icon" src={DanceIcon} alt=""/>
               </OverlayTrigger>
             }
             {
               this.state.lunches > 0 &&
               <OverlayTrigger key='bottom' placement='bottom' overlay={<Tooltip><strong>{this.state.lunches}</strong> lunch{this.state.lunches > 1 && 'es'} together!</Tooltip>}>
-              <img className="header-icon" src={LunchIcon} />
+              <img className="header-icon" src={LunchIcon} alt=""/>
               </OverlayTrigger>
             }
             {
               this.state.courses > 0 &&
               <OverlayTrigger key='bottom' placement='bottom' overlay={<Tooltip><strong>{this.state.courses}</strong> course{this.state.courses > 1 && 's'} together!</Tooltip>}>
-              <img className="header-icon" src={BookIcon} />
+              <img className="header-icon" src={BookIcon} alt=""/>
               </OverlayTrigger>
             }
             {
               this.state.mass &&
               <OverlayTrigger key='bottom' placement='bottom' overlay={<Tooltip>Also attends mass regularly!</Tooltip>}>
-              <img className="header-icon" src={ChurchIcon} />
+              <img className="header-icon" src={ChurchIcon} alt=""/>
               </OverlayTrigger>
             }
             Recommended by {this.state.recommendedBy}
@@ -440,19 +436,19 @@ class Browse extends React.Component {
                     <Form onSubmit={this.updateRecommendationInterest}>
                     <div className="prompt-container">
                       <Form.Group controlId="prompt.Textarea">
-                        <Form.Control as="textarea" rows="1" placeholder={this.state.person[9]} className="question-response" onChange={this.setMessage}/>
+                        <Form.Control as="textarea" rows="2" placeholder={this.state.person[9]} className="question-response" onChange={this.setMessage}/>
                       </Form.Group>
                       <Row>
                       <Col md={6}>
                       <button className="promptButton" onClick={this.updateRecommendationInterest}>
                         <p className="buttonMessage">Send Message</p>
-                        <img src={TJ} className="tjImage" />
+                        <img src={TJ} className="tjImage" alt=""/>
                       </button>
                       </Col>
                       <Col md={6}>
                       <button onClick={this.updateRecommendationPass} className="passButton">
                           Not For Me
-                          <img src={Arrow} className="notMeButtonArrow" />
+                          <img src={Arrow} className="notMeButtonArrow" alt=""/>
                       </button>
                       </Col>
                       </Row>
@@ -488,7 +484,7 @@ class Browse extends React.Component {
                 			</div>
                       }
                       <div className="filter-toggle float-right"  onClick={this.expandFilters}>
-                          <img className="submit-filter-button" src={Filter} />
+                          <img className="submit-filter-button" src={Filter} alt=""/>
                       </div>
                     </Col>
                    </Row>
@@ -521,7 +517,7 @@ class Browse extends React.Component {
   			</div>
         }
         <div className="filter-toggle float-right"  onClick={this.expandFilters}>
-            <img className="submit-filter-button" src={Filter} />
+            <img className="submit-filter-button" src={Filter} alt=""/>
         </div>
 		    </Col>
          </Row>

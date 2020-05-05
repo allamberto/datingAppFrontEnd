@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter, NavLink } from 'react-router-dom';
 import { Overlay, Tooltip } from 'react-bootstrap';
 import Popup from 'react-popup';
+import Alert from './../components/alertError';
 
 function RememberMe(props) {
 
@@ -53,7 +54,9 @@ class Creds extends React.Component {
                      netid: netid,
                      password: "",
                      passwordConfirm: "",
-                     rememberMe: false
+                     rememberMe: false,
+                     toAlert: false,
+                     alertMessage: "",
       };
 
       this.mySubimtHandler = this.mySubmitHandler.bind(this);
@@ -61,6 +64,8 @@ class Creds extends React.Component {
       this.onChangePassword = this.onChangePassword.bind(this);
       this.onChangePasswordConfirm = this.onChangePasswordConfirm.bind(this);
       this.saveSessionUsername = this.saveSessionUsername.bind(this);
+      this.sendAlert = this.sendAlert.bind(this);
+      this.closeAlert = this.closeAlert.bind(this);
     }
 
     mySubmitHandler = (event) => {
@@ -81,8 +86,8 @@ class Creds extends React.Component {
                 // check for error response
                 if (!response.ok) {
                     // get error message from body or default to response status
+                    this.sendAlert("You have entered an incorrect username or password. Please try again.");
                     const error = (data && data.message) || response.status;
-                    alert("You have entered an incorrect username or password.");
                     return Promise.reject(error);
                 }
 
@@ -94,10 +99,10 @@ class Creds extends React.Component {
             });
         } else if(this.props.create) {
             if(this.state.netid == "") {
-                alert("Please Enter Your NetID.");
+              this.sendAlert("Please enter your netID.");
                 return;
             }
-		
+
             if(this.state.password == this.state.passwordConfirm) {
                 const requestOptions = {
                     method: 'POST',
@@ -112,20 +117,19 @@ class Creds extends React.Component {
                         // check for error response
                         if (!response.ok) {
                             // get error message from body or default to response status
+                            this.sendAlert("There was an error creating your account. Please try again.");
                             const error = (data && data.message) || response.status;
-                            alert("There was an error creating your account. Please try again.");
                             return Promise.reject(error);
                         }
-                    
-                        sessionStorage.setItem('netid', this.state.netid); 
+
+                        sessionStorage.setItem('netid', this.state.netid);
                         this.props.history.push(this.props.path);
-                    }) 
+                    })
                     .catch(error => {
                         console.error('There was an error!', error);
-                        alert("There was an error creating your account. Please try again.");
                     });
             } else {
-                alert("Your passwords do not match. Please try again.");
+                this.sendAlert("Your passwords do not match. Please try again.");
             }
         }
     }
@@ -133,7 +137,7 @@ class Creds extends React.Component {
     onChangeUser(event){
         this.setState({"netid": event.target.value});
         if(this.state.rememberMe) {
-            localStorage.setItem('rememberMe', event.target.value); 
+            localStorage.setItem('rememberMe', event.target.value);
         }
     }
 
@@ -147,6 +151,15 @@ class Creds extends React.Component {
 
     saveSessionUsername(e) {
         this.setState({"rememberMe": e.target.checked});
+    }
+
+    sendAlert(message) {
+        this.setState({toAlert: true});
+        this.setState({alertMessage: message});
+    }
+
+    closeAlert() {
+       this.setState({toAlert: false});
     }
 
     render() {
@@ -164,22 +177,23 @@ class Creds extends React.Component {
 
     return (
         <form onSubmit={this.mySubmitHandler}>
-                <h3>{this.props.header}</h3>
+            <Alert message={this.state.alertMessage} toAlert={this.state.toAlert} closeCallback={this.closeAlert}/>
+            <h3>{this.props.header}</h3>
 
-                <div className="form-group">
-                    <label className="form-group-text">NetID</label>
-                    <input required type="text" className="form-control" value={this.state.netid} placeholder="Enter NetID" onChange={this.onChangeUser}/>
-                </div>
+            <div className="form-group">
+                <label className="form-group-text">NetID</label>
+                <input required type="text" className="form-control" value={this.state.netid} placeholder="Enter NetID" onChange={this.onChangeUser}/>
+            </div>
 
-                <div className="form-group">
-                    <label className="form-group-text">Password</label>
-                    <input required type="password" className="form-control" placeholder="Enter Password" onChange={this.onChangePassword}/>
-                </div>
-                
-                {extra1}
+            <div className="form-group">
+                <label className="form-group-text">Password</label>
+                <input required type="password" className="form-control" placeholder="Enter Password" onChange={this.onChangePassword}/>
+            </div>
 
-                <button type="submit" className="btn btn-primary submit-button-signup">Submit</button>
-                {extra2}
+            {extra1}
+
+            <button type="submit" className="btn btn-primary submit-button-signup">Submit</button>
+            {extra2}
         </form>
     );}
 }

@@ -11,105 +11,11 @@ import SwipeableViews from 'react-swipeable-views';
 import AnimatedTabs from './../components/animatedTabs';
 import './../css/settings.css';
 import './../css/textbox.css';
-
-class CustomPopover extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            "pop": this.props.state
-        }
-
-        this.popoverSuccess = this.popoverSuccess.bind(this);
-        this.popoverFail = this.popoverFail.bind(this);
-    }
-
-    popoverSuccess(){
-        return(
-          <Popover id="popover-basic">
-            <Popover.Title as="h3">Success!</Popover.Title>
-            <Popover.Content>
-              Your password has been changed.
-            </Popover.Content>
-          </Popover>
-        );
-      }
-
-      popoverFail() {
-        return (
-          <Popover id="popover-basic">
-            <Popover.Title as="h3">Failure!</Popover.Title>
-            <Popover.Content>
-              Your password failed to be changed. Please try again.
-            </Popover.Content>
-          </Popover>
-        );
-      }
-
-    render() {
-        const requestOptions = {
-            method: 'POST',
-            body:  JSON.stringify({ "netid": this.state.netid, "password": this.state.oldPassword})
-          };
-          fetch('http://3.211.82.27:8800/login', requestOptions)
-          .then(async response => {
-                const data = await response;
-
-                // check for error response
-                if (!response.ok) {
-                    // get error message from body or default to response status
-                    const error = (data && data.message) || response.status;
-                    console.log("Error creating request");
-                    return Promise.reject(error);
-                }
-
-               if(this.state.newPassword != this.state.newPasswordConfirm) {
-                    alert('\t\t\t\tYour passwords do not match. \t\t\t\t\t\tPlease try again.');
-               } else {
-                    const requestOptions = {
-                        method: 'PUT',
-                        body:  JSON.stringify({ "netid": this.state.netid, "oldPassword": this.state.oldPassword, "newPassword": this.state.newPassword})
-                    };
-                    fetch('http://3.211.82.27:8800/login', requestOptions)
-                      .then(async response => {
-                            const data = await response;
-
-                            // check for error response
-                            if (!response.ok) {
-                                // get error message from body or default to response status
-                                const error = (data && data.message) || response.status;
-                                console.log("Error creating request");
-                                return Promise.reject(error);
-                            }
-
-                            return(this.popoverSuccess());
-                       })
-                    .catch(error => {
-                        return(this.popoverFail());
-                    });
-                }
-
-          })
-          .catch(error => {
-                return(this.popoverFail());
-          });
-
-        return(this.popoverFail());
-    }
-}
+import Alert from './../components/alertError';
 
 const popoverGood = (
     <Popover id="popover-basic">
             <Popover.Title as="h3">Success!</Popover.Title>
-            <Popover.Content>
-              Your password has been changed.
-            </Popover.Content>
-          </Popover>
-);
-
-const popoverBad = (
-    <Popover id="popover-basic">
-            <Popover.Title as="h3">Failure!</Popover.Title>
             <Popover.Content>
               Your password has been changed.
             </Popover.Content>
@@ -132,8 +38,9 @@ class Settings extends React.Component {
       oldPassword: "",
       newPassword: "",
       newPasswordConfirm: "",
-      pop: false,
-      show: false
+      show: false,
+      toAlert: false,
+      alertMessage: ""
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -142,14 +49,20 @@ class Settings extends React.Component {
     this.setNew = this.setNew.bind(this);
     this.setConfirm = this.setConfirm.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.setPopover = this.setPopover.bind(this);
-    this.popoverGood = this.popoverGood.bind(this);
-    this.popoverBad = this.popoverBad.bind(this);
-    this.renderNothing = this.renderNothing.bind(this);
+    this.sendAlert = this.sendAlert.bind(this);
+    this.closeAlert = this.closeAlert.bind(this);
+  }
+
+  sendAlert(message) {
+      this.setState({toAlert: true});
+      this.setState({alertMessage: message});
+  }
+
+  closeAlert() {
+     this.setState({toAlert: false});
   }
 
   onSubmit() {
-    this.setState({show: true });
 
   const requestOptions = {
     method: 'POST',
@@ -163,12 +76,14 @@ class Settings extends React.Component {
         if (!response.ok) {
             // get error message from body or default to response status
             const error = (data && data.message) || response.status;
-            console.log("Error creating request");
+            this.sendAlert("There was an error validating your old password. Please try again.");
+            this.setState({show: false});
             return Promise.reject(error);
         }
-        
+
        if(this.state.newPassword != this.state.newPasswordConfirm) {
-            alert('\t\t\t\tYour passwords do not match. \t\t\t\t\t\tPlease try again.');
+            this.setState({show: false});
+            this.sendAlert("Your provided passwords don't match.");
        } else {
             const requestOptions = {
                 method: 'PUT',
@@ -185,21 +100,19 @@ class Settings extends React.Component {
                         console.log("Error creating request");
                         return Promise.reject(error);
                     }
-
-                    this.setState({pop: true });;
-                    setTimeout( () => {this.setState({show: false}); }, 4000); 
+                    this.setState({show: true});
+                    setTimeout( () => {this.setState({show: false}); }, 6000);
                })
             .catch(error => {
-                this.setPopover(false);
-                setTimeout( () => {this.setState({show: false}); }, 4000);
+                this.setState({show: false});
+                this.sendAlert("Your password could not be updated at this time. Please try again.");
             });
         }
-         
+
   })
   .catch(error => {
-        this.setPopover(false);
-        console.error('\t\t\t\tYour old password was incorrect. \t\t\t\t\t\tPlease try again.', error);
-        setTimeout( () => {this.setState({show: false}); }, 4000);
+        this.setState({show: false});
+        this.sendAlert("Your old password is incorrect. Please try again.");
   });
 }
 
@@ -227,36 +140,6 @@ class Settings extends React.Component {
     this.setState({newPasswordConfirm: e.target.value});
   }
 
-  setPopover(e) {
-    this.setState({pop: e});
-  } 
-
-  popoverGood() {
-    return (
-        <Popover id="popover-basic">
-            <Popover.Title as="h3">Success!</Popover.Title>
-            <Popover.Content>
-              Your password has been changed.
-            </Popover.Content>
-          </Popover>
-    );
-  }
-
-  popoverBad() {
-    return (
-        <Popover id="popover-basic">
-            <Popover.Title as="h3">Failure!</Popover.Title>
-            <Popover.Content>
-              Your password has been changed.
-            </Popover.Content>
-          </Popover>
-    );
-  }
-
-  renderNothing() {
-    return(<div />);
-  }
- 
   render() {
 
     const { index } = this.state;
@@ -264,6 +147,7 @@ class Settings extends React.Component {
 
     return(
         <div id="Page">
+            <Alert message={this.state.alertMessage} toAlert={this.state.toAlert} closeCallback={this.closeAlert}/>
             <SideBar pageWrapId={"page-wrap"} outerContainerId={"Page"} />
             <div id="page-wrap" className="settings">
               <div className="wrapperSettings">
@@ -330,7 +214,7 @@ class Settings extends React.Component {
                                 <label>Confirm New Password</label>
                                 <input type="password" className="form-control"  placeholder="Re-enter New Password" onChange={this.setConfirm}/>
                             </div>
-                            <OverlayTrigger trigger="click" placement="right" overlay={ this.state.show ? (this.state.pop ? popoverGood : popoverBad) : renderNothing} >
+                            <OverlayTrigger trigger="click" placement="right" overlay={ this.state.show ? popoverGood : renderNothing} >
                                 <button onClick={this.onSubmit} className="changePasswordButton">Submit</button>
                              </OverlayTrigger>
                       </div>

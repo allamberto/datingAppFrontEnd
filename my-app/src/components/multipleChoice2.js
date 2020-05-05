@@ -19,7 +19,8 @@ class MC extends React.Component {
       selectedOptions: this.props.selected
     };
 
-    this.check = this.check.bind(this);
+		this.check = this.check.bind(this);
+		this.onSelect = this.onSelect.bind(this);
 
   }
 
@@ -27,10 +28,17 @@ class MC extends React.Component {
     this.props.callback(this.state.selectedOptions);
   }
 
+	onSelect(selectedOptions) {
+		this.setState({ selectedOptions });
+		this.props.callback(this.state.selectedOptions);
+	}
+
+
+
   render() {
     return (
      <div className="multiple-choice-container" onClick={this.check}>
-        <Test style={{"width": "90%", "text-align": "right"}} onOptionSelect={selectedOptions => this.setState({ selectedOptions })}>
+        <Test style={{"width": "90%", "text-align": "right"}} onOptionSelect={selectedOptions => this.onSelect( selectedOptions )}>
           <QuestionGroup defaultValue={this.state.selectedOptions.temperament} questionNumber={"temperament"}>
             <h2 className="question-text">Question 1 of 14: Which best describes you?</h2>
             <Option value="introverted" style={optionStyle}><p className="text-test">Introverted</p></Option>

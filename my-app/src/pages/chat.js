@@ -33,6 +33,8 @@ class Chat extends React.Component {
         this.closeModal = this.closeModal.bind(this);
         this.getLunches = this.getLunches.bind(this);
         this.modalUpdateText = this.modalUpdateText.bind(this);
+        this.sendAlert = this.sendAlert.bind(this);
+        this.closeAlert = this.closeAlert.bind(this);
 
         this.state = {
             netid: sessionStorage.getItem("netid"),
@@ -52,7 +54,7 @@ class Chat extends React.Component {
             attendsMass: false,
             show: false,
             toAlert: false,
-            alertMessage: "",
+            alertMessage: ""
         }
         this.loadSideBar();
     }
@@ -256,6 +258,7 @@ class Chat extends React.Component {
     render() {
       return(
         <div id="Page" className="chatContainer">
+            <Alert message={this.state.alertMessage} toAlert={this.state.toAlert} closeCallback={this.closeAlert}/>
             <SideBar pageWrapId={"page-wrap"} outerContainerId={"Page"} />
             <div id="page-wrap" className="chat-page">
                 <Container className="chat-page" fluid="true">

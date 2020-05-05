@@ -4,6 +4,7 @@ import "./../css/signup.css";
 import {DropdownButton, Dropdown} from "react-bootstrap";
 import StepProgressBar from "./../components/progressbar";
 import MultipleChoice from './../components/multipleChoice2';
+import Alert from './../components/alertError';
 
 class Signup3 extends React.Component {
 
@@ -23,19 +24,32 @@ constructor(props) {
 	         netid: sessionStorage.getItem("netid"),
            path: pathOp,
 	         selected: {},
-           loaded: false
+           loaded: false,
+           toAlert: false,
+           alertMessage: ""
       }
 
       this.autoPopulate();
 
       this.changePage = this.changePage.bind(this);
       this.setSelected = this.setSelected.bind(this);
+      this.sendAlert = this.sendAlert.bind(this);
+      this.closeAlert = this.closeAlert.bind(this);
     }
 
     componentDidMount() {
         if(sessionStorage.getItem("netid") == null){
             this.props.history.push("/login");
         }
+    }
+
+    sendAlert(message) {
+        this.setState({toAlert: true});
+        this.setState({alertMessage: message});
+    }
+
+    closeAlert() {
+       this.setState({toAlert: false});
     }
 
     setSelected = (childData) => {
@@ -70,16 +84,16 @@ constructor(props) {
 
                 // check for error response
                 if (!response.ok) {
-                    // get error message from body or default to response status
                     const error = (data && data.message) || response.status;
                     return Promise.reject(error);
                 }
-
+                this.setState({loaded : false});
                 this.props.history.push(this.state.path);
-                this.setState({loaded : true});
+
             })
             .catch(error => {
                 console.error('There was an error!', error);
+                this.sendAlert("Unable to update student information. Please try again.");
             });
     }
 
@@ -91,8 +105,8 @@ constructor(props) {
               // check for error response
               if (!response.ok) {
                   // get error message from body or default to response status
+                  this.sendAlert("Unable to load existing student information. Please try again.");
                   const error = (data && data.message) || response.status;
-                  console.log("Error auto populating data");
                   return Promise.reject(error);
               }
               this.setState({
@@ -118,6 +132,7 @@ constructor(props) {
           })
           .catch(error => {
               console.error('There was an error!', error);
+              this.sendAlert("Unable to load existing student information. Please try again.");
       });
     }
 
@@ -127,6 +142,7 @@ render() {
 
         return (
             <div className="signup">
+              <Alert message={this.state.alertMessage} toAlert={this.state.toAlert} closeCallback={this.closeAlert}/>
               <div className="backdrop">
                 {step}
                 <div className="content-container">
